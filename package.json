@@ -1,0 +1,19 @@
+{
+  "name": "big-ip-blocker",
+  "version": "0.0.1",
+  "description": "A tool for blocking monopolists",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miamiww/Big-IP-Blocker.git"
+  },
+  "author": "alden jones",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miamiww/Big-IP-Blocker/issues"
+  },
+  "homepage": "https://github.com/miamiww/Big-IP-Blocker#readme"
+}
