@@ -83,6 +83,9 @@ chrome.webRequest.onCompleted.addListener(
 			.then(response => response.json())
 			.then(data => {
 				console.log(data)
+				if(data.hasOwnProperty("ip")){
+					setTimeout(() => {  console.log("page loaded!"); }, 10000);	
+				}
 			})
 			.catch(err => console.log(err));
 	  }
