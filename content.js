@@ -26,6 +26,8 @@ $(document).ready(function() {
 			var websiteIP_status = response.enableDisableIP;
 			if (websiteIP_status == "Disable" || typeof websiteIP_status == 'undefined') {
 				console.log(finalIP)  ;
+				fetch("http://159.65.179.9:8080/ips/"+finalIP).then(response => response.json()).then(data => console.log(data));
+
 			}
 		});
 	});
