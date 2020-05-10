@@ -1,2 +1,7 @@
 references
 node_modules
+Gruntfile.js
+
+.DS_Store
+*.csv
+reload.*
