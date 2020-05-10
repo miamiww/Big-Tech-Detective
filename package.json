@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/miamiww/Big-IP-Blocker/issues"
   },
-  "homepage": "https://github.com/miamiww/Big-IP-Blocker#readme"
+  "homepage": "https://github.com/miamiww/Big-IP-Blocker#readme",
+  "devDependencies": {
+    "grunt": "^1.1.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-crx-auto-reload": "^1.0.2"
+  }
 }
