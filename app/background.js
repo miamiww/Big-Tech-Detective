@@ -11,6 +11,11 @@ let chart_object;
 // console.assert(port.name == "start_listen");
 // message_object = port;
 
+// settings for pop-out window
+var net_url = chrome.extension.getURL('main.html');
+var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 1200 , 'height' : 700 }
+var net_win;
+
 
 // this isn't really necessary, it prevents the extension from running on non-web pages like settings pages, but it is OK to make the request on such pages
 function checkForValidUrl(tabId, changeInfo, tab) {
@@ -81,3 +86,8 @@ chrome.runtime.onConnect.addListener(function(port) {
 });
 
 
+chrome.browserAction.onClicked.addListener(() => {
+	chrome.windows.create(win_properties, (tab) => {
+		net_win = tab;
+	})
+})
