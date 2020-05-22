@@ -49,8 +49,8 @@ chrome.webRequest.onCompleted.addListener(
 	  //	 preventing infinite loops
 	  if(!ignore_ips.includes(info.ip)){
 		console.log('fetch request for ' + info.ip)
-		console.log("http://159.65.179.9:8080/ips/"+info.ip)
-		fetch("http://159.65.179.9:8080/ips/"+info.ip)
+		console.log("https://thegreatest.website:8080/ips/"+info.ip)
+		fetch("https://thegreatest.website:8080/ips/"+info.ip)
 			.then(response => response.json())
 			.then(data => {
 				console.log(data)
