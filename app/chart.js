@@ -5,7 +5,12 @@ var container = d3.select("#pie");
 const init = () => {
     port = chrome.runtime.connect({name: "start_listen"});
     port.onMessage.addListener(onMessage);
-    update(companyData)
+    chrome.storage.local.get(['key'], function(result) {
+        console.log('Company data from local storage is ' + result.key);
+        companyData = result.key;
+        update(companyData);
+    });
+
 }
 
 // processing of packet info and call of chart build
