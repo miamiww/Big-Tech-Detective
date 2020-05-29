@@ -15,7 +15,7 @@ let companyData = {};
 
 // settings for pop-out window
 var net_url = chrome.extension.getURL('main.html');
-var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 700 , 'height' : 700 }
+var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 700 , 'height' : 600 }
 var net_win;
 
 // functions for setting local storage

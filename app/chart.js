@@ -35,7 +35,7 @@ const buildChart = () => {
     var radius = Math.min(width, height) / 2 - margin
   
     // set the color scale
-    var color = d3.scaleOrdinal(d3.schemeCategory10), svg;
+    var color = d3.scaleOrdinal(d3.schemeSet3), svg;
     
     function graph(_selection) {
         _selection.each(function(_data) {	
