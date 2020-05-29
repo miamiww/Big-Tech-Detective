@@ -22,7 +22,17 @@ body{
 
 /* page element styling */
 .switches{
-    background-color: aquamarine;
+    background-color: tan;
+    margin: 15px;
+    /* width: 300px; */
+    height: 410px;
+}
+
+.analyzer{
+    background-color: lightgrey;
+    margin: 15px;
+    /* width: 300px; */
+    height: 410px;
 }
   
 /* begin toggle switches */
