@@ -13,12 +13,58 @@
     <script type="text/javascript" src="lib/d3.min.js"></script>
     <script type="text/javascript" src="lib/d3-scale-chromatic.v1.min.js"></script>
 
-    <div class="flex-container">
-        <div id='main'><b><i>IP ANALYZER</i></b></div>
-        <div id="pie"></div>
+    <div class="flex-row">
+        <div class="flex-column">
+            <img src="logo_red.svg">
+            <h2><b><i>IP ANALYZER</i></b><h2> 
+        </div>
     </div>
+    <div class="flex-row">
+        <div class="flex-column">
+            <div id="pie"></div>
+        </div>
+
+    </div>
+    <div class="switches"> 
+        <div class="flex-row">
+            <div class="flex-column">
+                <p>Amazon</p>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span> 
+                </label>
+            </div>
+    
+            <div class="flex-column">
+                <p>Facebook</p> 
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+    
+            <div class="flex-column">
+                <p>Microsoft</p>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+    
+            <div class="flex-column">
+                <p>Google</p>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    
+    </div>
+
+
 
 
     <script type="text/javascript" src="chart.js"></script>
 </body>
-</html> 
+</html>  
