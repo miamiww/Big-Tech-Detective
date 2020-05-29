@@ -73,13 +73,20 @@ chrome.runtime.onConnect.addListener((port) => {
 	try{console.log(port); /** console.trace(); /**/ }catch(e){}
 	console.assert(port.name == "start_listen");
 	message_object = port;
-
+	message_object.onDisconnect.addListener(function(){
+		net_win = null;
+	})
 
 });
 
 // open up the extension window when icon is clicked
 chrome.browserAction.onClicked.addListener(() => {
-	chrome.windows.create(win_properties, (tab) => {
-		net_win = tab;
-	})
+	if(net_win){
+
+	}else{
+		chrome.windows.create(win_properties, (tab) => {
+			net_win = tab;
+		})
+	}
+
 })
