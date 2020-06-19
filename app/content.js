@@ -7,11 +7,19 @@ var blockingData = {
     "Microsoft": false
 };
 
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 const init = () => {
     port = chrome.runtime.connect({name: "blocker_socket"});
     port.onMessage.addListener(blockTime);
     chrome.storage.local.get(['blocks'], function(result) {
-        if(result != undefined){
+        if(isEmpty(result)){
             console.log('Blocking data from local storage is ' + result.blocks);
             blockingData = result.blocks;
             console.log(blockingData);

@@ -5,10 +5,17 @@ document.getElementById("facebookSwitch").addEventListener("click", checkFaceboo
 document.getElementById("microsoftSwitch").addEventListener("click", checkMicrosoft);
 
 let blockObject = {};
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
 
 const initBlocks = () => {
     chrome.storage.local.get(['blocks'], function(result) {
-        if(result != undefined){
+        if(isEmpty(result)){
             console.log('Blocking data from local storage is ' + result.blocks);
             blockObject = result.blocks;
             if(blockObject.Google){
