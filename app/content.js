@@ -11,7 +11,7 @@ const init = () => {
     port = chrome.runtime.connect({name: "blocker_socket"});
     port.onMessage.addListener(blockTime);
     chrome.storage.local.get(['blocks'], function(result) {
-        if(result != null){
+        if(result != undefined){
             console.log('Blocking data from local storage is ' + result.blocks);
             blockingData = result.blocks;
             console.log(blockingData);
@@ -33,7 +33,7 @@ const blockTime = data => {
                     block = true;
                     let div = document.createElement('div');
                     div.className = "overlay";
-                    div.innerHTML = "<strong>Hi there!</strong> This page is blocked";
+                    div.innerHTML = "\n\n\n<strong>Hi there!</strong> This page is blocked";
                   
                     document.body.append(div);
                 }
@@ -44,7 +44,7 @@ const blockTime = data => {
                     block = true;
                     let div = document.createElement('div');
                     div.className = "overlay";
-                    div.innerHTML = "<strong>Hi there!</strong> This page is blocked";
+                    div.innerHTML = "\n\n\n<strong>Hi there!</strong> This page is blocked";
                   
                     document.body.append(div);
                 }
@@ -55,7 +55,7 @@ const blockTime = data => {
                     block = true;
                     let div = document.createElement('div');
                     div.className = "overlay";
-                    div.innerHTML = "<strong>Hi there!</strong> This page is blocked";
+                    div.innerHTML = "\n\n\n<strong>Hi there!</strong> This page is blocked";
                   
                     document.body.append(div);
                 }
@@ -66,7 +66,7 @@ const blockTime = data => {
                     block = true;
                     let div = document.createElement('div');
                     div.className = "overlay";
-                    div.innerHTML = "<strong>Hi there!</strong> This page is blocked";
+                    div.innerHTML = "\n\n\n<strong>Hi there!</strong> This page is blocked";
                   
                     document.body.append(div);
                 }

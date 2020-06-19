@@ -8,7 +8,7 @@ let blockObject = {};
 
 const initBlocks = () => {
     chrome.storage.local.get(['blocks'], function(result) {
-        if(result != null){
+        if(result != undefined){
             console.log('Blocking data from local storage is ' + result.blocks);
             blockObject = result.blocks;
             if(blockObject.Google){
