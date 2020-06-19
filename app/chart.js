@@ -16,10 +16,11 @@ const init = () => {
 // processing of packet info and call of chart build
 const onMessage = data => {
     console.log(data);
-    if(data.hasOwnProperty("company")){
+    if(data.type=="packetIn"){
         console.log('receiving packet data');
         companyData[data.company]=(companyData[data.company]+1) || 1;
-        update(companyData);
+        update(companyData)
+
     }
 }
 

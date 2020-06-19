@@ -8,6 +8,7 @@ const ignore_ips = ["159.65.179.9",undefined]
 
 // objects for messaging to the chart
 let message_object = null;
+let block_object = null;
 let chart_object;
 // object for local storage
 let companyData = {};
@@ -33,6 +34,11 @@ const setOtherInStorage = () => {
 	  });
 }
 
+
+// functions for sending block message
+
+
+
 // Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
 chrome.webRequest.onCompleted.addListener( 
 	(info) => {
@@ -50,7 +56,7 @@ chrome.webRequest.onCompleted.addListener(
 					// console.log('IP in database')
 					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company});
 					setCompanyInStorage(data);
-				
+					// if(block_object) block_object.postMessage({'type': 'blockPage', 'company_to_block':data.ip.company});
 					
 				}else{
 					// console.log('IP not in database')
@@ -73,11 +79,22 @@ chrome.runtime.onConnect.addListener((port) => {
 	try{console.log(port); /** console.trace(); /**/ }catch(e){}
 	console.assert(port.name == "start_listen");
 	message_object = port;
+	// block_object = port;
 	message_object.onDisconnect.addListener(function(){
 		net_win = null;
 	})
 
 });
+
+// chrome.runtime.onConnect.addListener((port) => {
+
+// 	try{console.log(port); /** console.trace(); /**/ }catch(e){}
+// 	console.assert(port.name == "blocker_socket");
+// 	block_object = port;
+
+// });
+
+// send messages to content.js in realtime
 
 // open up the extension window when icon is clicked
 chrome.browserAction.onClicked.addListener(() => {
