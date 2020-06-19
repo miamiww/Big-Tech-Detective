@@ -11,10 +11,11 @@
                                              
 ```
 
-To install:
 
-download / clone the repo
-fire up chrome and navigate to chrome://extensions/
-toggle that "developer mode" switch in the upper right hand corner
-click "load unpacked" in the upper left and select the /app directory of the repo
-boom. you're done.
+To install:
+1. download / clone the repo
+2. fire up chrome and navigate to [chrome://extensions/](chrome://extensions/)
+3. toggle that "developer mode" switch in the upper right hand corner
+4. click "load unpacked" in the upper left and select the /app directory of the repo
+5. boom. you're done.
+6. open up your new blocking tool by clicking its icon in the chrome toolbar
