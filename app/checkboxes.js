@@ -1,8 +1,4 @@
 
-document.getElementById("googleSwitch").addEventListener("click", checkGoogle);
-document.getElementById("amazonSwitch").addEventListener("click", checkAmazon);
-document.getElementById("facebookSwitch").addEventListener("click", checkFacebook);
-document.getElementById("microsoftSwitch").addEventListener("click", checkMicrosoft);
 
 let blockObject = {};
 function isEmpty(obj) {
@@ -14,6 +10,11 @@ function isEmpty(obj) {
 }
 
 const initBlocks = () => {
+    document.getElementById("googleSwitch").addEventListener("click", checkGoogle);
+    document.getElementById("amazonSwitch").addEventListener("click", checkAmazon);
+    document.getElementById("facebookSwitch").addEventListener("click", checkFacebook);
+    document.getElementById("microsoftSwitch").addEventListener("click", checkMicrosoft);
+
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
             console.log('Blocking data from local storage is ' + result.blocks);
@@ -58,56 +59,53 @@ const setBlockingInStorage = (company) => {
 	});
 }
 
-function checkGoogle()
-{
-  var checkbox = document.getElementById('googleSwitch');
-  if (checkbox.checked == true)
-  {
-    alert("blocking Google could be very annoying");
-    setBlockingInStorage("Google");
-  } else{
-    setBlockingInStorage("Google");
-  }
-}
-function checkAmazon()
-{
-  var checkbox = document.getElementById('amazonSwitch');
-  if (checkbox.checked == true)
-  {
-    alert("blocking Amazon could be very annoying");
-    setBlockingInStorage("Amazon");
-
-  } else{
-    setBlockingInStorage("Amazon");
-  }
+const checkGoogle = () => {
+    var checkbox = document.getElementById('googleSwitch');
+    if (checkbox.checked == true)
+    {
+        alert("blocking Google could be very annoying");
+        setBlockingInStorage("Google");
+    } else{
+        setBlockingInStorage("Google");
+    }
 }
 
-function checkFacebook()
-{
-  var checkbox = document.getElementById('facebookSwitch');
-  if (checkbox.checked == true)
-  {
-    alert("blocking Facebook could be very annoying");
-    setBlockingInStorage("Facebook");
+const checkAmazon = () => {
+    var checkbox = document.getElementById('amazonSwitch');
+    if (checkbox.checked == true)
+    {
+        alert("blocking Amazon could be very annoying");
+        setBlockingInStorage("Amazon");
 
-  } else{
-    setBlockingInStorage("Facebook");
-
-  }
+    } else{
+        setBlockingInStorage("Amazon");
+    }
 }
 
-function checkMicrosoft()
-{
-  var checkbox = document.getElementById('microsoftSwitch');
-  if (checkbox.checked == true)
-  {
-    alert("blocking Microsoft could be very annoying");
-    setBlockingInStorage("Microsoft");
+const checkFacebook = () => {
+    var checkbox = document.getElementById('facebookSwitch');
+    if (checkbox.checked == true)
+    {
+        alert("blocking Facebook could be very annoying");
+        setBlockingInStorage("Facebook");
 
-  } else{
-    setBlockingInStorage("Microsoft");
+    } else{
+        setBlockingInStorage("Facebook");
 
-  }
+    }
+}
+
+const checkMicrosoft = () => {
+    var checkbox = document.getElementById('microsoftSwitch');
+    if (checkbox.checked == true)
+    {
+        alert("blocking Microsoft could be very annoying");
+        setBlockingInStorage("Microsoft");
+
+    } else{
+        setBlockingInStorage("Microsoft");
+
+    }
 }
 
 initBlocks();

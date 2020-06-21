@@ -3,7 +3,7 @@ var container = d3.select("#pie");
 
 // start the communication with background.js
 const init = () => {
-    port = chrome.runtime.connect({name: "start_listen"});
+    port = chrome.runtime.connect({name: "extension_socket"});
     port.onMessage.addListener(onMessage);
     chrome.storage.local.get(['key'], function(result) {
         console.log('Company data from local storage is ' + result.key);
@@ -69,15 +69,15 @@ const buildChart = () => {
            
             chart.exit().remove()
 
-            var annotations = svg.selectAll("chart").data(pie(d3.entries(_data)));
+            // var annotations = svg.selectAll("chart").data(pie(d3.entries(_data)));
 
-            annotations.enter().append('text')
-                .text(function(d){ return d.data.key + "\n\n" + d.data.value})
-                .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")";  })
-                .style("text-anchor", "middle")
-                .style("font-size", 17)
+            // annotations.enter().append('text')
+            //     .text(function(d){ return d.data.key + "\n\n" + d.data.value})
+            //     .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")";  })
+            //     .style("text-anchor", "middle")
+            //     .style("font-size", 17)
            
-            annotations.exit().remove()
+            // annotations.exit().remove()
 
             function arcTween(a) {
                 var i = d3.interpolate(this._current, a);

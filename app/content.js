@@ -33,7 +33,7 @@ const initBlocks = () => {
 
 const blockTime = data => {
     console.log(data)
-    if(data.type=="packetIn"){
+    if(data.type=="blockPage"){
         // window.location.replace(block_url);
         if(!block){
             if(data.company == "Google"){

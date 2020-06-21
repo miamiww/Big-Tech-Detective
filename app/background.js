@@ -16,7 +16,7 @@ let companyData = {};
 
 // settings for pop-out window
 var net_url = chrome.extension.getURL('main.html');
-var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 700 , 'height' : 600 }
+var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 700 , 'height' : 660 }
 var net_win;
 
 // functions for setting local storage
@@ -44,19 +44,22 @@ chrome.webRequest.onCompleted.addListener(
 	(info) => {
 	
 	  //	 preventing infinite loops
-	  if(!ignore_ips.includes(info.ip)){
+	  	if(!ignore_ips.includes(info.ip)){
+		// chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+		// 	console.log(tabs[0]);
+		// });
 		// console.log('fetch request for ' + info.ip)
 		// console.log("https://thegreatest.website:8080/ips/"+info.ip)
 		fetch("https://thegreatest.website:8080/ips/"+info.ip)
 			.then(response => response.json())
 			.then(data => {
-				console.log(data)
 				if(data.hasOwnProperty("ip")){
 					//this is where we send info to the extension front-end
-					// console.log('IP in database')
+					console.log('IP in database')
 					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company});
+
 					setCompanyInStorage(data);
-					// if(block_object) block_object.postMessage({'type': 'blockPage', 'company_to_block':data.ip.company});
+					if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company});
 					
 				}else{
 					// console.log('IP not in database')
@@ -73,30 +76,37 @@ chrome.webRequest.onCompleted.addListener(
 );
 
 
-// send messages to window in realtime
+// send messages to extension window and content.js in realtime
 chrome.runtime.onConnect.addListener((port) => {
+	console.log(port.name)
+	if(port.name=="extension_socket"){
+		try{console.log(port); /** console.trace(); /**/ }catch(e){}
+		console.assert(port.name == "extension_socket");
+		message_object = port;
+		message_object.onDisconnect.addListener(function(){
+			console.log("disconnected from extension")
+			net_win = null;
+			message_object = null;
 
-	try{console.log(port); /** console.trace(); /**/ }catch(e){}
-	console.assert(port.name == "start_listen");
-	message_object = port;
-	// block_object = port;
-	message_object.onDisconnect.addListener(function(){
-		net_win = null;
-	})
+		})
+	}
+	if(port.name=="blocker_socket"){
+		try{console.log(port); /** console.trace(); /**/ }catch(e){}
+		console.assert(port.name == "blocker_socket");
+		block_object = port;
+		block_object.onDisconnect.addListener(function(){
+			console.log("disconnected from page")
+			block_object = null;
+
+		})	
+	}
 
 });
 
-// chrome.runtime.onConnect.addListener((port) => {
 
-// 	try{console.log(port); /** console.trace(); /**/ }catch(e){}
-// 	console.assert(port.name == "blocker_socket");
-// 	block_object = port;
-
-// });
-
-// send messages to content.js in realtime
 
 // open up the extension window when icon is clicked
+// only works if the window is already open
 chrome.browserAction.onClicked.addListener(() => {
 	if(net_win){
 
