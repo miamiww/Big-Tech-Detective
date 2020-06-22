@@ -8,9 +8,12 @@ function isEmpty(obj) {
 }
 var container = d3.select("#pie");
 
+var pieChartStatus = true;
+
 // start the communication with background.js
 const init = () => {
     document.getElementById("clearbutton").addEventListener("click", clearHistory);
+    document.getElementById("switchview").addEventListener("click", switchView);
 
     port = chrome.runtime.connect({name: "extension_socket"});
     port.onMessage.addListener(onMessage);
@@ -41,6 +44,12 @@ const clearHistory = () => {
     });
 }
 
+const switchView = () => {
+    pieChartStatus = !pieChartStatus
+    update(companyData)
+
+}
+
 const buildChart = () => {
     console.log('rebuilding chart')
     // let svg
@@ -63,6 +72,7 @@ const buildChart = () => {
             console.log(_data)
 
             if(isEmpty(_data)){
+                d3.select(".packet-table").remove();
                 d3.select(".packet-chart").remove();
                 d3.select(".message-container").remove();
 
@@ -77,8 +87,10 @@ const buildChart = () => {
                     .style('fill', 'red')
                     .text("no data, waiting for incoming traffic to inspect 🔍")
 
-            } else {
+            } else if(pieChartStatus) {
+                d3.select(".packet-table").remove();
                 d3.select(".message-container").remove();
+                
 
                             // get total packets for % calculations
                 let total = 0;
@@ -168,12 +180,63 @@ const buildChart = () => {
                     };
                 }
 
+            } else if(!pieChartStatus){
+                d3.select(".packet-chart").remove();
+                d3.select(".message-container").remove();
+                d3.select(".packet-table").remove();
+                svg=false;
+
+
+                var packetArray = [];
+                let total = 0;
+                for (const prop in _data) {
+                    total = _data[prop] + total
+                }
+
+                for (const prop in _data) {
+                    packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
+                    console.log(packetArray);
+                }
+                console.log(packetArray);
+
+                // _data.forEach(function(d, i){
+                //     // now we add another data object value, a calculated value.
+                //     // here we are making strings into numbers using type coercion
+                //     // Add a new array with the values of each:
+                //     packetArray.push([d.data.key, d.d.data.value]);
+                // });
+                var table = d3.select(this).append("table");
+                table.classed("packet-table",true)
+
+                var header = table.append("thead").append("tr");
+                header
+                .selectAll("th")
+                .data(["Source","Packet Count","% Total Packets"])
+                .enter()
+                .append("th")
+                .text(function(d) { return d; });
+                var tablebody = table.append("tbody");
+                rows = tablebody
+                .selectAll("tr")
+                .data(packetArray)
+                .enter()
+                .append("tr");
+                // We built the rows using the nested array - now each row has its own array.
+                cells = rows.selectAll("td")
+            // each row has data associated; we get it and enter it for the cells.
+                .data(function(d) {
+                    console.log(d);
+                    return d;
+                })
+                .enter()
+                .append("td")
+                .text(function(d) {
+                    return d;
+                });
+            }
+    });
             }
 
-
-        });
-     
-    }
     return graph;
 
 }
@@ -181,6 +244,51 @@ const buildChart = () => {
 var updateFunction = buildChart();
 function update(data) {
     container.datum(data).call(updateFunction);
+}
+
+function tabulate(data, columns, id) {
+    /**
+ * Created by shiyan on 9/13/15.
+ */
+/*
+ Code by Shawn Allen (@shawnbot) repro'd in d3noob's book,
+ http://www.d3noob.org/2013/02/add-html-table-to-your-d3js-graph.html,
+ but with minor modification by Lynn.
+ */
+    var table = d3.select(id).append("table"),
+        thead = table.append("thead"),
+        tbody = table.append("tbody");
+
+    // append the header row
+    thead.append("tr")
+        .selectAll("th")
+        .data(columns)
+        .enter()
+        .append("th")
+        .text(function(column) { return column; });
+
+    // create a row for each object in the data
+    var rows = tbody.selectAll("tr")
+        .data(data)
+        .enter()
+        .append("tr");
+
+    // create a cell in each row for each column
+    // At this point, the rows have data associated.
+    // So the data function accesses it.
+    var cells = rows.selectAll("td")
+        .data(function(row) {
+            // he does it this way to guarantee you only use the
+            // values for the columns you provide.
+            return columns.map(function(column) {
+                // return a new object with a value set to the row's column value.
+                return {value: row[column]};
+            });
+        })
+        .enter()
+        .append("td")
+        .text(function(d) { return d.value; });
+    return table;
 }
 
 
