@@ -86,7 +86,7 @@ const blockTime = (data,sender,sendResponse) => {
 }
 
 const blockingText = (data) => {
-    return "<br />" + "<strong>Hi there!</strong> This page is blocked" +  "<br />"  + " because it loaded a resource from" + "<br />"  + data.url  + "<br />"  + "which is owned by "+data.company + "." + "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
+    return "<br />" + "<strong>Hi there!</strong> This page is blocked" +  "<br />"  + " because it loaded a resource from" + "<br />"  + "<br />" + "<i>"+ data.url +"</i>"  + "<br />"+ "<br />"   + "which is owned by "+data.company + "." + "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
 }
 
 
