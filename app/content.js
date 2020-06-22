@@ -1,5 +1,4 @@
 var block = false;
-console.log(block);
 var blockingData = {
     "Google": false,
     "Amazon": false,
@@ -16,13 +15,14 @@ function isEmpty(obj) {
 }
 
 const initBlocks = () => {
-    port = chrome.runtime.connect({name: "blocker_socket"});
-    port.onMessage.addListener(blockTime);
+    // port = chrome.runtime.connect({name: "blocker_socket"});
+    // port.onMessage.addListener(blockTime);
+
+    chrome.runtime.onMessage.addListener(blockTime);
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
             console.log('Blocking data from local storage is ' + result.blocks);
             blockingData = result.blocks;
-            console.log(blockingData);
         } else{
             console.log('No user input on blocking, allow everything')
         }
@@ -31,8 +31,8 @@ const initBlocks = () => {
     });
 }
 
-const blockTime = data => {
-    console.log(data)
+const blockTime = (data,sender,sendResponse) => {
+
     if(data.type=="blockPage"){
         // window.location.replace(block_url);
         if(!block){
@@ -80,6 +80,7 @@ const blockTime = data => {
     
         }
         }
+      sendResponse({message: "received"});
 
 
 }
