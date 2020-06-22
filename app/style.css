@@ -50,6 +50,23 @@ body {
     height: 410px;
 }
 
+.pie{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+}
+
+.message-container{
+    display: flex;
+    text-align: center;
+    display: inline-block;
+    font-size: xx-large;
+    color:red;
+    width:350px;
+    height: 350px;
+}
+
 /* begin toggle switches */
 .switch {
 position: relative;
