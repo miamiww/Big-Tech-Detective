@@ -59,7 +59,7 @@ chrome.webRequest.onCompleted.addListener(
 					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company});
 
 					setCompanyInStorage(data);
-					if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company});
+					if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company, 'url':info.url});
 					
 				}else{
 					// console.log('IP not in database')

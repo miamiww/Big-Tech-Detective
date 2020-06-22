@@ -41,7 +41,7 @@ const blockTime = data => {
                     block = true;
                     let div = document.createElement('div');
                     div.className = "overlay";
-                    div.innerHTML = "\n\n\n<strong>Hi there!</strong> This page is blocked";
+                    div.innerHTML = blockingText(data);
                   
                     document.body.append(div);
                 }
@@ -52,8 +52,7 @@ const blockTime = data => {
                     block = true;
                     let div = document.createElement('div');
                     div.className = "overlay";
-                    div.innerHTML = "\n\n\n<strong>Hi there!</strong> This page is blocked";
-                  
+                    div.innerHTML = blockingText(data);                  
                     document.body.append(div);
                 }
     
@@ -63,8 +62,7 @@ const blockTime = data => {
                     block = true;
                     let div = document.createElement('div');
                     div.className = "overlay";
-                    div.innerHTML = "\n\n\n<strong>Hi there!</strong> This page is blocked";
-                  
+                    div.innerHTML = blockingText(data);                  
                     document.body.append(div);
                 }
     
@@ -74,8 +72,7 @@ const blockTime = data => {
                     block = true;
                     let div = document.createElement('div');
                     div.className = "overlay";
-                    div.innerHTML = "\n\n\n<strong>Hi there!</strong> This page is blocked";
-                  
+                    div.innerHTML = blockingText(data);                  
                     document.body.append(div);
                 }
     
@@ -85,6 +82,10 @@ const blockTime = data => {
         }
 
 
+}
+
+const blockingText = (data) => {
+    return "<br />" + "<strong>Hi there!</strong> This page is blocked" +  "<br />"  + " because it loaded a resource from" + "<br />"  + data.url  + "<br />"  + "which is owned by "+data.company + "." + "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
 }
 
 
