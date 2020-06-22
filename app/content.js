@@ -16,8 +16,10 @@ function isEmpty(obj) {
 }
 
 const initBlocks = () => {
-    port = chrome.runtime.connect({name: "blocker_socket"});
-    port.onMessage.addListener(blockTime);
+    // port = chrome.runtime.connect({name: "blocker_socket"});
+    // port.onMessage.addListener(blockTime);
+
+    chrome.runtime.onMessage.addListener(blockTime);
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
             console.log('Blocking data from local storage is ' + result.blocks);

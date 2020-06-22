@@ -42,15 +42,12 @@ const setOtherInStorage = () => {
 // Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
 chrome.webRequest.onCompleted.addListener( 
 	(info) => {
-	
+
 	  //	 preventing infinite loops
 	  	if(!ignore_ips.includes(info.ip)){
-		// chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-		// 	console.log(tabs[0]);
-		// });
-		// console.log('fetch request for ' + info.ip)
-		// console.log("https://thegreatest.website:8080/ips/"+info.ip)
-		fetch("https://thegreatest.website:8080/ips/"+info.ip)
+			console.log(info.ip)
+
+			fetch("https://thegreatest.website:8080/ips/"+info.ip)
 			.then(response => response.json())
 			.then(data => {
 				if(data.hasOwnProperty("ip")){
@@ -59,7 +56,14 @@ chrome.webRequest.onCompleted.addListener(
 					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company});
 
 					setCompanyInStorage(data);
-					if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company, 'url':info.url});
+					chrome.tabs.sendMessage(
+						info.tabId,
+						{'type': 'blockPage', 'company':data.ip.company, 'url':info.url},
+						function(response){
+							console.log(response)
+						}
+					)
+					// if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company, 'url':info.url});
 					
 				}else{
 					// console.log('IP not in database')
