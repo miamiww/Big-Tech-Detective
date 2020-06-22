@@ -56,13 +56,16 @@ chrome.webRequest.onCompleted.addListener(
 					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company});
 
 					setCompanyInStorage(data);
-					chrome.tabs.sendMessage(
-						info.tabId,
-						{'type': 'blockPage', 'company':data.ip.company, 'url':info.url},
-						function(response){
-							console.log(response)
-						}
-					)
+					chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+						chrome.tabs.sendMessage(
+							info.tabId,
+							{'type': 'blockPage', 'company':data.ip.company, 'url':info.url},
+							function(response){
+								console.log(response)
+							}
+						)
+					  });
+
 					// if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company, 'url':info.url});
 					
 				}else{
