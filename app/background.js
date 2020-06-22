@@ -45,7 +45,6 @@ chrome.webRequest.onCompleted.addListener(
 
 	  //	 preventing infinite loops
 	  	if(!ignore_ips.includes(info.ip)){
-			console.log(info.ip)
 
 			fetch("https://thegreatest.website:8080/ips/"+info.ip)
 			.then(response => response.json())
@@ -56,15 +55,18 @@ chrome.webRequest.onCompleted.addListener(
 					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company});
 
 					setCompanyInStorage(data);
-					chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-						chrome.tabs.sendMessage(
-							info.tabId,
-							{'type': 'blockPage', 'company':data.ip.company, 'url':info.url},
-							function(response){
-								console.log(response)
-							}
-						)
-					  });
+					if(info.tabId>0){
+						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+							chrome.tabs.sendMessage(
+								info.tabId,
+								{'type': 'blockPage', 'company':data.ip.company, 'url':info.url},
+								function(response){
+									console.log(response)
+								}
+							)
+						  });
+					}
+
 
 					// if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company, 'url':info.url});
 					
