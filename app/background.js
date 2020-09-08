@@ -45,6 +45,7 @@ chrome.webRequest.onCompleted.addListener(
 
 	  //	 preventing infinite loops
 	  	if(!ignore_ips.includes(info.ip)){
+			console.log(info)
 
 			fetch("https://thegreatest.website:8080/ips/"+info.ip)
 			.then(response => response.json())
@@ -57,6 +58,7 @@ chrome.webRequest.onCompleted.addListener(
 					setCompanyInStorage(data);
 					if(info.tabId>0){
 						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+							console.log(tabs)
 							chrome.tabs.sendMessage(
 								info.tabId,
 								{'type': 'blockPage', 'company':data.ip.company, 'url':info.url},
