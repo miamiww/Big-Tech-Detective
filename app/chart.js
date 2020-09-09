@@ -1,4 +1,5 @@
-var companyData = {};
+var companyData = {
+};
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -55,7 +56,7 @@ const buildChart = () => {
     // let svg
 
     // set the dimensions and margins of the graph
-    var width = 350
+    var width = 450
     height = 350
     margin = 65
 
@@ -63,7 +64,9 @@ const buildChart = () => {
     var radius = Math.min(width, height) / 2 - margin
   
     // set the color scale
-    var color = d3.scaleOrdinal(d3.schemeSet3), svg;
+    var color = d3.scaleOrdinal()
+        .domain(["Amazon","Microsoft","Facebook","Google","Other"])
+        .range(["#eaaeaa","#00CBB0","#FF5551","#F9DAF5","#AFE5DB"]), svg;
     console.log(svg)
     
     function graph(_selection) {
@@ -115,7 +118,7 @@ const buildChart = () => {
                         .classed("packet-chart",true)
                     svg = svgSpecial
                         .append("g")
-                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+                        .attr("transform", "translate(" + (width / 2 + 50) + "," + height / 2 + ")");
                 }
                 var chart = svg.selectAll("chart").data(pie(d3.entries(_data)));
                 chart.enter().append("path")
@@ -131,13 +134,14 @@ const buildChart = () => {
                     .data(pie(d3.entries(_data)))
                     .enter().append("g")
                     .attr("transform", function(d,i){
-                        return "translate(" + (width - 110) + "," + (i * 15 + 20) + ")"; // place each legend on the right and bump each one down 15 pixels
+                        return "translate(" + (8) + "," + (i * 30 + 50) + ")"; // place each legend on the right and bump each one down 15 pixels
                     })
                     .attr("class", "legend");   
 
-                    legendG.append("rect") // make a matching color rect
-                    .attr("width", 10)
-                    .attr("height", 10)
+                    legendG.append("circle") // make a matching color rect
+                    .attr("r", 8)
+                    .attr("cy",5)
+                    // .attr("height", 10)
                     .attr("fill", function(d, i) {
                         return color(i);
                     });
@@ -145,7 +149,7 @@ const buildChart = () => {
                     legendG.append("text") // add the text
                     .text(function(d){
                         console.log(d.data.key + " " + (d.data.value*100)/total + "%")
-                        return d.data.key + "  " + Math.round(d.data.value*100)/total + "%";
+                        return d.data.key + ":  " + Math.round(d.data.value*100)/total + "%";
                     })
                     .style("font-size", 12)
                     .attr("y", 10)
@@ -164,7 +168,7 @@ const buildChart = () => {
                     .attr("class","legendtext");
                 texts.text(function(d){
                     console.log(d.data.key + " " + (d.data.value*100)/total + "%")
-                    return d.data.key + "  " + Math.round((d.data.value*100)/total) + "%";
+                    return d.data.key + ":  " + Math.round((d.data.value*100)/total) + "%";
                 })    
 
                 chart.exit().remove()

@@ -117,11 +117,13 @@ body {
 .switches h2{
     font-family: "GT Walsham Bold";
     margin-top: 0px;
+    color: #1E354C;
 }
 
 .analyzer h2{
     font-family: "GT Walsham Bold";
     margin-top: 0px;
+    color: #1E354C;
 
 }
 
@@ -148,9 +150,10 @@ body {
     text-align: center;
     display: inline-block;
     font-size: xx-large;
-    color:red;
+    color:#1E354C;
     width:350px;
     height: 350px;
+    padding-top: 20px;
 }
 
 /* table style */
@@ -175,6 +178,10 @@ table{
     color: #1E354C;
     width:350px;
 
+}
+
+.packet-table{
+    padding-top: 20px;
 }
 
 button {
@@ -223,7 +230,7 @@ top: 0;
 left: 0;
 right: 0;
 bottom: 0;
-background-color: #ccc;
+background-color: #1E354C;
 -webkit-transition: .4s;
 transition: .4s;
 }
@@ -231,18 +238,21 @@ transition: .4s;
 .slider:before {
 position: absolute;
 content: "";
-height: 19px;
-width: 19px;
+height: 20px;
+width: 20px;
 top: 5px;
 left: 5px;
 bottom: 5px;
-background-color: #1E354C;
+background-color: #C3D8D3;
 -webkit-transition: .4s;
 transition: .4s;
 }
 
 input:checked + .slider {
 background-color: red;
+}
+input:checked + .slider:before {
+    background-color: #1E354C;
 }
 
 input:focus + .slider {
@@ -251,9 +261,9 @@ box-shadow: 0 0 1px #2196F3;
 
 
 input:checked + .slider:before {
--webkit-transform: translateX(46px);
--ms-transform: translateX(46px);
-transform: translateX(46px);
+-webkit-transform: translateX(50px);
+-ms-transform: translateX(50px);
+transform: translateX(50px);
 }
 
 .slider.round {
