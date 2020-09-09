@@ -6,7 +6,7 @@ function isEmpty(obj) {
     }
     return true;
 }
-var container = d3.select("#pie");
+var container = d3.select("#pie"); 
 
 var pieChartStatus = true;
 
