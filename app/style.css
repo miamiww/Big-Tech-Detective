@@ -27,6 +27,7 @@
 
 body {
     font-family: "GT Walsham Regular", monospace;
+    margin: 0px;
 }
 
 .main-container {
@@ -164,13 +165,14 @@ th{
 }
 tr{
     background-color: #E6F7F4;
-    border: 1px solid #1E354C;
-
+    /* border: 1px solid #1E354C; */
+    border-bottom: 1px solid #1E354C;
 
 }
 td{
     background-color: #E6F7F4;
     border-left: 1px solid #1E354C;
+    border-right: 1px solid #1E354C;
     border-bottom: 1px solid #1E354C;
 
 }
@@ -182,6 +184,7 @@ table{
 
 .packet-table{
     padding-top: 20px;
+    
 }
 
 button {

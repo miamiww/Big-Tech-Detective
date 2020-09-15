@@ -46,6 +46,7 @@ const clearHistory = () => {
 }
 
 const switchView = () => {
+
     pieChartStatus = !pieChartStatus
     update(companyData)
 
@@ -57,7 +58,7 @@ const buildChart = () => {
 
     // set the dimensions and margins of the graph
     var width = 450
-    height = 350
+    height = 325
     margin = 65
 
     // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.

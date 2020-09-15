@@ -16,7 +16,7 @@ let companyData = {};
 
 // settings for pop-out window
 var net_url = chrome.extension.getURL('main.html');
-var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 690 }
+var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 680 }
 var net_win;
 
 // functions for setting local storage
@@ -120,7 +120,7 @@ chrome.runtime.onConnect.addListener((port) => {
 // only works if the window is already open
 chrome.browserAction.onClicked.addListener(() => {
 	if(net_win){
-
+		net_win.focus();
 	}else{
 		chrome.windows.create(win_properties, (tab) => {
 			net_win = tab;
