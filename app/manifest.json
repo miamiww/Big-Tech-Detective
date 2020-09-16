@@ -24,5 +24,6 @@
 		"webRequest",
 		"webRequestBlocking",
 		"storage"
-	]
+	],
+	"web_accessible_resources":["assets/icons/lock_icon.png"]
   }
