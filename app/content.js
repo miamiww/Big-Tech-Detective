@@ -39,11 +39,18 @@ const blockTime = (data,sender,sendResponse) => {
             if(data.company == "Google"){
                 if(blockingData.Google){
                     block = true;
-                    let div = document.createElement('div');
-                    div.className = "overlay";
-                    div.innerHTML = blockingText(data);
-                  
-                    document.body.append(div);
+                    let overlayDiv = document.createElement('div');
+                    overlayDiv.className = "overlay";
+                    let contentDiv = document.createElement('div');
+                    contentDiv.className = "block-information-container";
+                    contentDiv.innerHTML = blockingText(data);
+                    let lockDiv = document.createElement('div');
+                    lockDiv.className = "lock-container";
+           
+                    document.body.append(overlayDiv);
+                    document.body.append(contentDiv);
+                    document.body.append(lockDiv);
+
                 }
     
             }
