@@ -80,8 +80,10 @@ const buildBlockPage = (data) => {
     let overlayDiv = document.createElement('div');
     overlayDiv.className = "overlay";
     let contentDiv = document.createElement('div');
+
     contentDiv.className = "block-information-container";
     contentDiv.innerHTML = blockingText(data);
+    
     let lockDiv = document.createElement('div');
     lockDiv.className = "lock-container";
 

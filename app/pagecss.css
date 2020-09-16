@@ -16,6 +16,7 @@
     position: fixed;
     background-color: #ff5551;
     color: #1E354C;
+    font-size: xx-large;
     /* z-index: 2,147,483,647; */
     z-index: 99999;
     top: 0;
@@ -35,7 +36,7 @@
     width: 50%;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image:url('chrome-extension://__MSG_@@extension_id__/assets/icons/lock_icon.png');
+    background-image:url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/lock_icon.png');
     background-size: 35%;
 
   }
