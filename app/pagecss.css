@@ -7,6 +7,36 @@
     left: 0;
     height: 100%;
     width: 100%;
-    z-index: 9999;
-    background-color: rgba(0,0,0,0.7);
+    /* z-index: 2,147,483,646; */
+    z-index: 99998;
+    background-color: rgba(175,229,219,0.7);
+  }
+
+  .block-information-container {
+    position: fixed;
+    background-color: #ff5551;
+    color: #1E354C;
+    font-size: xx-large;
+    /* z-index: 2,147,483,647; */
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    overflow-wrap: break-word;
+  }
+
+  .lock-container {
+    position: fixed;
+    /* z-index: 2,147,483,647; */
+    z-index: 99999;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image:url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/lock_icon.png');
+    background-size: 35%;
+
   }

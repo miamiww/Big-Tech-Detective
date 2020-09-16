@@ -16,7 +16,7 @@ let companyData = {};
 
 // settings for pop-out window
 var net_url = chrome.extension.getURL('main.html');
-var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 700 , 'height' : 660 }
+var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 680, 'focused': true }
 var net_win;
 
 // functions for setting local storage
@@ -45,6 +45,7 @@ chrome.webRequest.onCompleted.addListener(
 
 	  //	 preventing infinite loops
 	  	if(!ignore_ips.includes(info.ip)){
+			console.log(info)
 
 			fetch("https://thegreatest.website:8080/ips/"+info.ip)
 			.then(response => response.json())
@@ -57,6 +58,7 @@ chrome.webRequest.onCompleted.addListener(
 					setCompanyInStorage(data);
 					if(info.tabId>0){
 						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+							console.log(tabs)
 							chrome.tabs.sendMessage(
 								info.tabId,
 								{'type': 'blockPage', 'company':data.ip.company, 'url':info.url},
@@ -115,10 +117,12 @@ chrome.runtime.onConnect.addListener((port) => {
 
 
 // open up the extension window when icon is clicked
-// only works if the window is already open
 chrome.browserAction.onClicked.addListener(() => {
 	if(net_win){
-
+		chrome.windows.remove(net_win.id)
+		chrome.windows.create(win_properties, (tab) => {
+			net_win = tab;
+		})
 	}else{
 		chrome.windows.create(win_properties, (tab) => {
 			net_win = tab;

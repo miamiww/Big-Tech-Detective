@@ -1,10 +1,11 @@
 {
 	"manifest_version": 2,
-	"name": "Big IP Blocker",
-	"version": "0.1",
+	"name": "Big Tech Detective",
+	"version": "0.3.1",
 	"background": {
 	  "scripts": [
-		"background.js"
+		"background.js",
+		"reload.js"
 	]
 	},
 	"content_scripts":[
@@ -14,7 +15,7 @@
 		"css": ["pagecss.css"]
 	}],
 	"browser_action": {
-	  "default_icon": "icon.png"
+	  "default_icon": "btd_icon_logo_128x128.png"
 
 	},
 	"permissions": [
@@ -23,5 +24,6 @@
 		"webRequest",
 		"webRequestBlocking",
 		"storage"
-	]
+	],
+	"web_accessible_resources":["assets/icons/lock_icon.png"]
   }

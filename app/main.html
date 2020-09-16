@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>IP Analyzer</title>
+    <title>Big Tech Detective</title>
     <link rel="stylesheet" href="style.css">
     <!-- <script type='text/javascript' src='redirect.js'></script> -->
     <!-- <link rel="stylesheet" href="style.css" type="text/css"> -->
@@ -12,59 +12,91 @@
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/d3.min.js"></script>
     <script type="text/javascript" src="lib/d3-scale-chromatic.v1.min.js"></script>
+    <div class="main-container">
 
-    <div class="flex-row">
-        <div class="flex-column">
-            <img src="logo_red.svg">
+
+        <div class="flex-row">
+            <div class="icon-column">
+                <img id="logo" src="assets/logo/big_tech_detective_logo.svg">
+
+            </div>
+        </div>
+        <div class="flex-row ">
+
+            <div class="flex-row control-panel"><br><br></div>
+            <div class="flex-column middle-margin">
+                <div class="analyzer">
+                    <h2>TRAFFIC ANALYZER</h2> 
+                    <p>% of current browser session traffic that has gone to each company</p>
+                    <div id="buttons-container">
+                        <button id="clearbutton"
+                            type="button">
+                            clear history
+                        </button>
+                        <button id="switchview"
+                            type="button">
+                            toggle view
+                        </button>
+                    </div>
+
+                    <div id="pie"></div>
+
+                </div>
+            </div>
+
+
+            <div class="flex-column margin-spacer">
+                <div class="switches">
+                    <h2><b>TRAFFIC BLOCKER</b></h2>
+                    <p>Flip the switch to block the company</p>
+                    <div class="flex-row switch-area">
+                        <label class="switch">
+                            <input type="checkbox" id="amazonSwitch" >
+                            <span class="slider round"></span> 
+                        </label>
+                        <div class="comp-name">Amazon</div>
+    
+                    </div>
+
+                    <div class="flex-row switch-area">
+                        <label class="switch">
+                            <input type="checkbox" id="facebookSwitch" >
+                            <span class="slider round"></span>
+                        </label> 
+                        <div class="comp-name">Facebook</div>
+
+
+                    </div>
+
+
+                    <div class="flex-row switch-area">
+                        <label class="switch">
+                            <input type="checkbox" id="microsoftSwitch" >
+                            <span class="slider round"></span>
+                        </label> 
+                        <div class="comp-name">Microsoft</div>
+
+                    </div>
+
+                    <div class="flex-row switch-area">
+                        <label class="switch">
+                            <input type="checkbox" id="googleSwitch" >
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="comp-name">Google</div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
+        <div class="flex-row"><br><br></div>
+
     </div>
-    <div class="flex-row">
-
-
-        <div class="flex-column">
-            <div class="analyzer">
-                <h2><b><i>IP ANALYZER</i></b></h2> 
-                <p><i>% of current browser session traffic that has gone to each company</i></p>
-                <button id="clearbutton"
-                    type="button">
-                    clear history
-                </button>
-                <button id="switchview"
-                    type="button">
-                    toggle view
-                </button>
-                <div id="pie"></div>
-
-            </div>
-        </div>
-
-
-        <div class="flex-column">
-            <div class="switches">
-                <h2><b><i>IP BLOCKER</i></b></h2>
-                <p><i>flip the switch to block the company</i></p>
-                <p>Amazon</p>
-                <label class="switch">
-                    <input type="checkbox" id="amazonSwitch" >
-                    <span class="slider"></span> 
-                </label>
-                <p>Facebook</p> 
-                <label class="switch">
-                    <input type="checkbox" id="facebookSwitch" >
-                    <span class="slider"></span>
-                </label> 
-                <p>Microsoft</p>
-                <label class="switch">
-                    <input type="checkbox" id="microsoftSwitch" >
-                    <span class="slider"></span>
-                </label>
-                <p>Google</p>
-                <label class="switch">
-                    <input type="checkbox" id="googleSwitch" >
-                    <span class="slider"></span>
-                </label>
-            </div>
+    <div class="flex-column" id="bottom-links-container">
+        <div id="links">
+            <a href="https://example.com" target="_blank">About</a>
+            <a href="https://example.com" target="_blank">Privacy</a>
         </div>
 
     </div>
