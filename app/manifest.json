@@ -11,7 +11,7 @@
 	"content_scripts":[
 		{
 		"matches": ["<all_urls>"],
-		"js": ["content.js"],
+		"js": ["lib/d3.min.js", "content.js"],
 		"css": ["pagecss.css"]
 	}],
 	"browser_action": {

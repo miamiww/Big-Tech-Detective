@@ -76,6 +76,19 @@ chrome.webRequest.onCompleted.addListener(
 					// console.log('IP not in database')
 					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other'});
 					setOtherInStorage();
+
+					if(info.tabId>0){
+						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+							console.log(tabs)
+							chrome.tabs.sendMessage(
+								info.tabId,
+								{'type': 'blockPage', 'company':"Other", 'url':info.url},
+								function(response){
+									console.log(response)
+								}
+							)
+						  });
+					}
 				}
 			})
 			.catch(err => console.log(err));
