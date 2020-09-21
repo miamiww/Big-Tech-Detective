@@ -67,12 +67,14 @@ const blockTime = (data,sender,sendResponse) => {
             addBlockPage(data);
             if(data.company == "Google"){
                 if(blockingData.Google){
+                    updateResourceList(data);
                     console.log(data.url);
                 }
     
             }
             if(data.company == "Amazon"){
                 if(blockingData.Amazon){
+                    updateResourceList(data);
                     console.log(data.url);
 
                 }
@@ -80,6 +82,8 @@ const blockTime = (data,sender,sendResponse) => {
             }
             if(data.company == "Facebook"){
                 if(blockingData.Facebook){
+                    updateResourceList(data);
+
                     console.log(data.url);
 
                 }
@@ -87,6 +91,7 @@ const blockTime = (data,sender,sendResponse) => {
             }
             if(data.company == "Microsoft"){
                 if(blockingData.Microsoft){
+                    updateResourceList(data);
                     console.log(data.url);
                 }
     
@@ -99,9 +104,19 @@ const blockTime = (data,sender,sendResponse) => {
 
 }
 
-const blockingText = (data) => {
-    return "<br />" + "<strong>Hi there!</strong> This page is locked by Big Tech Detective" +  "<br />"  + " because it loaded a resource from" + "<br />"  + "<br />" + "<i>"+ data.url +"</i>"  + "<br />"+ "<br />"   + "which is owned by "+data.company + "." + "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
+const headingText = (data) => {
+    return `Hi there! This page is locked by Big Tech Detective because it loaded a resource from <i>${data.company}</i>.` 
 }
+
+const resourceText = (data) => {
+    return `<strong>${data.company}:</strong> ${data.url}`
+}
+
+const footerText = () => {
+    return "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
+}
+
+// + "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
 
 const buildBlockPage = (data) => {
     console.log(data);
@@ -110,24 +125,63 @@ const buildBlockPage = (data) => {
 
 
     block = true;
+
+    // the overlay
     let overlayDiv = document.createElement('div');
     overlayDiv.id = "btd-lock-overlay";
-    let contentDiv = document.createElement('div');
 
-    contentDiv.id = "btd-lock-information-container";
-    contentDiv.innerHTML = blockingText(data);
+    // begin information section
+    let containerDiv = document.createElement('div');
+    containerDiv.id = "btd-lock-information-container";
+
+    let contentDiv = document.createElement('div');
+    contentDiv.id = "btd-lock-information";
+    containerDiv.appendChild(contentDiv);
+
+    // heading
+    let headingDiv = document.createElement('div');
+    headingDiv.id = "btd-information-heading";
+    headingDiv.innerHTML = headingText(data);
+
+    // resource list
+    let resourceListDiv = document.createElement('div');
+    resourceListDiv.id = "btd-information-resource-list";
+    let resourceListItem = document.createElement('p')
+    resourceListItem.innerHTML = resourceText(data);
+    resourceListDiv.appendChild(resourceListItem)
+
+    // heading for table
+    let tableHeadingDiv = document.createElement('div');
+    tableHeadingDiv.id = "btd-information-table-heading"
+    tableHeadingDiv.innerHTML = "% of packet origins within page"
+
+    // table
+    let tableDiv = document.createElement('div');
+    tableDiv.id = "btd-lock-table";
+
+
+    // footer
+    let footerDiv = document.createElement('div');
+    footerDiv.id = "btd-information-footer";
+    footerDiv.innerHTML = footerText();
+
+    // putting the page together
+    contentDiv.appendChild(headingDiv);
+    contentDiv.appendChild(resourceListDiv);
+    contentDiv.appendChild(tableHeadingDiv);
+    contentDiv.appendChild(tableDiv);
+    contentDiv.appendChild(footerDiv);
+
+    // end information section
     
     let lockDiv = document.createElement('div');
     lockDiv.id = "btd-lock-container";
 
-    let tableDiv = document.createElement('div');
-    tableDiv.id = "btd-lock-table";
 
-    contentDiv.appendChild(tableDiv);
     // contentDiv.onload = () => update(companyData);
 
     document.body.append(overlayDiv);
-    document.body.append(contentDiv);
+    document.body.append(containerDiv);
     document.body.append(lockDiv);
 
     container = d3.select("#btd-lock-table"); 
@@ -141,6 +195,14 @@ const addBlockPage = (data) => {
     console.log('receiving packet data');
     companyData[data.company]=(companyData[data.company]+1) || 1;
     update(companyData)
+}
+
+const updateResourceList = (data) => {
+    // let resourceList = document.getElementById("btd-information-resource-list")
+    let resourceListItem = document.createElement('p')
+    resourceListItem.innerHTML = resourceText(data);
+    document.getElementById("btd-information-resource-list").appendChild(resourceListItem)
+
 }
 
 
