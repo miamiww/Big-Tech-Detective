@@ -1,3 +1,28 @@
+@font-face {
+  font-family: "Basis Mono";
+  src: url("chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/fonts/basis-grotesque-mono.otf");
+
+}
+
+
+@font-face {
+  font-family: "GT Walsham Regular";
+  src: url("chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/fonts/GT-Walsheim-Regular.otf");
+
+}
+
+@font-face {
+  font-family: "GT Walsham Bold";
+  src: url("chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/fonts/GT-Walsheim-Bold.otf");
+
+}
+
+@font-face {
+  font-family: "GT Walsham Black";
+  src: url("chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/fonts/GT-Walsheim-Black.otf");
+
+}
+
 #btd-lock-overlay {
   position: fixed;
   color: yellow;
@@ -8,7 +33,7 @@
   height: 100%;
   width: 100%;
   /* z-index: 2,147,483,646; */
-  z-index: 99998;
+  z-index: 2000000000;
   background-color: rgba(175,229,219,0.7);
 }
 
@@ -17,7 +42,7 @@
 #btd-lock-container {
   position: fixed;
   /* z-index: 2,147,483,647; */
-  z-index: 99999;
+  z-index: 2000000001;
   top: 0;
   right: 0;
   height: 100%;
@@ -30,11 +55,12 @@
 }
 
 #btd-lock-information-container {
+  font-family: "GT Walsham Regular";
   position: fixed;
   background-color: #ff5551;
   color: #1E354C;
   /* z-index: 2,147,483,647; */
-  z-index: 99999;
+  z-index: 2000000001;
   top: 0;
   left: 0;
   height: 100%;
@@ -44,32 +70,35 @@
 }
 
 #btd-lock-information{
+  font-family: "GT Walsham Regular";
   margin: 10%;
 
 }
 
 #btd-information-heading {
-  font-size: xx-large;
+  font-family: "GT Walsham Black";
+  font-size: xx-large;  
   font-weight: bold;
-  
 
 }
 
 #btd-information-resource-list{
-  padding-top: 30px;
-  height: 100px;
+  /* padding-top: 30px; */
+  height: 130px;
   font-size: medium;
   overflow-wrap: break-word;
   overflow: scroll;
   scroll-behavior: auto;
   border-bottom: 1px solid #1E354C;
+  border-top: 1px solid #1E354C;
+
   padding-bottom: 30px;
 }
 
 #btd-information-resource-list p{
 
-  /* border-bottom: 1px solid #1E354C; */
-
+  top: 0px;
+  bottom: 30px;
 }
 
 
@@ -89,10 +118,11 @@
 #btd-copy-data-button {
   background: #ff5551 url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/copy_clipboard.png') no-repeat left;
   background-size: 20px;
+  font-size: small;
   color: #1E354C;
   /* border-radius: 40px; */
   height: 60px;
-  width: 180px;
+  width: 240px;
   /* border: 1px solid #1E354C; */
   border: 0px;
   font-family: "Basis Mono", monospace;
@@ -103,15 +133,17 @@
 }
 
 #btd-information-footer {
+  font-family: "GT Walsham Black";
   font-size: x-large;
   font-weight: bold;
 
 
 }
 
-#btd-information-table-heading{
-  margin-top: 5%;
-  font-size: x-large;
+.btd-information-table-heading{
+  font-family: "GT Walsham Black";
+  margin-top: 15%;
+  font-size: large;
 }
 
 #btd-lock-table {
@@ -131,13 +163,16 @@
   padding-top: 20px;
   color: #1E354C;
   width:350px;
+  border-collapse: collapse;
 
+  border-top: 0;
 
 }
 
 .btd-packet-table  th{
   font-family: "Basis Mono";
   font-size: 9pt;
+  text-align: left;
 
 }
 .btd-packet-table tr{
@@ -145,9 +180,19 @@
     border-bottom: 1px solid #1E354C;
 
 }
-.btd-packet-table td{
+.btd-packet-table tr td{
     border-left: 1px solid #1E354C;
-    /* border-right: 1px solid #1E354C; */
     border-bottom: 1px solid #1E354C;
 
 }
+
+.btd-packet-table tr td:first-child {
+  border-left: 0;
+  border-top: 0;
+
+}
+
+.btd-packet-table tr td:last-child {
+  border-right: 0;
+}
+

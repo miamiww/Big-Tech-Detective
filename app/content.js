@@ -7,6 +7,7 @@ var blockingData = {
 };
 var companyData = {};
 var copyData = {};
+var companyList = [];
 var container;
 
 function isEmpty(obj) {
@@ -106,7 +107,7 @@ const headingText = (data) => {
 }
 
 const resourceText = (data) => {
-    return `<strong>${data.company}:</strong> ${data.url}`
+    return `<strong>From ${data.company}:</strong> ${data.url}`
 }
 
 const footerText = () => {
@@ -138,28 +139,29 @@ const buildBlockPage = (data) => {
     headingDiv.id = "btd-information-heading";
     headingDiv.innerHTML = headingText(data);
 
+
+
+    // heading for table
+    let tableHeadingDiv = document.createElement('div');
+    tableHeadingDiv.className = "btd-information-table-heading"
+    tableHeadingDiv.innerHTML = "% of packet sources within page"
+
+    // table
+    let tableDiv = document.createElement('div');
+    tableDiv.id = "btd-lock-table";
+
+    // heading for resources
+    let listHeadingDiv = document.createElement('div');
+    listHeadingDiv.className = "btd-information-table-heading"
+    listHeadingDiv.innerHTML = "origins of packets that triggered locking"
+
+
     // resource list
     let resourceListDiv = document.createElement('div');
     resourceListDiv.id = "btd-information-resource-list";
     let resourceListItem = document.createElement('p')
     resourceListItem.innerHTML = resourceText(data);
     resourceListDiv.appendChild(resourceListItem)
-
-    // heading for table
-    let tableHeadingDiv = document.createElement('div');
-    tableHeadingDiv.id = "btd-information-table-heading"
-    tableHeadingDiv.innerHTML = "% of packet origins within page"
-
-    // table
-    let tableDiv = document.createElement('div');
-    tableDiv.id = "btd-lock-table";
-
-
-    // footer
-    let footerDiv = document.createElement('div');
-    footerDiv.id = "btd-information-footer";
-    footerDiv.innerHTML = footerText();
-
 
     // data button
     let dataButton = document.createElement('button');
@@ -169,10 +171,16 @@ const buildBlockPage = (data) => {
       });
 
     dataButton.innerHTML = "Copy Data to Clipboard"
+
+    // footer
+    let footerDiv = document.createElement('div');
+    footerDiv.id = "btd-information-footer";
+    footerDiv.innerHTML = footerText();
     // putting the page together
     contentDiv.appendChild(headingDiv);
     contentDiv.appendChild(tableHeadingDiv);
     contentDiv.appendChild(tableDiv);
+    contentDiv.appendChild(listHeadingDiv);
     contentDiv.appendChild(resourceListDiv);
     contentDiv.appendChild(dataButton);
     contentDiv.appendChild(footerDiv);
