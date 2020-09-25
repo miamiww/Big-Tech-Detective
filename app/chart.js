@@ -47,7 +47,7 @@ const clearHistory = () => {
     companyData = {};
     update(companyData);
     chrome.storage.local.set({key: companyData}, function() {
-		// console.log(companyData);
+		console.log(companyData);
     });
 }
 

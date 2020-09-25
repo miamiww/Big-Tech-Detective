@@ -70,12 +70,16 @@ const blockTime = (data,sender,sendResponse) => {
             if(data.company == "Google"){
                 if(blockingData.Google){
                     updateResourceList(data);
+                    updateHeader(data);
+
+
                 }
     
             }
             if(data.company == "Amazon"){
                 if(blockingData.Amazon){
                     updateResourceList(data);
+                    updateHeader(data);
 
                 }
     
@@ -83,6 +87,7 @@ const blockTime = (data,sender,sendResponse) => {
             if(data.company == "Facebook"){
                 if(blockingData.Facebook){
                     updateResourceList(data);
+                    updateHeader(data);
 
 
                 }
@@ -91,6 +96,8 @@ const blockTime = (data,sender,sendResponse) => {
             if(data.company == "Microsoft"){
                 if(blockingData.Microsoft){
                     updateResourceList(data);
+                    updateHeader(data);
+
                 }
     
             }
@@ -103,7 +110,7 @@ const blockTime = (data,sender,sendResponse) => {
 }
 
 const headingText = (data) => {
-    return `Hi there! This page is locked by Big Tech Detective because it loaded a resource from <i>${data.company}</i>.` 
+    return `Hi there! This page is locked by Big Tech Detective because it loaded a resource from <i>${data.company}</i>` 
 }
 
 const resourceText = (data) => {
@@ -118,6 +125,7 @@ const footerText = () => {
 
 const buildBlockPage = (data) => {
     companyData[data.company]=(companyData[data.company]+1) || 1;
+    companyList.push(data.company);
 
 
     block = true;
@@ -203,8 +211,9 @@ const buildBlockPage = (data) => {
 const addBlockPage = (data) => {
     companyData[data.company]=(companyData[data.company]+1) || 1;
     update(companyData)
-
 }
+
+
 
 const updateResourceList = (data) => {
     // let resourceList = document.getElementById("btd-information-resource-list")
@@ -213,6 +222,14 @@ const updateResourceList = (data) => {
     document.getElementById("btd-information-resource-list").appendChild(resourceListItem)
 
 }
+
+const updateHeader = (data) => {
+    if(companyList.indexOf(data.company) === -1){
+        companyList.push(data.company);
+        document.getElementById('btd-information-heading').innerHTML = `${document.getElementById('btd-information-heading').innerHTML}, <i>${data.company}</i>`
+    }
+}
+
 
 const buildCopyData = (inData, copyData) => {
     let size = Object.keys(copyData).length;
