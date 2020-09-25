@@ -25,5 +25,5 @@
 		"webRequestBlocking",
 		"storage"
 	],
-	"web_accessible_resources":["assets/icons/lock_icon.png"]
+	"web_accessible_resources":["assets/icons/lock_icon.png", "assets/icons/copy_clipboard.png"]
   }

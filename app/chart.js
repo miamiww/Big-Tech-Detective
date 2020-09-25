@@ -24,6 +24,12 @@ const init = () => {
         update(companyData);
     });
 
+    chrome.app.window.current().onBoundsChanged.addListener(() => {
+        console.log("resized")
+        chrome.app.window.outerBounds.setSize(800, 680);
+
+    })
+
 }
 
 // processing of packet info and call of chart build

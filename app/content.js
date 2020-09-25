@@ -6,6 +6,7 @@ var blockingData = {
     "Microsoft": false
 };
 var companyData = {};
+var copyData = {};
 var container;
 
 function isEmpty(obj) {
@@ -23,7 +24,6 @@ const initBlocks = () => {
     chrome.runtime.onMessage.addListener(blockTime);
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
-            console.log('Blocking data from local storage is ' + result.blocks);
             blockingData = result.blocks;
         } else{
             console.log('No user input on blocking, allow everything')
@@ -36,6 +36,7 @@ const initBlocks = () => {
 const blockTime = (data,sender,sendResponse) => {
 
     if(data.type=="blockPage"){
+        buildCopyData(data,copyData);
         // window.location.replace(block_url);
         if(!block){
             if(data.company == "Google"){
@@ -68,14 +69,12 @@ const blockTime = (data,sender,sendResponse) => {
             if(data.company == "Google"){
                 if(blockingData.Google){
                     updateResourceList(data);
-                    console.log(data.url);
                 }
     
             }
             if(data.company == "Amazon"){
                 if(blockingData.Amazon){
                     updateResourceList(data);
-                    console.log(data.url);
 
                 }
     
@@ -84,7 +83,6 @@ const blockTime = (data,sender,sendResponse) => {
                 if(blockingData.Facebook){
                     updateResourceList(data);
 
-                    console.log(data.url);
 
                 }
     
@@ -92,7 +90,6 @@ const blockTime = (data,sender,sendResponse) => {
             if(data.company == "Microsoft"){
                 if(blockingData.Microsoft){
                     updateResourceList(data);
-                    console.log(data.url);
                 }
     
             }
@@ -119,8 +116,6 @@ const footerText = () => {
 // + "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
 
 const buildBlockPage = (data) => {
-    console.log(data);
-    console.log('receiving packet data');
     companyData[data.company]=(companyData[data.company]+1) || 1;
 
 
@@ -165,20 +160,27 @@ const buildBlockPage = (data) => {
     footerDiv.id = "btd-information-footer";
     footerDiv.innerHTML = footerText();
 
+
+    // data button
+    let dataButton = document.createElement('button');
+    dataButton.id = "btd-copy-data-button"
+    dataButton.addEventListener('click', (event) => {
+        copyTextToClipboard(JSON.stringify(copyData));
+      });
+
+    dataButton.innerHTML = "Copy Data to Clipboard"
     // putting the page together
     contentDiv.appendChild(headingDiv);
-    contentDiv.appendChild(resourceListDiv);
     contentDiv.appendChild(tableHeadingDiv);
     contentDiv.appendChild(tableDiv);
+    contentDiv.appendChild(resourceListDiv);
+    contentDiv.appendChild(dataButton);
     contentDiv.appendChild(footerDiv);
 
     // end information section
-    
+
     let lockDiv = document.createElement('div');
     lockDiv.id = "btd-lock-container";
-
-
-    // contentDiv.onload = () => update(companyData);
 
     document.body.append(overlayDiv);
     document.body.append(containerDiv);
@@ -191,10 +193,9 @@ const buildBlockPage = (data) => {
 }
 
 const addBlockPage = (data) => {
-    console.log(data)
-    console.log('receiving packet data');
     companyData[data.company]=(companyData[data.company]+1) || 1;
     update(companyData)
+
 }
 
 const updateResourceList = (data) => {
@@ -204,6 +205,16 @@ const updateResourceList = (data) => {
     document.getElementById("btd-information-resource-list").appendChild(resourceListItem)
 
 }
+
+const buildCopyData = (inData, copyData) => {
+    let size = Object.keys(copyData).length;
+    let name = "Packet " + size;
+    copyData[name] = {company: inData.company, url: inData.url, ip: inData.ip};
+
+
+}
+
+
 
 
 // chart stuff
@@ -219,7 +230,6 @@ function isEmpty(obj) {
 
 
 const buildChart = () => {
-    console.log('rebuilding chart')
     // let svg
 
     // set the dimensions and margins of the graph
@@ -235,8 +245,6 @@ const buildChart = () => {
     
     function graph(_selection) {
         _selection.each(function(_data) {	
-            console.log("data for chart")
-            console.log(_data)
 
 
             d3.select(".btd-packet-table").remove();
@@ -250,9 +258,7 @@ const buildChart = () => {
 
             for (const prop in _data) {
                 packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
-                console.log(packetArray);
             }
-            console.log(packetArray);
 
             // _data.forEach(function(d, i){
             //     // now we add another data object value, a calculated value.
@@ -280,7 +286,6 @@ const buildChart = () => {
             cells = rows.selectAll("td")
         // each row has data associated; we get it and enter it for the cells.
             .data(function(d) {
-                console.log(d);
                 return d;
             })
             .enter()
@@ -302,5 +307,55 @@ function update(data) {
 
 
 // end chart stuff
+
+
+
+
+// copy/paste data from https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+// const fallbackCopyTextToClipboard = (text) => {
+//     var textArea = document.createElement("textarea");
+//     textArea.value = text;
+    
+//     // Avoid scrolling to bottom
+//     textArea.style.top = "0";
+//     textArea.style.left = "0";
+//     textArea.style.position = "fixed";
+  
+//     document.body.appendChild(textArea);
+//     textArea.focus();
+//     textArea.select();
+  
+//     try {
+//       var successful = document.execCommand('copy');
+//       var msg = successful ? 'successful' : 'unsuccessful';
+//       console.log('Fallback: Copying text command was ' + msg);
+//     } catch (err) {
+//       console.error('Fallback: Oops, unable to copy', err);
+//     }
+  
+//     document.body.removeChild(textArea);
+// }
+
+const copyTextToClipboard = (text) => {
+    if (!navigator.clipboard) {
+      fallbackCopyTextToClipboard(text);
+      return;
+    }
+    navigator.clipboard.writeText(text).then(function() {
+      console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+      console.error('Async: Could not copy text: ', err);
+    });
+}
+  
+//   var copyBobBtn = document.querySelector('.js-copy-bob-btn'),
+//     copyJaneBtn = document.querySelector('.js-copy-jane-btn');
+  
+//   copyBobBtn.addEventListener('click', function(event) {
+//     copyTextToClipboard('Bob');
+//   });
+  
+  
+
 
 initBlocks();

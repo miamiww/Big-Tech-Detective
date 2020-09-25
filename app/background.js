@@ -53,7 +53,7 @@ chrome.webRequest.onCompleted.addListener(
 				if(data.hasOwnProperty("ip")){
 					//this is where we send info to the extension front-end
 					console.log('IP in database')
-					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company});
+					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip});
 
 					setCompanyInStorage(data);
 					if(info.tabId>0){
@@ -61,7 +61,7 @@ chrome.webRequest.onCompleted.addListener(
 							console.log(tabs)
 							chrome.tabs.sendMessage(
 								info.tabId,
-								{'type': 'blockPage', 'company':data.ip.company, 'url':info.url},
+								{'type': 'blockPage', 'company':data.ip.company, 'url':info.url, 'ip': info.ip},
 								function(response){
 									console.log(response)
 								}
@@ -74,7 +74,7 @@ chrome.webRequest.onCompleted.addListener(
 					
 				}else{
 					// console.log('IP not in database')
-					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other'});
+					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip});
 					setOtherInStorage();
 
 					if(info.tabId>0){
@@ -82,7 +82,7 @@ chrome.webRequest.onCompleted.addListener(
 							console.log(tabs)
 							chrome.tabs.sendMessage(
 								info.tabId,
-								{'type': 'blockPage', 'company':"Other", 'url':info.url},
+								{'type': 'blockPage', 'company':"Other", 'url':info.url, 'ip': info.ip},
 								function(response){
 									console.log(response)
 								}
@@ -143,3 +143,9 @@ chrome.browserAction.onClicked.addListener(() => {
 	}
 
 })
+
+// chrome.windows.onBoundsChanged.addListener(net_win.id, (tab) => {
+// 	console.log("resized")
+// 	chrome.app.window.outerBounds.setSize(800, 680);
+
+// })
