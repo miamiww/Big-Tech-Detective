@@ -24,180 +24,182 @@
 }
 
 #btd-lock-overlay {
-  position: fixed;
-  color: yellow;
-  text-align: center;
-  font-size: xx-large;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+  position: fixed !important;
+  color: yellow !important;
+  text-align: center !important;
+  font-size: xx-large !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
   /* z-index: 2,147,483,646; */
-  z-index: 2000000000;
-  background-color: rgba(175,229,219,0.7);
+  z-index: 2000000000 !important;
+  background-color: rgba(175,229,219,0.7) !important;
 }
 
 
 
 #btd-lock-container {
-  position: fixed;
+  position: fixed !important;
   /* z-index: 2,147,483,647; */
-  z-index: 2000000001;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 50%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-image:url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/lock_icon.png');
-  background-size: 35%;
+  z-index: 2000000001 !important;
+  top: 0 !important;
+  right: 0 !important;
+  height: 100% !important;
+  width: 50% !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-image:url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/lock_icon.png') !important;
+  background-size: 35% !important;
 
 }
 
 #btd-lock-information-container {
-  font-family: "GT Walsham Regular";
-  position: fixed;
-  background-color: #ff5551;
-  color: #1E354C;
+  font-family: "GT Walsham Regular" !important;
+  position: fixed !important;
+  background-color: #ff5551 !important;
+  color: #1E354C !important;
   /* z-index: 2,147,483,647; */
-  z-index: 2000000001;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 50%;
-  overflow-wrap: break-word;
-  overflow-y:auto;
+  z-index: 2000000001 !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  width: 50% !important;
+  overflow-wrap: break-word !important;
+  overflow-y:auto !important;
+  line-height: normal !important;
 }
 
 #btd-lock-information{
-  font-family: "GT Walsham Regular";
-  margin: 10%;
+  font-family: "GT Walsham Regular" !important;
+  margin: 10% !important;
 
 }
 
 #btd-information-heading {
-  font-family: "GT Walsham Black";
-  font-size: xx-large;  
-  font-weight: bold;
+  font-family: "GT Walsham Black" !important;
+  font-size: xx-large !important;  
+  font-weight: bold !important;
 
 }
 
 #btd-information-resource-list{
   /* padding-top: 30px; */
-  height: 130px;
-  font-size: medium;
-  overflow-wrap: break-word;
-  overflow: scroll;
-  scroll-behavior: auto;
-  border-bottom: 1px solid #1E354C;
-  border-top: 1px solid #1E354C;
+  height: 130px !important;
+  overflow-wrap: break-word !important;
+  overflow: scroll !important;
+  scroll-behavior: auto !important;
+  border-bottom: 1px solid #1E354C !important;
+  border-top: 1px solid #1E354C !important;
 
-  padding-bottom: 30px;
+  padding-bottom: 30px !important;
 }
 
 #btd-information-resource-list p{
-
-  top: 0px;
-  bottom: 30px;
+  color: #1E354C;
+  font-size: medium !important;
+  top: 0px !important;
+  bottom: 30px !important;
 }
 
 
 
 #btd-information-resource-list::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 3px;
-  height: 0px;
+  -webkit-appearance: none !important;
+  width: 3px !important;
+  height: 0px !important;
 }
 
 #btd-information-resource-list::-webkit-scrollbar-thumb {
-  border-radius: 1px;
-  background-color: #1E354C;
-  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  border-radius: 1px !important;
+  background-color: #1E354C !important;
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5) !important;
 }
 
 #btd-copy-data-button {
-  background: #ff5551 url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/copy_clipboard.png') no-repeat left;
-  background-size: 20px;
-  font-size: small;
-  color: #1E354C;
+  background: #ff5551 url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/copy_clipboard.png') no-repeat left !important;
+  background-size: 20px!important;
+  font-size: small !important;
+  color: #1E354C !important;
   /* border-radius: 40px; */
-  height: 60px;
-  width: 240px;
+  height: 60px !important;
+  width: 240px !important;
   /* border: 1px solid #1E354C; */
-  border: 0px;
-  font-family: "Basis Mono", monospace;
+  border: 0px !important;
+  font-family: "Basis Mono", monospace !important;
 }
 
 #btd-copy-data-button:active {
-  background: #1E354C;
+  background: #1E354C !important;
 }
 
 #btd-information-footer {
-  font-family: "GT Walsham Black";
-  font-size: large;
-  font-weight: bold;
+  font-family: "GT Walsham Black" !important;
+  font-size: large !important;
+  font-weight: bold !important;
 
 
 }
 
 .btd-information-table-heading{
-  font-family: "GT Walsham Black";
-  margin-top: 15%;
-  font-size: large;
+  font-family: "GT Walsham Black" !important;
+  margin-top: 15% !important;
+  font-size: large !important;
 }
 
 #btd-lock-table {
-  display:flex;
-  justify-content: left;
-  align-items: center;
+  display:flex !important;
+  justify-content: left !important;
+  align-items: center !important;
   /* height:100%; */
-  background-color: #ff5551;
+  background-color: #ff5551 !important;
 
 
 }
 
 .btd-packet-table {
-  background-color: #ff5551;
-  font-family: "Basis Mono";
+  background-color: #ff5551 !important;
+  font-family: "Basis Mono" !important;
 
-  top: 0px;
-  padding-top: 20px;
-  color: #1E354C;
-  width:350px;
-  border-collapse: collapse;
-
-  border-top: 0;
+  top: 0px !important;
+  padding-top: 20px !important;
+  color: #1E354C !important;
+  /* width:350px !important; */
+  border-collapse: collapse !important;
+  width: 100%; 
+  border-top: 0 !important;
 
 }
 
 .btd-packet-table  th{
-  font-family: "Basis Mono";
-  font-size: 9pt;
-  text-align: left;
+  font-family: "Basis Mono" !important;
+  font-size: 9pt !important;
+  text-align: left !important;
 
 }
 .btd-packet-table tr{
     /* border: 1px solid #1E354C; */
-    border-bottom: 1px solid #1E354C;
+    border-bottom: 1px solid #1E354C !important;
 
 }
 .btd-packet-table tr td{
-    border-left: 1px solid #1E354C;
-    border-bottom: 1px solid #1E354C;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
+    border-left: 1px solid #1E354C !important;
+    border-bottom: 1px solid #1E354C !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 5px !important;
+    font-size: 12pt !important;
 
 }
 
 .btd-packet-table tr td:first-child {
-  border-left: 0;
-  border-top: 0;
-  padding-left: 0;
+  border-left: 0 !important;
+  border-top: 0 !important;
+  padding-left: 0 !important;
 
 }
 
 .btd-packet-table tr td:last-child {
-  border-right: 0;
+  border-right: 0 !important;
 }
 

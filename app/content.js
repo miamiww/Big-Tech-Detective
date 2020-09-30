@@ -118,7 +118,7 @@ const resourceText = (data) => {
 }
 
 const footerText = () => {
-    return "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
+    return "<br />" + "<br />" + "If you wish to access the page, turn off locking in your extension, and reload the page."
 }
 
 // + "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
