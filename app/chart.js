@@ -23,7 +23,7 @@ const init = () => {
         companyData = result.key;
         update(companyData);
     });
-
+s
     chrome.app.window.current().onBoundsChanged.addListener(() => {
         console.log("resized")
         chrome.app.window.outerBounds.setSize(800, 680);
@@ -206,7 +206,6 @@ const buildChart = () => {
 
                 for (const prop in _data) {
                     packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
-                    console.log(packetArray);
                 }
                 console.log(packetArray);
 
@@ -222,7 +221,7 @@ const buildChart = () => {
                 var header = table.append("thead").append("tr");
                 header
                 .selectAll("th")
-                .data(["Source","Packet Count","% Total Packets"])
+                .data(["Source","Packet Count","% Total Packets", ""])
                 .enter()
                 .append("th")
                 .text(function(d) { return d; });
