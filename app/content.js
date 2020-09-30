@@ -113,6 +113,11 @@ const headingText = (data) => {
     return `Hi there! This page is locked by Big Tech Detective because it loaded a resource from <i>${data.company}</i>` 
 }
 
+const subHeadingText = () => {
+    return `Note that this does not block any of the resources from loading or prevent any of their trackers from collecting your data` 
+}
+
+
 const resourceText = (data) => {
     return `<strong>From ${data.company}:</strong> ${data.url}`
 }
@@ -147,7 +152,10 @@ const buildBlockPage = (data) => {
     headingDiv.id = "btd-information-heading";
     headingDiv.innerHTML = headingText(data);
 
-
+    // sub heading
+    let subHeadingDiv = document.createElement('div');
+    subHeadingDiv.id = "btd-information-sub-heading";
+    subHeadingDiv.innerHTML = subHeadingText();
 
     // heading for table
     let tableHeadingDiv = document.createElement('div');
@@ -186,6 +194,8 @@ const buildBlockPage = (data) => {
     footerDiv.innerHTML = footerText();
     // putting the page together
     contentDiv.appendChild(headingDiv);
+    contentDiv.appendChild(subHeadingDiv);
+
     contentDiv.appendChild(tableHeadingDiv);
     contentDiv.appendChild(tableDiv);
     contentDiv.appendChild(listHeadingDiv);

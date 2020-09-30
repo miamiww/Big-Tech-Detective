@@ -71,15 +71,29 @@
 }
 
 #btd-lock-information{
+  color: #1E354C !important;
+
   font-family: "GT Walsham Regular" !important;
   margin: 10% !important;
 
 }
 
 #btd-information-heading {
+  color: #1E354C !important;
+
   font-family: "GT Walsham Black" !important;
   font-size: xx-large !important;  
   font-weight: bold !important;
+
+}
+
+#btd-information-sub-heading {
+  padding-top: 5px !important;
+  color: #1E354C !important;
+
+  font-family: "GT Walsham Regular" !important;
+  font-size: medium !important;
+  /* padding-bottom: 10px !important;  */
 
 }
 
@@ -91,6 +105,7 @@
   scroll-behavior: auto !important;
   border-bottom: 1px solid #1E354C !important;
   border-top: 1px solid #1E354C !important;
+  color: #1E354C !important;
 
   padding-bottom: 30px !important;
 }
@@ -99,7 +114,8 @@
   color: #1E354C;
   font-size: medium !important;
   top: 0px !important;
-  bottom: 30px !important;
+  padding-bottom: 10px !important;
+  
 }
 
 
@@ -137,6 +153,8 @@
   font-family: "GT Walsham Black" !important;
   font-size: large !important;
   font-weight: bold !important;
+  color: #1E354C !important;
+
 
 
 }
@@ -145,6 +163,9 @@
   font-family: "GT Walsham Black" !important;
   margin-top: 15% !important;
   font-size: large !important;
+  margin-bottom: 3%;
+  color: #1E354C !important;
+
 }
 
 #btd-lock-table {
@@ -153,6 +174,7 @@
   align-items: center !important;
   /* height:100%; */
   background-color: #ff5551 !important;
+  color: #1E354C !important;
 
 
 }
@@ -168,27 +190,47 @@
   border-collapse: collapse !important;
   width: 100%; 
   border-top: 0 !important;
+  color: #1E354C !important;
+
+
+}
+
+.btd-packet-table  thead{
+  background-color: #ff5551 !important;
+  border-top: 0 !important;
 
 }
 
 .btd-packet-table  th{
+  background-color: #ff5551 !important;
+  border-color: #1E354C !important;
+  border-style: none;
   font-family: "Basis Mono" !important;
   font-size: 9pt !important;
   text-align: left !important;
 
 }
 .btd-packet-table tr{
+  background-color: #ff5551 !important;
+  color: #1E354C !important;
+
     /* border: 1px solid #1E354C; */
-    border-bottom: 1px solid #1E354C !important;
+  border-bottom: 1px solid #1E354C !important;
 
 }
 .btd-packet-table tr td{
     border-left: 1px solid #1E354C !important;
     border-bottom: 1px solid #1E354C !important;
+    border-color: #1E354C !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
     padding-left: 5px !important;
     font-size: 12pt !important;
+    background-color: #ff5551 !important;
+    color: #1E354C !important;
+    font-family: "Basis Mono" !important;
+
+
 
 }
 
