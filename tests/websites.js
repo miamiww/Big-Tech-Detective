@@ -1,4 +1,6 @@
 let websiteData = {"https://developers.google.com": {Google: 1}, "https://fivethirtyeight.com": {Amazon: 1, Google: 1}, "https://facebook.com": {Google: 1, Facebook: 1} }
+
+
 const reduceWebsites = data => {
     let total = 0;
     let totalGoogle = 0;

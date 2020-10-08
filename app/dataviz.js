@@ -56,9 +56,12 @@ const onMessage = data => {
         console.log('receiving packet data');
         companyData[data.company]=(companyData[data.company]+1) || 1;  // update the company global variable
         update(companyData)
-
-        assign(websiteData, [data.initiator, data.ip.company], websiteData[data.initiator[data.ip.company]] + 1 || 1); // update the website global variable
-        
+        let oldWebsiteData = websiteData;
+        assign(websiteData, [data.initiator, data.ip.company], websiteData[data.initiator[data.ip.company]] || 1); // update the website global variable
+        if(oldWebsiteData!=websiteData){
+            let webPercentData = reduceWebsites(websiteData)
+            // TO DO: function to update chart with new data
+        }
     }
 }
 
@@ -75,10 +78,6 @@ const reduceWebsites = data => {
             sum = websiteData[iterator][name] + sum;
         } 
         return sum
-    }
-
-    const percenter = (numerator, denominator) => {
-        return Math.round ((numerator*100)/denominator)
     }
 
     for (const prop in data) {

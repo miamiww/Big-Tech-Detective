@@ -1,3 +1,4 @@
+// global variables
 var block = false;
 var blockingData = {
     "Google": false,
@@ -10,6 +11,7 @@ var copyData = {};
 var companyList = [];
 var container;
 
+// helper functions
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -18,6 +20,7 @@ function isEmpty(obj) {
     return true;
 }
 
+// initialization function
 const initBlocks = () => {
     // port = chrome.runtime.connect({name: "blocker_socket"});
     // port.onMessage.addListener(blockTime);
@@ -30,85 +33,51 @@ const initBlocks = () => {
             console.log('No user input on blocking, allow everything')
         }
 
-
     });
 }
 
+// handling messages from background.js
 const blockTime = (data,sender,sendResponse) => {
 
     if(data.type=="blockPage"){
         buildCopyData(data,copyData);
         // window.location.replace(block_url);
         if(!block){
-            if(data.company == "Google"){
-                if(blockingData.Google){
-                    buildBlockPage(data);
-                }
-    
-            }
-            if(data.company == "Amazon"){
-                if(blockingData.Amazon){
-                    buildBlockPage(data)
-                }
-    
-            }
-            if(data.company == "Facebook"){
-                if(blockingData.Facebook){
-                    buildBlockPage(data)
-                }
-    
-            }
-            if(data.company == "Microsoft"){
-                if(blockingData.Microsoft){
-                    buildBlockPage(data)
-                }
-    
-            }
+            _firstBlock("Google", data);
+            _firstBlock("Amazon", data);
+            _firstBlock("Facebook", data);
+            _firstBlock("Microsoft", data);
     
         } else{
             addBlockPage(data);
-            if(data.company == "Google"){
-                if(blockingData.Google){
-                    updateResourceList(data);
-                    updateHeader(data);
-
-
-                }
-    
-            }
-            if(data.company == "Amazon"){
-                if(blockingData.Amazon){
-                    updateResourceList(data);
-                    updateHeader(data);
-
-                }
-    
-            }
-            if(data.company == "Facebook"){
-                if(blockingData.Facebook){
-                    updateResourceList(data);
-                    updateHeader(data);
-
-
-                }
-    
-            }
-            if(data.company == "Microsoft"){
-                if(blockingData.Microsoft){
-                    updateResourceList(data);
-                    updateHeader(data);
-
-                }
-    
-            }
+            _restBlock("Google",data);
+            _restBlock("Amazon",data);
+            _restBlock("Facebook",data);
+            _restBlock("Microsoft",data);
         }
         }
 
       sendResponse({message: "received"});
-
-
 }
 
+const _firstBlock = (company, data) => {
+    if(data.company == company){
+        if(blockingData[company]){
+            buildBlockPage(data);
+        }
+    }
+}
+
+const _restBlock = (company, data) => {
+    if(data.company == company){
+        if(blockingData[company]){
+            updateResourceList(data);
+            updateHeader(data);
+        }
+    }
+}
+
+// building the page
 const headingText = (data) => {
     return `Hi there! This page is locked by Big Tech Detective because it loaded a resource from <i>${data.company}</i>` 
 }
@@ -125,8 +94,6 @@ const resourceText = (data) => {
 const footerText = () => {
     return "<br />" + "<br />" + "If you wish to access the page, turn off locking in your extension, and reload the page."
 }
-
-// + "<br />" + "<br />" + "If you wish to access the page, turn off blocking in your extension, and reload the page."
 
 const buildBlockPage = (data) => {
     companyData[data.company]=(companyData[data.company]+1) || 1;
@@ -253,16 +220,6 @@ const buildCopyData = (inData, copyData) => {
 
 
 // chart stuff
-
-
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
-
 
 const buildChart = () => {
     // let svg

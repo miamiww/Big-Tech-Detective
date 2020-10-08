@@ -1,5 +1,3 @@
-
-
 let blockObject = {};
 function isEmpty(obj) {
     for(var key in obj) {
@@ -63,7 +61,7 @@ const checkGoogle = () => {
     var checkbox = document.getElementById('googleSwitch');
     if (checkbox.checked == true)
     {
-        alert("blocking Google could be very annoying");
+        // alert("blocking Google could be very annoying");
         setBlockingInStorage("Google");
     } else{
         setBlockingInStorage("Google");
@@ -74,7 +72,7 @@ const checkAmazon = () => {
     var checkbox = document.getElementById('amazonSwitch');
     if (checkbox.checked == true)
     {
-        alert("blocking Amazon could be very annoying");
+        // alert("blocking Amazon could be very annoying");
         setBlockingInStorage("Amazon");
 
     } else{
@@ -86,7 +84,7 @@ const checkFacebook = () => {
     var checkbox = document.getElementById('facebookSwitch');
     if (checkbox.checked == true)
     {
-        alert("blocking Facebook could be very annoying");
+        // alert("blocking Facebook could be very annoying");
         setBlockingInStorage("Facebook");
 
     } else{
@@ -99,7 +97,7 @@ const checkMicrosoft = () => {
     var checkbox = document.getElementById('microsoftSwitch');
     if (checkbox.checked == true)
     {
-        alert("blocking Microsoft could be very annoying");
+        // alert("blocking Microsoft could be very annoying");
         setBlockingInStorage("Microsoft");
 
     } else{
