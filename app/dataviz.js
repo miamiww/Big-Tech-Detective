@@ -25,6 +25,10 @@ const assign = (obj, keyPath, value) => {
 	obj[keyPath[lastKeyIndex]] = value;
 }
 
+const percenter = (numerator, denominator) => {
+    return Math.round ((numerator*100)/denominator)
+}
+
 // start the communication with background.js and start listeners and get local storage
 const init = () => {
     document.getElementById("clearbutton").addEventListener("click", clearHistory);
@@ -54,7 +58,43 @@ const onMessage = data => {
         update(companyData)
 
         assign(websiteData, [data.initiator, data.ip.company], websiteData[data.initiator[data.ip.company]] + 1 || 1); // update the website global variable
+        
+    }
+}
 
+
+const reduceWebsites = data => {
+    let total = 0;
+    let totalGoogle = 0;
+    let totalFacebook = 0;
+    let totalMicrosoft = 0;
+    let totalAmazon = 0;
+
+    const totaler = (name, iterator, sum) => {
+        if(websiteData[iterator][name]){
+            sum = websiteData[iterator][name] + sum;
+        } 
+        return sum
+    }
+
+    const percenter = (numerator, denominator) => {
+        return Math.round ((numerator*100)/denominator)
+    }
+
+    for (const prop in data) {
+        total = total + 1;
+        totalGoogle = totaler("Google", prop, totalGoogle);
+        totalFacebook = totaler("Facebook", prop, totalFacebook);
+        totalMicrosoft = totaler("Microsoft", prop, totalMicrosoft);
+        totalAmazon = totaler("Amazon", prop, totalAmazon); 
+    }
+
+    return {
+        Total: total,
+        Google: totalGoogle,
+        Facebook: totalFacebook,
+        Amazon: totalAmazon,
+        Microsoft: totalMicrosoft
     }
 }
 
