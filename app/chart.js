@@ -1,17 +1,31 @@
-var companyData = {
-};
-function isEmpty(obj) {
+// global variables
+var companyData = {};
+var websiteData = {};
+var container = d3.select("#pie"); 
+var pieChartStatus = true;
+
+// helper functions
+const isEmpty = (obj) => {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
             return false;
     }
     return true;
 }
-var container = d3.select("#pie"); 
 
-var pieChartStatus = true;
+const assign = (obj, keyPath, value) => {
+	lastKeyIndex = keyPath.length-1;
+	for (var i = 0; i < lastKeyIndex; ++ i) {
+	  key = keyPath[i];
+	  if (!(key in obj)){
+		obj[key] = {}
+	  }
+	  obj = obj[key];
+	}
+	obj[keyPath[lastKeyIndex]] = value;
+}
 
-// start the communication with background.js
+// start the communication with background.js and start listeners and get local storage
 const init = () => {
     document.getElementById("clearbutton").addEventListener("click", clearHistory);
     document.getElementById("switchview").addEventListener("click", switchView);
@@ -23,10 +37,9 @@ const init = () => {
         companyData = result.key;
         update(companyData);
     });
-s
-    chrome.app.window.current().onBoundsChanged.addListener(() => {
-        console.log("resized")
-        chrome.app.window.outerBounds.setSize(800, 680);
+    chrome.storage.local.get(['websites'], function(result) {
+        console.log('Website data from local storage is ' + result.websites)
+        websiteData = result.websites;
 
     })
 
@@ -37,17 +50,25 @@ const onMessage = data => {
     console.log(data);
     if(data.type=="packetIn"){
         console.log('receiving packet data');
-        companyData[data.company]=(companyData[data.company]+1) || 1;
+        companyData[data.company]=(companyData[data.company]+1) || 1;  // update the company global variable
         update(companyData)
+
+        assign(websiteData, [data.initiator, data.ip.company], websiteData[data.initiator[data.ip.company]] + 1 || 1); // update the website global variable
 
     }
 }
 
+// button function
 const clearHistory = () => {
     companyData = {};
     update(companyData);
     chrome.storage.local.set({key: companyData}, function() {
 		console.log(companyData);
+    });
+
+    websiteData = {};
+    chrome.storage.local.set({websites: websiteData}, function() {
+		console.log(websiteData);
     });
 }
 
@@ -57,6 +78,8 @@ const switchView = () => {
     update(companyData)
 
 }
+
+// the data visualization part
 
 const buildChart = () => {
     console.log('rebuilding chart')
@@ -89,7 +112,7 @@ const buildChart = () => {
                 svg=false;
 
                 var someContainer = d3.select(this)
-                    .append("div")
+                    .appeand("div")
                     .style("width", width)
                     .style("height", height)
                     .classed("message-container", true)
@@ -98,6 +121,8 @@ const buildChart = () => {
                     .text("no data, waiting for incoming traffic to inspect 🔍")
 
             } else if(pieChartStatus) {
+
+                
                 d3.select(".packet-table").remove();
                 d3.select(".message-container").remove();
                 
@@ -192,6 +217,7 @@ const buildChart = () => {
                 }
 
             } else if(!pieChartStatus){
+                // build table
                 d3.select(".packet-chart").remove();
                 d3.select(".message-container").remove();
                 d3.select(".packet-table").remove();
@@ -259,6 +285,6 @@ function update(data) {
 
 
 
-init()
+init();
 
 

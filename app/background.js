@@ -40,13 +40,13 @@ const setCompanyInStorage = (data, info) => {
 		console.log(companyData);
 	  });
 
-	// console.log(info)
-	// if(info.frameId===0){
-	// 	console.log("website data")
-	// 	assign(websiteData, [info.initiator, data.ip.company], websiteData[info.initiator[data.ip.company]] + 1 || 1)
-	// 	chrome.storage.local.set({websites: websiteData}, function() {
-	// 		console.log(websiteData);
-	// 	  });	}
+	console.log(info)
+	if(info.frameId===0){
+		console.log("website data")
+		assign(websiteData, [info.initiator, data.ip.company], websiteData[info.initiator[data.ip.company]] + 1 || 1)
+		chrome.storage.local.set({websites: websiteData}, function() {
+			console.log(websiteData);
+		  });	}
 
 }
 
