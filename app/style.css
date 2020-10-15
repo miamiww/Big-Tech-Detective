@@ -62,7 +62,7 @@ body {
 
 
 #logo { 
-    width: 40%; 
+    width: 80%; 
     height: auto; 
 }
 
@@ -91,10 +91,18 @@ body {
     justify-content: left;
     align-items: flex-start;
     flex: 1;
-    flex-basis: 100%;
+    flex-basis: 50%;
     margin-bottom: 5%;
 }
-
+.button-column{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    align-items: flex-end;
+    flex: 1;
+    flex-basis: 50%;
+    margin-bottom: 5%;
+}
 
 
 /* page element styling */
@@ -179,7 +187,7 @@ body {
 }   */
 
 th{
-    font-size: 7pt;
+    font-size: 8pt;
     text-align: left;
     padding-left: 0px;
 }
@@ -206,6 +214,7 @@ table tr td{
     background-color: #E6F7F4;
     border-left: 1px solid #1E354C;
     border-right: 1px solid #1E354C;
+    font-size: 11pt;
 }
 
 table tr td:first-child {
@@ -233,15 +242,61 @@ button {
 
 }
 
-#button-container{
+button:active {
+    background: #E6F7F4;
+    color: #1E354C;
+}
+
+#buttons-container{
     display:flex;
     flex-direction: row;
     align-items: flex-start;
 }
 
+#analyzer-description{
+    margin-right: 5%;
+}
+
 
 #clearbutton{
-    margin-right: 10%;
+    margin-top: 5px;
+    border-radius: 40px;
+    height: 40px;
+    width: 30%;
+    align-self: inherit;
+    margin-bottom: 5px;
+}
+#offbutton{
+    border-radius: 40px;
+    height: 40px;
+    width: 30%;
+    align-self: inherit;
+    margin-bottom: 5px;
+}
+
+#switchview{
+    margin-left: 0px;
+}
+
+#copy-data-button {
+    background: #E6F7F4 url('/assets/icons/copy_clipboard.png') no-repeat left;
+    background-size: 20px;
+    font-size: small ;
+    color: #1E354C ;
+    /* border-radius: 40px; */
+    height: 40px ;
+    width: 220px ;
+    /* border: 1px solid #1E354C; */
+    border: 0px ;
+    font-family: "Basis Mono", monospace ;
+    border-radius: 0px;
+    align-self: flex-end;
+    justify-self: flex-end;
+
+  }
+
+#copy-data-button:active {
+    background: #1E354C;
 }
 
 /* begin toggle switches */

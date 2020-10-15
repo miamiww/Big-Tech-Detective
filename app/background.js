@@ -12,53 +12,72 @@ let block_object = null;
 let chart_object;
 // object for local storage
 let companyData = {};
+let websiteData = {};
 
 
 // settings for pop-out window
 var net_url = chrome.extension.getURL('main.html');
-var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 675, 'focused': true }
+var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 715, 'focused': true }
 var net_win;
 
 // functions for setting local storage
-const setCompanyInStorage = (data) => {
+
+const assign = (obj, keyPath, value) => {
+	lastKeyIndex = keyPath.length-1;
+	for (var i = 0; i < lastKeyIndex; ++ i) {
+	  key = keyPath[i];
+	  if (!(key in obj)){
+		obj[key] = {}
+	  }
+	  obj = obj[key];
+	}
+	obj[keyPath[lastKeyIndex]] = value;
+}
+
+const setCompanyInStorage = (data, info) => {
 	companyData[data.ip.company]=(companyData[data.ip.company]+1) || 1;
 	chrome.storage.local.set({key: companyData}, function() {
-		// console.log(companyData);
+		console.log(companyData);
 	  });
+
+	console.log(info)
+	if(info.frameId===0){
+		console.log("website data")
+		assign(websiteData, [info.initiator, data.ip.company], websiteData[info.initiator[data.ip.company]] + 1 || 1)
+		chrome.storage.local.set({websites: websiteData}, function() {
+			console.log(websiteData);
+		  });	
+	}
+
 }
 
 const setOtherInStorage = () => {
 	companyData["Other"]=(companyData["Other"]+1) || 1;
 	chrome.storage.local.set({key: companyData}, function() {
-		// console.log(companyData);
+		console.log(companyData);
 	  });
 }
 
 
-// functions for sending block message
 
 
-
-// Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
+// the main listener - Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
 chrome.webRequest.onCompleted.addListener( 
 	(info) => {
 
 	  //	 preventing infinite loops
 	  	if(!ignore_ips.includes(info.ip)){
 			console.log(info)
-
 			fetch("https://thegreatest.website:8080/ips/"+info.ip)
 			.then(response => response.json())
 			.then(data => {
 				if(data.hasOwnProperty("ip")){
 					//this is where we send info to the extension front-end
-					console.log('IP in database')
-					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip});
+					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
 
-					setCompanyInStorage(data);
+					setCompanyInStorage(data, info);
 					if(info.tabId>0){
 						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-							console.log(tabs)
 							chrome.tabs.sendMessage(
 								info.tabId,
 								{'type': 'blockPage', 'company':data.ip.company, 'url':info.url, 'ip': info.ip},
@@ -74,12 +93,11 @@ chrome.webRequest.onCompleted.addListener(
 					
 				}else{
 					// console.log('IP not in database')
-					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip});
+					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
 					setOtherInStorage();
 
 					if(info.tabId>0){
 						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-							console.log(tabs)
 							chrome.tabs.sendMessage(
 								info.tabId,
 								{'type': 'blockPage', 'company':"Other", 'url':info.url, 'ip': info.ip},
@@ -102,7 +120,6 @@ chrome.webRequest.onCompleted.addListener(
 
 // send messages to extension window and content.js in realtime
 chrome.runtime.onConnect.addListener((port) => {
-	console.log(port.name)
 	if(port.name=="extension_socket"){
 		try{console.log(port); /** console.trace(); /**/ }catch(e){}
 		console.assert(port.name == "extension_socket");

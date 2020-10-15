@@ -1,19 +1,17 @@
-
-
+// global  variables
 let blockObject = {};
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
 
+
+
+// initializing function
 const initBlocks = () => {
+
+    //blocking 
     document.getElementById("googleSwitch").addEventListener("click", checkGoogle);
     document.getElementById("amazonSwitch").addEventListener("click", checkAmazon);
     document.getElementById("facebookSwitch").addEventListener("click", checkFacebook);
     document.getElementById("microsoftSwitch").addEventListener("click", checkMicrosoft);
+
 
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
@@ -49,9 +47,12 @@ const initBlocks = () => {
     
     
     });
+
+
 }
 
 
+//blocking functions
 const setBlockingInStorage = (company) => {
 	blockObject[company] = !blockObject[company]
 	chrome.storage.local.set({blocks: blockObject}, function() {
@@ -63,7 +64,7 @@ const checkGoogle = () => {
     var checkbox = document.getElementById('googleSwitch');
     if (checkbox.checked == true)
     {
-        alert("blocking Google could be very annoying");
+        // alert("blocking Google could be very annoying");
         setBlockingInStorage("Google");
     } else{
         setBlockingInStorage("Google");
@@ -74,7 +75,7 @@ const checkAmazon = () => {
     var checkbox = document.getElementById('amazonSwitch');
     if (checkbox.checked == true)
     {
-        alert("blocking Amazon could be very annoying");
+        // alert("blocking Amazon could be very annoying");
         setBlockingInStorage("Amazon");
 
     } else{
@@ -86,7 +87,7 @@ const checkFacebook = () => {
     var checkbox = document.getElementById('facebookSwitch');
     if (checkbox.checked == true)
     {
-        alert("blocking Facebook could be very annoying");
+        // alert("blocking Facebook could be very annoying");
         setBlockingInStorage("Facebook");
 
     } else{
@@ -99,7 +100,7 @@ const checkMicrosoft = () => {
     var checkbox = document.getElementById('microsoftSwitch');
     if (checkbox.checked == true)
     {
-        alert("blocking Microsoft could be very annoying");
+        // alert("blocking Microsoft could be very annoying");
         setBlockingInStorage("Microsoft");
 
     } else{
@@ -107,5 +108,7 @@ const checkMicrosoft = () => {
 
     }
 }
+
+
 
 initBlocks();
