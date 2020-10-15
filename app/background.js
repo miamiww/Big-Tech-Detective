@@ -17,7 +17,7 @@ let websiteData = {};
 
 // settings for pop-out window
 var net_url = chrome.extension.getURL('main.html');
-var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 675, 'focused': true }
+var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 715, 'focused': true }
 var net_win;
 
 // functions for setting local storage
@@ -46,7 +46,8 @@ const setCompanyInStorage = (data, info) => {
 		assign(websiteData, [info.initiator, data.ip.company], websiteData[info.initiator[data.ip.company]] + 1 || 1)
 		chrome.storage.local.set({websites: websiteData}, function() {
 			console.log(websiteData);
-		  });	}
+		  });	
+	}
 
 }
 
@@ -72,7 +73,7 @@ chrome.webRequest.onCompleted.addListener(
 			.then(data => {
 				if(data.hasOwnProperty("ip")){
 					//this is where we send info to the extension front-end
-					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip, 'initiator': info.initiator});
+					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
 
 					setCompanyInStorage(data, info);
 					if(info.tabId>0){
@@ -92,7 +93,7 @@ chrome.webRequest.onCompleted.addListener(
 					
 				}else{
 					// console.log('IP not in database')
-					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip, 'initiator': info.initiator});
+					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
 					setOtherInStorage();
 
 					if(info.tabId>0){

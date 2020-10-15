@@ -20,6 +20,15 @@ function isEmpty(obj) {
     return true;
 }
 
+// copy/paste data from https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+const copyTextToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(function() {
+      console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+      console.error('Async: Could not copy text: ', err);
+    });
+}
+
 // initialization function
 const initBlocks = () => {
     // port = chrome.runtime.connect({name: "blocker_socket"});
@@ -88,7 +97,7 @@ const subHeadingText = () => {
 
 
 const resourceText = (data) => {
-    return `<strong>From ${data.company}:</strong> ${data.url}`
+    return `<strong>From ${data.company}:</strong> <br> ${data.url}`
 }
 
 const footerText = () => {
@@ -303,42 +312,7 @@ function update(data) {
 
 
 
-// copy/paste data from https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
-// const fallbackCopyTextToClipboard = (text) => {
-//     var textArea = document.createElement("textarea");
-//     textArea.value = text;
-    
-//     // Avoid scrolling to bottom
-//     textArea.style.top = "0";
-//     textArea.style.left = "0";
-//     textArea.style.position = "fixed";
-  
-//     document.body.appendChild(textArea);
-//     textArea.focus();
-//     textArea.select();
-  
-//     try {
-//       var successful = document.execCommand('copy');
-//       var msg = successful ? 'successful' : 'unsuccessful';
-//       console.log('Fallback: Copying text command was ' + msg);
-//     } catch (err) {
-//       console.error('Fallback: Oops, unable to copy', err);
-//     }
-  
-//     document.body.removeChild(textArea);
-// }
 
-const copyTextToClipboard = (text) => {
-    if (!navigator.clipboard) {
-      fallbackCopyTextToClipboard(text);
-      return;
-    }
-    navigator.clipboard.writeText(text).then(function() {
-      console.log('Async: Copying to clipboard was successful!');
-    }, function(err) {
-      console.error('Async: Could not copy text: ', err);
-    });
-}
   
 //   var copyBobBtn = document.querySelector('.js-copy-bob-btn'),
 //     copyJaneBtn = document.querySelector('.js-copy-jane-btn');

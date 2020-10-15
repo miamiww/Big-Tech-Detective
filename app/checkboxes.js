@@ -1,17 +1,17 @@
+// global  variables
 let blockObject = {};
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
 
+
+
+// initializing function
 const initBlocks = () => {
+
+    //blocking 
     document.getElementById("googleSwitch").addEventListener("click", checkGoogle);
     document.getElementById("amazonSwitch").addEventListener("click", checkAmazon);
     document.getElementById("facebookSwitch").addEventListener("click", checkFacebook);
     document.getElementById("microsoftSwitch").addEventListener("click", checkMicrosoft);
+
 
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
@@ -47,9 +47,12 @@ const initBlocks = () => {
     
     
     });
+
+
 }
 
 
+//blocking functions
 const setBlockingInStorage = (company) => {
 	blockObject[company] = !blockObject[company]
 	chrome.storage.local.set({blocks: blockObject}, function() {
@@ -105,5 +108,7 @@ const checkMicrosoft = () => {
 
     }
 }
+
+
 
 initBlocks();

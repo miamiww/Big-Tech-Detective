@@ -2,32 +2,14 @@
 var companyData = {};
 var websiteData = {};
 var container = d3.select("#pie"); 
-var pieChartStatus = true;
+var pieChartStatus = false;
+var websiteViewer = true;
+let webPercentData;
+let descriptionTextAllPackets = "% of current browser session traffic that has gone to each company"
+let descriptionTextWebsites = "% of websites visited during current browser session traffic that had connections to each company"
+let buttonTextAllPackets = "packet view"
+let buttonTextWebsites = "websites view"
 
-// helper functions
-const isEmpty = (obj) => {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
-
-const assign = (obj, keyPath, value) => {
-	lastKeyIndex = keyPath.length-1;
-	for (var i = 0; i < lastKeyIndex; ++ i) {
-	  key = keyPath[i];
-	  if (!(key in obj)){
-		obj[key] = {}
-	  }
-	  obj = obj[key];
-	}
-	obj[keyPath[lastKeyIndex]] = value;
-}
-
-const percenter = (numerator, denominator) => {
-    return Math.round ((numerator*100)/denominator)
-}
 
 // start the communication with background.js and start listeners and get local storage
 const init = () => {
@@ -39,32 +21,72 @@ const init = () => {
     chrome.storage.local.get(['key'], function(result) {
         console.log('Company data from local storage is ' + result.key);
         companyData = result.key;
-        update(companyData);
     });
     chrome.storage.local.get(['websites'], function(result) {
         console.log('Website data from local storage is ' + result.websites)
         websiteData = result.websites;
+        webPercentData = reduceWebsites(websiteData)
 
-    })
+        update(webPercentData);
+        updateDescriptionText(descriptionTextWebsites);
+        updateSwitchButtonText(buttonTextAllPackets);
+
+    });
+
+    //copy/paste
+    document.getElementById("copy-data-button").addEventListener('click', (event) => {
+        
+        copyTextToClipboard(JSON.stringify(buildCopyData(websiteData,companyData)));
+    });
 
 }
 
 // processing of packet info and call of chart build
 const onMessage = data => {
-    console.log(data);
     if(data.type=="packetIn"){
-        console.log('receiving packet data');
         companyData[data.company]=(companyData[data.company]+1) || 1;  // update the company global variable
-        update(companyData)
-        let oldWebsiteData = websiteData;
-        assign(websiteData, [data.initiator, data.ip.company], websiteData[data.initiator[data.ip.company]] || 1); // update the website global variable
-        if(oldWebsiteData!=websiteData){
-            let webPercentData = reduceWebsites(websiteData)
-            // TO DO: function to update chart with new data
+        if(data.initiator == undefined){
+            console.log("true undefined")
+            console.log(data)
         }
+        if(data.initiator == "undefined"){
+            console.log("string undefined")
+            console.log(data)
+        }
+        if(data.Company != "Other" && data.frame ===0 && data.initiator !== undefined){
+            if(!websiteData.hasOwnProperty(data.initiator)){
+                let builtwebsitedataPromise = buildWebsiteData(websiteData,data)
+                builtwebsitedataPromise
+                .then(
+                    globalData => webPercentData = reduceWebsites(globalData)
+                )
+            } else if(!websiteData[data.initiator].hasOwnProperty(data.company)){
+                let builtwebsitedataPromise = buildWebsiteData(websiteData,data)
+                builtwebsitedataPromise
+                .then(
+                    globalData => webPercentData = reduceWebsites(globalData)
+                )
+            }
+            // console.log("building website data")
+            // assign(websiteData, [data.initiator, data.company],  1); // update the website global variable websiteData[data.initiator][data.ip.company] ||
+            // console.log("New Data")
+            // console.log(websiteData)
+        }
+
+        // if(oldWebsiteData!=websiteData){
+
+        // }
+        dataSwitcher(pieChartStatus)
     }
 }
 
+const buildWebsiteData = (globalData, inData) =>{
+    return new Promise ((webDataChange) => {
+        assign(globalData, [inData.initiator, inData.company],  1); // update the website global variable websiteData[data.initiator][data.ip.company] ||
+        console.log("New data!")
+        webDataChange(globalData)
+    })
+}
 
 const reduceWebsites = data => {
     let total = 0;
@@ -73,7 +95,7 @@ const reduceWebsites = data => {
     let totalMicrosoft = 0;
     let totalAmazon = 0;
 
-    const totaler = (name, iterator, sum) => {
+    const _totaler = (name, iterator, sum) => {
         if(websiteData[iterator][name]){
             sum = websiteData[iterator][name] + sum;
         } 
@@ -82,10 +104,10 @@ const reduceWebsites = data => {
 
     for (const prop in data) {
         total = total + 1;
-        totalGoogle = totaler("Google", prop, totalGoogle);
-        totalFacebook = totaler("Facebook", prop, totalFacebook);
-        totalMicrosoft = totaler("Microsoft", prop, totalMicrosoft);
-        totalAmazon = totaler("Amazon", prop, totalAmazon); 
+        totalGoogle = _totaler("Google", prop, totalGoogle);
+        totalFacebook = _totaler("Facebook", prop, totalFacebook);
+        totalMicrosoft = _totaler("Microsoft", prop, totalMicrosoft);
+        totalAmazon = _totaler("Amazon", prop, totalAmazon); 
     }
 
     return {
@@ -97,25 +119,67 @@ const reduceWebsites = data => {
     }
 }
 
-// button function
+
+
+const updateDescriptionText = text => {
+    document.getElementById("analyzer-description").innerHTML = text;
+}
+
+const updateSwitchButtonText = text => {
+    document.getElementById("switchview").innerHTML = text;
+}
+
+// button functions
 const clearHistory = () => {
     companyData = {};
-    update(companyData);
     chrome.storage.local.set({key: companyData}, function() {
 		console.log(companyData);
     });
 
     websiteData = {};
+    webPercentData = {Total: 0, Google: 0, Facebook: 0, Amazon: 0, Microsoft:0}
     chrome.storage.local.set({websites: websiteData}, function() {
 		console.log(websiteData);
     });
+
+    dataSwitcher(pieChartStatus);
 }
 
 const switchView = () => {
+    pieChartStatus = !pieChartStatus;
+    dataSwitcher(pieChartStatus);
 
-    pieChartStatus = !pieChartStatus
-    update(companyData)
+}
 
+// the most important function :P
+const dataSwitcher = switcher => {
+    if(switcher){
+        console.log("updating chart from packet message")
+        update(companyData)
+        updateDescriptionText(descriptionTextAllPackets);
+        updateSwitchButtonText(buttonTextWebsites)
+    } else{
+        console.log("updating table from packet message")
+        console.log(webPercentData);
+        update(webPercentData);
+        updateDescriptionText(descriptionTextWebsites);
+        updateSwitchButtonText(buttonTextAllPackets)
+
+    }
+}
+
+// copy/paste functions
+const copyTextToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(function() {
+      console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+      console.error('Async: Could not copy text: ', err);
+    });
+}
+const buildCopyData = (websiteData, companyData) => {
+    let websiteDataTrue = convertTrue(websiteData)
+    let copyData = {totalPacketCounts: companyData, websites: websiteDataTrue};
+    return copyData
 }
 
 // the data visualization part
@@ -140,8 +204,6 @@ const buildChart = () => {
     
     function graph(_selection) {
         _selection.each(function(_data) {	
-            console.log("data for chart")
-            console.log(_data)
 
             if(isEmpty(_data)){
                 d3.select(".packet-table").remove();
@@ -151,7 +213,23 @@ const buildChart = () => {
                 svg=false;
 
                 var someContainer = d3.select(this)
-                    .appeand("div")
+                    .append("div")
+                    .style("width", width)
+                    .style("height", height)
+                    .classed("message-container", true)
+                    .style('font-size', 30)
+                    .style('fill', 'red')
+                    .text("no data, waiting for incoming traffic to inspect 🔍")
+
+            } else if(_data.Total === 0){
+                d3.select(".packet-table").remove();
+                d3.select(".packet-chart").remove();
+                d3.select(".message-container").remove();
+
+                svg=false;
+
+                var someContainer = d3.select(this)
+                    .append("div")
                     .style("width", width)
                     .style("height", height)
                     .classed("message-container", true)
@@ -166,7 +244,7 @@ const buildChart = () => {
                 d3.select(".message-container").remove();
                 
 
-                            // get total packets for % calculations
+                // get total packets for % calculations
                 let total = 0;
                 for (const prop in _data) {
                     total = _data[prop] + total;
@@ -182,7 +260,6 @@ const buildChart = () => {
                     .outerRadius(radius);
                         
                 if (!svg){
-                    console.log('building svg')
                     svgSpecial = d3.select(this).append("svg")
                         .attr("width", width)
                         .attr("height", height)
@@ -219,7 +296,6 @@ const buildChart = () => {
 
                     legendG.append("text") // add the text
                     .text(function(d){
-                        console.log(d.data.key + " " + (d.data.value*100)/total + "%")
                         return d.data.key + ":  " + Math.round(d.data.value*100)/total + "%";
                     })
                     .style("font-size", 12)
@@ -238,7 +314,6 @@ const buildChart = () => {
                     .attr('y', 10)
                     .attr("class","legendtext");
                 texts.text(function(d){
-                    console.log(d.data.key + " " + (d.data.value*100)/total + "%")
                     return d.data.key + ":  " + Math.round((d.data.value*100)/total) + "%";
                 })    
 
@@ -262,52 +337,87 @@ const buildChart = () => {
                 d3.select(".packet-table").remove();
                 svg=false;
 
+                if(!websiteViewer){
+                    var packetArray = [];
+                    let total = 0;
+                    for (const prop in _data) {
+                        total = _data[prop] + total
+                    }
+    
+                    for (const prop in _data) {
+                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
+                    }
+    
+                    // _data.forEach(function(d, i){
+                    //     // now we add another data object value, a calculated value.
+                    //     // here we are making strings into numbers using type coercion
+                    //     // Add a new array with the values of each:
+                    //     packetArray.push([d.data.key, d.d.data.value]);
+                    // });
+                    var table = d3.select(this).append("table");
+                    table.classed("packet-table",true)
+    
+                    var header = table.append("thead").append("tr");
+                    header
+                    .selectAll("th")
+                    .data(["Source","Packet Count","% Total Packets", ""])
+                    .enter()
+                    .append("th")
+                    .text(function(d) { return d; });
+                    var tablebody = table.append("tbody");
+                    rows = tablebody
+                    .selectAll("tr")
+                    .data(packetArray)
+                    .enter()
+                    .append("tr");
+                    // We built the rows using the nested array - now each row has its own array.
+                    cells = rows.selectAll("td")
+                // each row has data associated; we get it and enter it for the cells.
+                    .data(function(d) {
+                        return d;
+                    })
+                    .enter()
+                    .append("td")
+                    .text(function(d) {
+                        return d;
+                    });
+                } else{
+                    var packetArray = [];
+                    let total = _data.Total;
 
-                var packetArray = [];
-                let total = 0;
-                for (const prop in _data) {
-                    total = _data[prop] + total
+                    for (const prop in _data) {
+                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
+                    }
+
+                    var table = d3.select(this).append("table");
+                    table.classed("packet-table",true)
+
+                    var header = table.append("thead").append("tr");
+                    header
+                    .selectAll("th")
+                    .data(["Company","Websites","% Total Websites", ""])
+                    .enter()
+                    .append("th")
+                    .text(function(d) { return d; });
+                    var tablebody = table.append("tbody");
+                    rows = tablebody
+                    .selectAll("tr")
+                    .data(packetArray)
+                    .enter()
+                    .append("tr");
+                    // We built the rows using the nested array - now each row has its own array.
+                    cells = rows.selectAll("td")
+                    // each row has data associated; we get it and enter it for the cells.
+                    .data(function(d) {
+                        return d;
+                    })
+                    .enter()
+                    .append("td")
+                    .text(function(d) {
+                        return d;
+                    });
                 }
-
-                for (const prop in _data) {
-                    packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
-                }
-                console.log(packetArray);
-
-                // _data.forEach(function(d, i){
-                //     // now we add another data object value, a calculated value.
-                //     // here we are making strings into numbers using type coercion
-                //     // Add a new array with the values of each:
-                //     packetArray.push([d.data.key, d.d.data.value]);
-                // });
-                var table = d3.select(this).append("table");
-                table.classed("packet-table",true)
-
-                var header = table.append("thead").append("tr");
-                header
-                .selectAll("th")
-                .data(["Source","Packet Count","% Total Packets", ""])
-                .enter()
-                .append("th")
-                .text(function(d) { return d; });
-                var tablebody = table.append("tbody");
-                rows = tablebody
-                .selectAll("tr")
-                .data(packetArray)
-                .enter()
-                .append("tr");
-                // We built the rows using the nested array - now each row has its own array.
-                cells = rows.selectAll("td")
-            // each row has data associated; we get it and enter it for the cells.
-                .data(function(d) {
-                    console.log(d);
-                    return d;
-                })
-                .enter()
-                .append("td")
-                .text(function(d) {
-                    return d;
-                });
+                
             }
     });
             }

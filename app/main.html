@@ -18,36 +18,53 @@
         <div class="flex-row">
             <div class="icon-column">
                 <img id="logo" src="assets/logo/big_tech_detective_logo.svg">
-
+ 
             </div>
+            <div class="button-column">
+                <button id="clearbutton"
+                type="button">
+                clear history
+                </button>
+                <!-- <button id="offbutton"
+                type="button">
+                off
+                </button> -->
+            </div>
+
         </div>
         <div class="flex-row ">
 
             <div class="flex-row control-panel"><br><br></div>
             <div class="flex-column middle-margin">
                 <div class="analyzer">
+                
                     <h2>TRAFFIC ANALYZER</h2> 
-                    <p>% of current browser session traffic that has gone to each company</p>
+                    <p id="analyzer-description"></p>
                     <div id="buttons-container">
-                        <button id="clearbutton"
-                            type="button">
-                            clear history
-                        </button>
+
                         <button id="switchview"
                             type="button">
-                            toggle view
                         </button>
+                        
                     </div>
 
                     <div id="pie"></div>
 
+
                 </div>
+                <div class="flex-row">
+                    <button id="copy-data-button"
+                    type="button">
+                    copy data to clipboard
+                    </button>
+                </div>
+            
             </div>
 
 
             <div class="flex-column margin-spacer">
                 <div class="switches">
-                    <h2><b>TRAFFIC LOCKER</b></h2>
+                    <h2><b>TRAFFIC LOCK</b></h2>
                     <p>Flip the switch to lock access to the company</p>
                     <div class="flex-row switch-area">
                         <label class="switch">
@@ -93,7 +110,9 @@
         <div class="flex-row"><br><br></div>
 
     </div>
+
     <div class="flex-column" id="bottom-links-container">
+ 
         <div id="links">
             <a href="https://example.com" target="_blank">About</a>
             <a href="https://example.com" target="_blank">Privacy</a>
@@ -104,7 +123,7 @@
 
 
 
-
+    <script type="text/javascript" src="helpers.js"></script>
     <script type="text/javascript" src="dataviz.js"></script>
     <script type="text/javascript" src="checkboxes.js"></script>
 </body>
