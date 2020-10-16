@@ -396,7 +396,7 @@ const buildChart = () => {
                     var header = table.append("thead").append("tr");
                     header
                     .selectAll("th")
-                    .data(["Company","Websites","% Total Websites", ""])
+                    .data(["Company","Websites","% of Total Websites Visited", ""])
                     .enter()
                     .append("th")
                     .attr("id", d => d + "HeaderCell")
@@ -434,7 +434,9 @@ const buildChart = () => {
                     setBarGraph(_data,"Microsoft","#00CBB0",total)
                     setBarGraph(_data,"Amazon","#eaaeaa",total)
 
-                    document.getElementById("% Total WebsitesHeaderCell").colSpan = "2";
+                    document.getElementById("% of Total Websites VisitedHeaderCell").colSpan = "2";
+                    document.getElementById("% of Total Websites VisitedHeaderCell").style.paddingLeft = "10px"
+
                     document.getElementById("TotalCell3").innerHTML = "";
 
 
