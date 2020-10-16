@@ -15,6 +15,7 @@
                                                       
 ```
 
+A tool to help you track tech giants in your browser.
 
 To install:
 1. download / clone the repo
