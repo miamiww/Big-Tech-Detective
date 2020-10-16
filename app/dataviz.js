@@ -111,11 +111,11 @@ const reduceWebsites = data => {
     }
 
     return {
-        Total: total,
         Google: totalGoogle,
         Facebook: totalFacebook,
         Amazon: totalAmazon,
-        Microsoft: totalMicrosoft
+        Microsoft: totalMicrosoft,
+        Total: total
     }
 }
 
@@ -387,6 +387,7 @@ const buildChart = () => {
 
                     for (const prop in _data) {
                         packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%", ""]);;
+                        
                     }
 
                     var table = d3.select(this).append("table");
@@ -417,19 +418,26 @@ const buildChart = () => {
                     // .attr("id", d => "cell" + d)
                     .text(d => d);
 
-                    let elements = document.getElementById("GoogleRow").querySelectorAll("td");
-                    console.log(elements)
-                    for (var i = 0, element; element = elements[i++];) {
-                        element.setAttribute("id", "GoogleCell" + i)
-                    }
-
                     setID("Google")
                     setID("Facebook")
                     setID("Microsoft")
                     setID("Amazon")
                     setID("Total")
 
-                    
+                    // let googlePercent = Math.round((_data["Google"]*100)/total)
+                    // document.getElementById("GoogleCell4").style.background = "-webkit-linear-gradient(left, #eaaeaa "+googlePercent+"%, #E6F7F4 "+(100-googlePercent)+"%)"
+                    // let microsoftPercent = Math.round((_data["Microsoft"]*100)/total)
+                    // document.getElementById("MicrosoftCell4").style.background = "-webkit-linear-gradient(left, #00CBB0 "+microsoftPercent+"%, #E6F7F4 "+(100-microsoftPercent)+"%)"
+
+                    setBarGraph(_data,"Google","#F9DAF5",total)
+                    setBarGraph(_data,"Facebook","#FF5551",total)
+                    setBarGraph(_data,"Microsoft","#00CBB0",total)
+                    setBarGraph(_data,"Amazon","#eaaeaa",total)
+
+                    document.getElementById("% Total WebsitesHeaderCell").colSpan = "2";
+                    document.getElementById("TotalCell3").innerHTML = "";
+
+
                 }
                 
             }
@@ -442,10 +450,21 @@ const buildChart = () => {
 
 const setID = rowname => {
     let elements = document.getElementById(rowname+"Row").querySelectorAll("td");
-    console.log(elements)
     for (var i = 0, element; element = elements[i++];) {
         element.setAttribute("id", rowname+ "Cell" + i)
     }
+}
+
+const setBarGraph = (data,company,color,total) => {
+    let percent = Math.round((data[company]*100)/total)
+    if(percent>=50){
+        document.getElementById(company+"Cell4").style.background = "-webkit-linear-gradient(left, "+color+" "+percent+"%, #E6F7F4 "+(100-percent)+"%)"
+    } else if(percent === 0){
+
+    } else if(percent < 50){
+        document.getElementById(company+"Cell4").style.background = "-webkit-linear-gradient(right, #E6F7F4 "+ (100 - percent)+"%,"+color+" "+percent+"% )"
+    }
+
 }
 
 var updateFunction = buildChart();
