@@ -418,21 +418,17 @@ const buildChart = () => {
                     // .attr("id", d => "cell" + d)
                     .text(d => d);
 
+                    // table manipulation
                     setID("Google")
                     setID("Facebook")
                     setID("Microsoft")
                     setID("Amazon")
                     setID("Total")
 
-                    // let googlePercent = Math.round((_data["Google"]*100)/total)
-                    // document.getElementById("GoogleCell4").style.background = "-webkit-linear-gradient(left, #eaaeaa "+googlePercent+"%, #E6F7F4 "+(100-googlePercent)+"%)"
-                    // let microsoftPercent = Math.round((_data["Microsoft"]*100)/total)
-                    // document.getElementById("MicrosoftCell4").style.background = "-webkit-linear-gradient(left, #00CBB0 "+microsoftPercent+"%, #E6F7F4 "+(100-microsoftPercent)+"%)"
-
                     setBarGraph(_data,"Google","#F9DAF5",total)
                     setBarGraph(_data,"Facebook","#FF5551",total)
-                    setBarGraph(_data,"Microsoft","#00CBB0",total)
-                    setBarGraph(_data,"Amazon","#eaaeaa",total)
+                    setBarGraph(_data,"Microsoft","#eaaeaa",total)
+                    setBarGraph(_data,"Amazon","#00CBB0",total)
 
                     document.getElementById("% of Total Websites VisitedHeaderCell").colSpan = "2";
                     document.getElementById("% of Total Websites VisitedHeaderCell").style.paddingLeft = "10px"
