@@ -111,11 +111,11 @@ const reduceWebsites = data => {
     }
 
     return {
-        Total: total,
         Google: totalGoogle,
         Facebook: totalFacebook,
         Amazon: totalAmazon,
-        Microsoft: totalMicrosoft
+        Microsoft: totalMicrosoft,
+        Total: total
     }
 }
 
@@ -345,7 +345,7 @@ const buildChart = () => {
                     }
     
                     for (const prop in _data) {
-                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
+                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%", " "]);;
                     }
     
                     // _data.forEach(function(d, i){
@@ -386,7 +386,8 @@ const buildChart = () => {
                     let total = _data.Total;
 
                     for (const prop in _data) {
-                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
+                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%", ""]);;
+                        
                     }
 
                     var table = d3.select(this).append("table");
@@ -395,27 +396,46 @@ const buildChart = () => {
                     var header = table.append("thead").append("tr");
                     header
                     .selectAll("th")
-                    .data(["Company","Websites","% Total Websites", ""])
+                    .data(["Company","Websites","% of Total Websites Visited", ""])
                     .enter()
                     .append("th")
-                    .text(function(d) { return d; });
+                    .attr("id", d => d + "HeaderCell")
+                    .text(d => d );
+
                     var tablebody = table.append("tbody");
                     rows = tablebody
                     .selectAll("tr")
                     .data(packetArray)
                     .enter()
-                    .append("tr");
+                    .append("tr")
+                    .attr("id", d => d[0] + "Row");
                     // We built the rows using the nested array - now each row has its own array.
                     cells = rows.selectAll("td")
                     // each row has data associated; we get it and enter it for the cells.
-                    .data(function(d) {
-                        return d;
-                    })
+                    .data(d => d)
                     .enter()
                     .append("td")
-                    .text(function(d) {
-                        return d;
-                    });
+                    // .attr("id", d => "cell" + d)
+                    .text(d => d);
+
+                    // table manipulation
+                    setID("Google")
+                    setID("Facebook")
+                    setID("Microsoft")
+                    setID("Amazon")
+                    setID("Total")
+
+                    setBarGraph(_data,"Google","#F9DAF5",total)
+                    setBarGraph(_data,"Facebook","#FF5551",total)
+                    setBarGraph(_data,"Microsoft","#eaaeaa",total)
+                    setBarGraph(_data,"Amazon","#00CBB0",total)
+
+                    document.getElementById("% of Total Websites VisitedHeaderCell").colSpan = "2";
+                    document.getElementById("% of Total Websites VisitedHeaderCell").style.paddingLeft = "10px"
+
+                    document.getElementById("TotalCell3").innerHTML = "";
+
+
                 }
                 
             }
@@ -423,6 +443,25 @@ const buildChart = () => {
             }
 
     return graph;
+
+}
+
+const setID = rowname => {
+    let elements = document.getElementById(rowname+"Row").querySelectorAll("td");
+    for (var i = 0, element; element = elements[i++];) {
+        element.setAttribute("id", rowname+ "Cell" + i)
+    }
+}
+
+const setBarGraph = (data,company,color,total) => {
+    let percent = Math.round((data[company]*100)/total)
+    if(percent>=50){
+        document.getElementById(company+"Cell4").style.background = "-webkit-linear-gradient(left, "+color+" "+percent+"%, #E6F7F4 "+(100-percent)+"%)"
+    } else if(percent === 0){
+
+    } else if(percent < 50){
+        document.getElementById(company+"Cell4").style.background = "-webkit-linear-gradient(right, #E6F7F4 "+ (100 - percent)+"%,"+color+" "+percent+"% )"
+    }
 
 }
 
