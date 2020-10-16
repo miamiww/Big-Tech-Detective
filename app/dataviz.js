@@ -345,7 +345,7 @@ const buildChart = () => {
                     }
     
                     for (const prop in _data) {
-                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
+                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%", " "]);;
                     }
     
                     // _data.forEach(function(d, i){
@@ -386,7 +386,7 @@ const buildChart = () => {
                     let total = _data.Total;
 
                     for (const prop in _data) {
-                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%"]);;
+                        packetArray.push([prop, _data[prop],Math.round((_data[prop]*100)/total)+"%", ""]);;
                     }
 
                     var table = d3.select(this).append("table");
@@ -398,24 +398,38 @@ const buildChart = () => {
                     .data(["Company","Websites","% Total Websites", ""])
                     .enter()
                     .append("th")
-                    .text(function(d) { return d; });
+                    .attr("id", d => d + "HeaderCell")
+                    .text(d => d );
+
                     var tablebody = table.append("tbody");
                     rows = tablebody
                     .selectAll("tr")
                     .data(packetArray)
                     .enter()
-                    .append("tr");
+                    .append("tr")
+                    .attr("id", d => d[0] + "Row");
                     // We built the rows using the nested array - now each row has its own array.
                     cells = rows.selectAll("td")
                     // each row has data associated; we get it and enter it for the cells.
-                    .data(function(d) {
-                        return d;
-                    })
+                    .data(d => d)
                     .enter()
                     .append("td")
-                    .text(function(d) {
-                        return d;
-                    });
+                    // .attr("id", d => "cell" + d)
+                    .text(d => d);
+
+                    let elements = document.getElementById("GoogleRow").querySelectorAll("td");
+                    console.log(elements)
+                    for (var i = 0, element; element = elements[i++];) {
+                        element.setAttribute("id", "GoogleCell" + i)
+                    }
+
+                    setID("Google")
+                    setID("Facebook")
+                    setID("Microsoft")
+                    setID("Amazon")
+                    setID("Total")
+
+                    
                 }
                 
             }
@@ -424,6 +438,14 @@ const buildChart = () => {
 
     return graph;
 
+}
+
+const setID = rowname => {
+    let elements = document.getElementById(rowname+"Row").querySelectorAll("td");
+    console.log(elements)
+    for (var i = 0, element; element = elements[i++];) {
+        element.setAttribute("id", rowname+ "Cell" + i)
+    }
 }
 
 var updateFunction = buildChart();
