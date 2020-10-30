@@ -5,6 +5,7 @@
 const url_filter = {urls: ["<all_urls>"], types:[]}
 // make sure to ignore the packets being sent to the server or else it will cause an infinite loop of requests
 const ignore_ips = ["159.65.179.9",undefined]
+const early_flagged_domains = []
 
 // objects for messaging to the chart
 let message_object = null;
