@@ -68,6 +68,7 @@
   overflow-wrap: break-word !important;
   overflow-y:auto !important;
   line-height: normal !important;
+  text-align: left !important;
 }
 
 #btd-lock-information{

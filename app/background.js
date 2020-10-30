@@ -109,7 +109,7 @@ chrome.webRequest.onCompleted.addListener(
 					}
 				}
 			})
-			.catch(err => console.log(err));
+			.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
 	  }
 	return;
   },
