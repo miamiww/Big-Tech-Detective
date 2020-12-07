@@ -78,6 +78,9 @@ const onMessage = data => {
         // }
         dataSwitcher(pieChartStatus)
     }
+    if(data.type=="error"){
+        console.log(data.message)
+    }
 }
 
 const buildWebsiteData = (globalData, inData) =>{
