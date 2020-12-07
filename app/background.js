@@ -67,9 +67,9 @@ chrome.webRequest.onCompleted.addListener(
 	(info) => {
 
 	  //	 preventing infinite loops
-	  	if(!ignore_ips.includes(info.ip)){
+	  	if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://")){
 			console.log(info)
-			fetch("https://thegreatest.website:8080/ips/"+info.ip)
+			fetch("https://big-tech-detective-api.herokuapp.com/ips/"+info.ip)
 			.then(response => response.json())
 			.then(data => {
 				if(data.hasOwnProperty("ip")){
