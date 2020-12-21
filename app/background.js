@@ -83,7 +83,7 @@ const init = () => {
 				.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
 			}
 		} else{
-			console.log('off')
+			console.log('extension is off')
 		}
 		return;
 	},
@@ -103,11 +103,18 @@ const init = () => {
 				message_object = null;
 	
 			})
-			let port2 = chrome.runtime.connect({name: "on_off_messaging"});
-			port2.onMessage.addListener(onMessage);
+
 		}
+		// recieve on / off signal
+		let onOffPort = chrome.runtime.connect({name: "on_off_messaging"});
+		onOffPort.onMessage.addListener(onMessage);
+		onOffPort.onDisconnect.addListener(function(){
+			console.log('disconnected from on / off port')
+		})
 	
 	});
+
+
 
 	// open up the extension window when icon is clicked
 	chrome.browserAction.onClicked.addListener(() => {

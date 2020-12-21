@@ -63,6 +63,7 @@ const initBlocks = () => {
             } else{
                 var checkbox = document.getElementById('onOffSwitch');
                 checkbox.checked = false;
+                greyOutFeatures();
             }
         } else{
             console.log('setting on off')
@@ -158,7 +159,11 @@ const onOff = () => {
 
     if(!onOffObject["onStatus"]){
         turnOffBlocking();
-        // add some functions to grey out the different zones
+        // add some functions to grey out the different zo
+        greyOutFeatures()
+    } else {
+        alert("Extension is turned on and sending browsing information to external server")
+        unGreyFeatures()
     }
 }
 
@@ -177,6 +182,17 @@ const turnOffBlocking = () => {
         let checkbox = document.getElementById(switchIDs[i]);
         checkbox.checked = false;
     }
+}
+
+const greyOutFeatures = () =>{
+    document.getElementById("analyzer-overlay").style.visibility = "visible"
+    document.getElementById("switches-overlay").style.visibility = "visible"
+}
+
+const unGreyFeatures = () =>{
+    document.getElementById("analyzer-overlay").style.visibility = "hidden"
+    document.getElementById("switches-overlay").style.visibility = "hidden"
+
 }
 
 initBlocks();
