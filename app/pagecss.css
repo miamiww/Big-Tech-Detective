@@ -150,6 +150,30 @@
   background: #1E354C !important;
 }
 
+#btd-remove-button {
+  font-size: small !important;
+  color: #1E354C !important;
+  background: #ff5551 !important;
+  font-family: "Basis Mono", monospace !important;
+  font-size: large !important;
+  border: 0px !important;
+  border: 1px solid #1E354C !important;
+  border-radius: 3px !important; 
+
+}
+
+#btd-remove-button:active {
+  background: #1E354C !important;
+}
+
+#btd-remove-button:hover {
+  background: #1E354C !important;
+  color: #ff5551 !important;
+  border: 1px solid #1E354C !important;
+  border-radius: 3px !important; 
+}
+
+
 #btd-information-footer {
   font-family: "GT Walsham Black" !important;
   font-size: large !important;
