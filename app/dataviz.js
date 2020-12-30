@@ -134,18 +134,21 @@ const updateSwitchButtonText = text => {
 
 // button functions
 const clearHistory = () => {
-    companyData = {};
-    chrome.storage.local.set({key: companyData}, function() {
-		console.log(companyData);
-    });
+    if (window.confirm("Are you sure you want delete your history? This cannot be undone.")) {
+        companyData = {};
+        chrome.storage.local.set({key: companyData}, function() {
+		    console.log(companyData);
+        });
 
-    websiteData = {};
-    webPercentData = {Total: 0, Google: 0, Facebook: 0, Amazon: 0, Microsoft:0}
-    chrome.storage.local.set({websites: websiteData}, function() {
-		console.log(websiteData);
-    });
+        websiteData = {};
+        webPercentData = {Total: 0, Google: 0, Facebook: 0, Amazon: 0, Microsoft:0}
+        chrome.storage.local.set({websites: websiteData}, function() {
+            console.log(websiteData);
+        });
 
-    dataSwitcher(pieChartStatus);
+        dataSwitcher(pieChartStatus);
+    }
+
 }
 
 const switchView = () => {
