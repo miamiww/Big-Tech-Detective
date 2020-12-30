@@ -34,6 +34,8 @@ body {
     max-height: 665px; */
     width: 800px;
     height: 50px;
+    background: #E6F7F4;
+
 }
 
 .main-container {
@@ -108,9 +110,10 @@ body {
 /* page element styling */
 .middle-margin{
     border-right: 1px solid #1E354C;
-
+    height: 417px;
 }
-.
+
+
 #switches{
     /* margin: 15px; */
     /* width: 300px; */ 
@@ -263,6 +266,7 @@ button {
     height: 30px;
     border: 0;
     font-family: "Basis Mono", monospace;
+    cursor: pointer; 
 
 }
 
@@ -313,14 +317,22 @@ button:active {
     /* border: 1px solid #1E354C; */
     border: 0px ;
     font-family: "Basis Mono", monospace ;
-    border-radius: 0px;
+    border-radius: 5px;
     align-self: flex-end;
     justify-self: flex-end;
+    /* margin-top: 10px; */
+    z-index: 1000;
+    position: absolute;
+    top: 568px;
 
   }
+/* #copy-data-button:hover{
+    border: 1px solid #1E354C;
+} */
 
 #copy-data-button:active {
     background: #1E354C;
+
 }
 
 /* begin toggle switches */
@@ -330,6 +342,11 @@ button:active {
     display: inline-block;
     width: 80px;
     height: 30px;
+}
+
+#onOffSwitchBox{
+    width: 30%;
+    height: 40px;
 }
 
 /* Hide default HTML checkbox */
@@ -398,6 +415,8 @@ transform: translateX(50px);
     height: 30%;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-top:30px;
+
 }
 
 #bottom-links-container a{
@@ -414,9 +433,9 @@ transform: translateX(50px);
     color: red;
     text-align: center;
     font-size: large;
-    z-index: 2000000000 !important;
+    z-index: 200 !important;
     /* background-color: rgba(175,229,219,0.7) !important; */
-    background-color: #d3d3d3;
+    background-color: #E6F7F4;
     opacity: .7;
     position: absolute;
     height: 448px;
@@ -427,9 +446,9 @@ transform: translateX(50px);
     /* height: 100% !important;
     width: 100% !important; */
     /* z-index: 2,147,483,646; */
-    z-index: 2000000000 !important;
+    z-index: 200 !important;
     /* background-color: rgba(175,229,219,0.7) !important; */
-    background-color: #d3d3d3;
+    background-color: #E6F7F4;
     opacity: .7;
     position: absolute;
     height: 417px;
