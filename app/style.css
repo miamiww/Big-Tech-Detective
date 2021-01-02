@@ -347,10 +347,7 @@ button:active {
     height: 30px;
 }
 
-#onOffSwitchBox{
-    width: 30%;
-    height: 40px;
-}
+
 
 /* Hide default HTML checkbox */
 .switch input {
@@ -412,6 +409,54 @@ transform: translateX(50px);
   }
 
 /* end toggle switches */
+/* on off switch */
+#onOffSwitchBox{
+    width: 120px;
+    height: 40px;
+}
+#onOffSlider{
+    border-radius: 34px;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #1E354C;
+    -webkit-transition: .3s;
+    transition: .3s;
+    font-family: "Basis Mono", monospace;
+
+}
+
+#onOffSlider::after{
+    color: #E6F7F4;
+    font-family: "Basis Mono", monospace;
+    content: 'OFF';
+    text-align: center;
+    /* padding: 30px; */
+    left: 50%;
+    font-size: xx-large;
+    transform: translate(-50%, 0px);
+    position: absolute;
+    top: 0;
+
+
+}
+
+input:checked + #onOffSlider {
+    background-color: #E6F7F4;
+    border: 1px solid #1E354C;
+
+}
+
+input:checked + #onOffSlider::after {
+    color:#1E354C;
+    content: "ON";
+
+}
+
+/* end on off switch */
 
 #bottom-links-container{
     background: #1E354C;
