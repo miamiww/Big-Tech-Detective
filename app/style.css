@@ -20,7 +20,7 @@
 }
 
 @font-face {
-    font-family: "GT Walsham Bold";
+    font-family: "GT Walsham Black";
     src: url("assets/fonts/GT-Walsheim-Black.otf");
 
 }
@@ -127,10 +127,13 @@ body {
 
 #switches p{
     font-size: 17px;
+    color:#1E354C;
+
 }
 
 #analyzer p{
     font-size: 17px;
+    color:#1E354C;
 }
 
 #switches h2{
@@ -172,7 +175,7 @@ body {
     font-size: xx-large;
     color:#1E354C;
     width: 85%;
-    height: 325px;
+    height: 125px;
     margin-top: 40px;
 }
 
@@ -262,7 +265,7 @@ button {
     background: #1E354C;
     color: #E6F7F4;
     border-radius: 40px;
-    width: 35%;
+    width: 120px;
     height: 30px;
     border: 0;
     font-family: "Basis Mono", monospace;
@@ -289,8 +292,8 @@ button:active {
 #clearbutton{
     margin-top: 5px;
     border-radius: 40px;
-    height: 40px;
-    width: 30%;
+    height: 45px;
+    width: 120px;
     align-self: inherit;
     margin-bottom: 5px;
 }
@@ -426,32 +429,29 @@ transform: translateX(50px);
     padding-right: 20px;
 }
 
-#analyzer-overlay{
+#overlay{
     /* height: 100% !important;
     width: 100% !important; */
     /* z-index: 2,147,483,646; */
-    color: red;
     text-align: center;
     font-size: large;
     z-index: 200 !important;
     /* background-color: rgba(175,229,219,0.7) !important; */
     background-color: #E6F7F4;
-    opacity: .7;
+    opacity: .8;
     position: absolute;
     height: 448px;
     width: 720px;
     visibility: hidden;
+    line-height: 448px;
 }
-#switches-overlay{
-    /* height: 100% !important;
-    width: 100% !important; */
-    /* z-index: 2,147,483,646; */
-    z-index: 200 !important;
-    /* background-color: rgba(175,229,219,0.7) !important; */
-    background-color: #E6F7F4;
-    opacity: .7;
-    position: absolute;
-    height: 417px;
-    width: 230px;
-    visibility: hidden;
+
+#off-message{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+    color:#1E354C;
+    font-size: xx-large;
+    /* visibility: hidden; */
+    font-family: "GT Walsham Black";
 }

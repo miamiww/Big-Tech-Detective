@@ -185,14 +185,11 @@ const turnOffBlocking = () => {
 }
 
 const greyOutFeatures = () =>{
-    document.getElementById("analyzer-overlay").style.visibility = "visible"
-    document.getElementById("switches-overlay").style.visibility = "visible"
+    document.getElementById("overlay").style.visibility = "visible"
 }
 
 const unGreyFeatures = () =>{
-    document.getElementById("analyzer-overlay").style.visibility = "hidden"
-    document.getElementById("switches-overlay").style.visibility = "hidden"
-
+    document.getElementById("overlay").style.visibility = "hidden"
 }
 
 initBlocks();
