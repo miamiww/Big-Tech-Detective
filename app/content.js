@@ -176,7 +176,7 @@ const buildBlockPage = (data) => {
         removeLockPage();
     });
 
-    removeButton.innerHTML = "unlock it"
+    removeButton.innerHTML = "Unlock It"
 
     footerDiv.appendChild(removeButton);
 
