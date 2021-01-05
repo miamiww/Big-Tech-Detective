@@ -7,8 +7,8 @@ var websiteViewer = true;
 let webPercentData;
 let descriptionTextAllPackets = "% of current browser session traffic that has gone to each company"
 let descriptionTextWebsites = "% of websites visited during current browser session traffic that had connections to each company"
-let buttonTextAllPackets = "packet view"
-let buttonTextWebsites = "websites view"
+let buttonTextAllPackets = "switch view"
+let buttonTextWebsites = "switch view"
 
 
 // start the communication with background.js and start listeners and get local storage

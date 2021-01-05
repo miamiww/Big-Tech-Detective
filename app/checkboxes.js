@@ -162,7 +162,7 @@ const onOff = () => {
         // add some functions to grey out the different zo
         greyOutFeatures()
     } else {
-        alert("Extension is turned on and sending browsing information to external server")
+        alert("Extension is turned on and connected to external server")
         unGreyFeatures()
     }
 }
