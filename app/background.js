@@ -69,47 +69,8 @@ chrome.webRequest.onCompleted.addListener(
 	  //	 preventing infinite loops
 	  	if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://")){
 			console.log(info)
-			fetch("https://big-tech-detective-api.herokuapp.com/ips/"+info.ip)
-			.then(response => response.json())
-			.then(data => {
-				if(data.hasOwnProperty("ip")){
-					//this is where we send info to the extension front-end
-					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
-
-					setCompanyInStorage(data, info);
-					if(info.tabId>0){
-						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-							chrome.tabs.sendMessage(
-								info.tabId,
-								{'type': 'blockPage', 'company':data.ip.company, 'url':info.url, 'ip': info.ip},
-								function(response){
-									console.log(response)
-								}
-							)
-						  });
-					}
-
-
-					// if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company, 'url':info.url});
-					
-				}else{
-					// console.log('IP not in database')
-					if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
-					setOtherInStorage();
-
-					if(info.tabId>0){
-						chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-							chrome.tabs.sendMessage(
-								info.tabId,
-								{'type': 'blockPage', 'company':"Other", 'url':info.url, 'ip': info.ip},
-								function(response){
-									console.log(response)
-								}
-							)
-						  });
-					}
-				}
-			})
+			postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
+			.then(data => postResponseHandler(data,info,message_object))
 			.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
 	  }
 	return;
@@ -162,8 +123,62 @@ chrome.browserAction.onClicked.addListener(() => {
 
 })
 
-// chrome.windows.onBoundsChanged.addListener(net_win.id, (tab) => {
-// 	console.log("resized")
-// 	chrome.app.window.outerBounds.setSize(800, 680);
 
-// })
+// from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+async function postData(url = '', data = {}) {
+	// Default options are marked with *
+	const response = await fetch(url, {
+	  method: 'POST', // *GET, POST, PUT, DELETE, etc.
+	  mode: 'cors', // no-cors, *cors, same-origin
+	  cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+	  credentials: 'same-origin', // include, *same-origin, omit
+	  headers: {
+		'Content-Type': 'application/json'
+		// 'Content-Type': 'application/x-www-form-urlencoded',
+	  },
+	  redirect: 'follow', // manual, *follow, error
+	  referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+	  body: JSON.stringify(data) // body data type must match "Content-Type" header
+	});
+	return response.json(); // parses JSON response into native JavaScript objects
+}
+  
+const postResponseHandler = (data,info,message_object) => {
+	if(data.hasOwnProperty("ip")){
+		//this is where we send info to the extension front-end
+		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
+
+		setCompanyInStorage(data, info);
+		if(info.tabId>0){
+			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+				chrome.tabs.sendMessage(
+					info.tabId,
+					{'type': 'blockPage', 'company':data.ip.company, 'url':info.url, 'ip': info.ip},
+					function(response){
+						console.log(response)
+					}
+				)
+			  });
+		}
+
+
+		// if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company, 'url':info.url});
+		
+	}else{
+		// console.log('IP not in database')
+		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
+		setOtherInStorage();
+
+		if(info.tabId>0){
+			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+				chrome.tabs.sendMessage(
+					info.tabId,
+					{'type': 'blockPage', 'company':"Other", 'url':info.url, 'ip': info.ip},
+					function(response){
+						console.log(response)
+					}
+				)
+			  });
+		}
+	}
+}
