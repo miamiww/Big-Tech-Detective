@@ -20,7 +20,7 @@
 }
 
 @font-face {
-    font-family: "GT Walsham Bold";
+    font-family: "GT Walsham Black";
     src: url("assets/fonts/GT-Walsheim-Black.otf");
 
 }
@@ -34,6 +34,8 @@ body {
     max-height: 665px; */
     width: 800px;
     height: 50px;
+    background: #E6F7F4;
+
 }
 
 .main-container {
@@ -108,9 +110,11 @@ body {
 /* page element styling */
 .middle-margin{
     border-right: 1px solid #1E354C;
-
+    height: 417px;
 }
-.switches{
+
+
+#switches{
     /* margin: 15px; */
     /* width: 300px; */ 
     height: 410px;
@@ -121,21 +125,24 @@ body {
     margin-left: 5%;
 }
 
-.switches p{
+#switches p{
     font-size: 17px;
+    color:#1E354C;
+
 }
 
-.analyzer p{
+#analyzer p{
     font-size: 17px;
+    color:#1E354C;
 }
 
-.switches h2{
+#switches h2{
     font-family: "GT Walsham Bold";
     margin-top: 0px;
     color: #1E354C;
 }
 
-.analyzer h2{
+#analyzer h2{
     font-family: "GT Walsham Bold";
     margin-top: 0px;
     color: #1E354C;
@@ -144,7 +151,7 @@ body {
 
 
 
-.analyzer{
+#analyzer{
     /* margin: 15px; */
     /* width: 300x; */
     height: 410px;
@@ -168,7 +175,7 @@ body {
     font-size: xx-large;
     color:#1E354C;
     width: 85%;
-    height: 325px;
+    height: 125px;
     margin-top: 40px;
 }
 
@@ -211,6 +218,7 @@ table tr td{
     padding-top: 12px;
     padding-bottom: 12px;
     padding-left: 5px;
+    width: 40px;
     background-color: #E6F7F4;
     border-left: 1px solid #1E354C;
     border-right: 1px solid #1E354C;
@@ -258,10 +266,11 @@ button {
     background: #1E354C;
     color: #E6F7F4;
     border-radius: 40px;
-    width: 35%;
+    width: 120px;
     height: 30px;
     border: 0;
     font-family: "Basis Mono", monospace;
+    cursor: pointer; 
 
 }
 
@@ -284,8 +293,8 @@ button:active {
 #clearbutton{
     margin-top: 5px;
     border-radius: 40px;
-    height: 40px;
-    width: 30%;
+    height: 45px;
+    width: 120px;
     align-self: inherit;
     margin-bottom: 5px;
 }
@@ -312,14 +321,22 @@ button:active {
     /* border: 1px solid #1E354C; */
     border: 0px ;
     font-family: "Basis Mono", monospace ;
-    border-radius: 0px;
+    border-radius: 5px;
     align-self: flex-end;
     justify-self: flex-end;
+    /* margin-top: 10px; */
+    z-index: 1000;
+    position: absolute;
+    top: 568px;
 
   }
+/* #copy-data-button:hover{
+    border: 1px solid #1E354C;
+} */
 
 #copy-data-button:active {
     background: #1E354C;
+
 }
 
 /* begin toggle switches */
@@ -330,6 +347,8 @@ button:active {
     width: 80px;
     height: 30px;
 }
+
+
 
 /* Hide default HTML checkbox */
 .switch input {
@@ -391,12 +410,62 @@ transform: translateX(50px);
   }
 
 /* end toggle switches */
+/* on off switch */
+#onOffSwitchBox{
+    width: 120px;
+    height: 40px;
+}
+#onOffSlider{
+    border-radius: 34px;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #1E354C;
+    -webkit-transition: .3s;
+    transition: .3s;
+    font-family: "Basis Mono", monospace;
+
+}
+
+#onOffSlider::after{
+    color: #E6F7F4;
+    font-family: "Basis Mono", monospace;
+    content: 'OFF';
+    text-align: center;
+    /* padding: 30px; */
+    left: 50%;
+    font-size: xx-large;
+    transform: translate(-50%, 0px);
+    position: absolute;
+    top: 0;
+
+
+}
+
+input:checked + #onOffSlider {
+    background-color: #E6F7F4;
+    border: 1px solid #1E354C;
+
+}
+
+input:checked + #onOffSlider::after {
+    color:#1E354C;
+    content: "ON";
+
+}
+
+/* end on off switch */
 
 #bottom-links-container{
     background: #1E354C;
     height: 30%;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-top:30px;
+
 }
 
 #bottom-links-container a{
@@ -404,4 +473,31 @@ transform: translateX(50px);
     text-decoration: none;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+#overlay{
+    /* height: 100% !important;
+    width: 100% !important; */
+    /* z-index: 2,147,483,646; */
+    text-align: center;
+    font-size: large;
+    z-index: 200 !important;
+    /* background-color: rgba(175,229,219,0.7) !important; */
+    background-color: #E6F7F4;
+    opacity: .8;
+    position: absolute;
+    height: 448px;
+    width: 720px;
+    visibility: hidden;
+    line-height: 448px;
+}
+
+#off-message{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+    color:#1E354C;
+    font-size: xx-large;
+    /* visibility: hidden; */
+    font-family: "GT Walsham Black";
 }

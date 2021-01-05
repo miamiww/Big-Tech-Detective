@@ -24,5 +24,5 @@
 		"webRequest",
 		"storage"
 	],
-	"web_accessible_resources":["assets/icons/lock_icon.png", "assets/icons/copy_clipboard.png","assets/fonts/basis-grotesque-mono.otf","assets/fonts/GT-Walsheim-Regular.otf","assets/fonts/GT-Walsheim-Bold.otf","assets/fonts/GT-Walsheim-Black.otf"]
+	"web_accessible_resources":["assets/icons/unlock_icon.png","assets/icons/lock_icon.png", "assets/icons/copy_clipboard.png","assets/fonts/basis-grotesque-mono.otf","assets/fonts/GT-Walsheim-Regular.otf","assets/fonts/GT-Walsheim-Bold.otf","assets/fonts/GT-Walsheim-Black.otf"]
   }

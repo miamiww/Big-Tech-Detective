@@ -1,11 +1,16 @@
 // global  variables
 let blockObject = {};
+let message_object = null;
+let onOffObject = {};
+let onOffStatus;
 
+let switchIDs = ['googleSwitch', 'amazonSwitch','facebookSwitch','microsoftSwitch']
 
 
 // initializing function
 const initBlocks = () => {
 
+    document.getElementById("onOffSwitch").addEventListener("click", onOff);
     //blocking 
     document.getElementById("googleSwitch").addEventListener("click", checkGoogle);
     document.getElementById("amazonSwitch").addEventListener("click", checkAmazon);
@@ -47,9 +52,44 @@ const initBlocks = () => {
     
     
     });
+    chrome.storage.local.get(['onOff'], function(result){
+        if(!isEmpty(result)){
+            console.log('OnOff data from local storage is ' + result.onOff);
+            onOffObject = result.onOff;
 
+            if(onOffObject.onStatus){
+                var checkbox = document.getElementById('onOffSwitch');
+                checkbox.checked = true;
+            } else{
+                var checkbox = document.getElementById('onOffSwitch');
+                checkbox.checked = false;
+                greyOutFeatures();
+            }
+        } else{
+            console.log('setting on off')
+            onOffObject = {
+                "onStatus": true,
+            };
+            chrome.storage.local.set({onOff: onOffObject}, function(){
+                console.log(onOffObject)
+            })
+        }
+    })
 
+    chrome.runtime.onConnect.addListener((port) => {
+        if(port.name=="on_off_messaging"){
+            try{console.log(port); /** console.trace(); /**/ }catch(e){}
+            console.assert(port.name == "on_off_messaging");
+            message_object = port;
+            message_object.onDisconnect.addListener(function(){
+                console.log("disconnected from background")
+    
+            })
+        }
+    
+    });
 }
+
 
 
 //blocking functions
@@ -109,6 +149,47 @@ const checkMicrosoft = () => {
     }
 }
 
+const onOff = () => {
+    console.log(onOffObject)
+	onOffObject["onStatus"] = !onOffObject["onStatus"]
+	chrome.storage.local.set({onOff: onOffObject}, function() {
+		console.log(blockObject);
+    });
+    if(message_object) message_object.postMessage({'type': 'OnOff', 'message':'switching on/off', 'onStatus': onOffObject["onStatus"]})
 
+    if(!onOffObject["onStatus"]){
+        turnOffBlocking();
+        // add some functions to grey out the different zo
+        greyOutFeatures()
+    } else {
+        alert("Extension is turned on and sending browsing information to external server")
+        unGreyFeatures()
+    }
+}
+
+const turnOffBlocking = () => {
+    blockObject = {
+        "Google": false,
+        "Amazon": false,
+        "Facebook": false,
+        "Microsoft": false
+    };
+    chrome.storage.local.set({blocks: blockObject}, function() {
+        console.log(blockObject);
+    });
+
+    for(let i =0; i<switchIDs.length;i++){
+        let checkbox = document.getElementById(switchIDs[i]);
+        checkbox.checked = false;
+    }
+}
+
+const greyOutFeatures = () =>{
+    document.getElementById("overlay").style.visibility = "visible"
+}
+
+const unGreyFeatures = () =>{
+    document.getElementById("overlay").style.visibility = "hidden"
+}
 
 initBlocks();

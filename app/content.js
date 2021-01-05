@@ -101,7 +101,7 @@ const resourceText = (data) => {
 }
 
 const footerText = () => {
-    return "<br />" + "<br />" + "If you wish to access the page, turn off locking in your extension, and reload the page."
+    return "<br />" + "<br />" + "If you wish to access the page,"+"<br />" 
 }
 
 const buildBlockPage = (data) => {
@@ -168,6 +168,18 @@ const buildBlockPage = (data) => {
     let footerDiv = document.createElement('div');
     footerDiv.id = "btd-information-footer";
     footerDiv.innerHTML = footerText();
+
+    // remove button
+    let removeButton = document.createElement('button');
+    removeButton.id = "btd-remove-button"
+    removeButton.addEventListener('click', (event) => {
+        removeLockPage();
+    });
+
+    removeButton.innerHTML = "Unlock It"
+
+    footerDiv.appendChild(removeButton);
+
     // putting the page together
     contentDiv.appendChild(headingDiv);
     contentDiv.appendChild(subHeadingDiv);
@@ -202,7 +214,6 @@ const addBlockPage = (data) => {
 
 
 const updateResourceList = (data) => {
-    // let resourceList = document.getElementById("btd-information-resource-list")
     let resourceListItem = document.createElement('p')
     resourceListItem.innerHTML = resourceText(data);
     document.getElementById("btd-information-resource-list").appendChild(resourceListItem)
@@ -222,6 +233,16 @@ const buildCopyData = (inData, copyData) => {
     let name = "Packet " + size;
     copyData[name] = {company: inData.company, url: inData.url, ip: inData.ip};
 
+
+}
+
+const removeLockPage = () => {
+    let removeElements = ["btd-lock-container", "btd-lock-overlay", "btd-lock-information-container"]
+
+    for(let i =0; i<removeElements.length; i++){
+        let delObj = document.getElementById(removeElements[i]);
+        delObj.remove(); 
+    }
 
 }
 

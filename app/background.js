@@ -4,7 +4,7 @@
 
 const url_filter = {urls: ["<all_urls>"], types:[]}
 // make sure to ignore the packets being sent to the server or else it will cause an infinite loop of requests
-const ignore_ips = ["159.65.179.9",undefined]
+const ignore_ips = [undefined]
 const early_flagged_domains = []
 
 // objects for messaging to the chart
@@ -14,11 +14,11 @@ let chart_object;
 // object for local storage
 let companyData = {};
 let websiteData = {};
-
+let onStatus;
 
 // settings for pop-out window
 var net_url = chrome.extension.getURL('main.html');
-var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 715, 'focused': true }
+var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 686, 'focused': true }
 var net_win;
 
 // functions for setting local storage
@@ -33,6 +33,14 @@ const assign = (obj, keyPath, value) => {
 	  obj = obj[key];
 	}
 	obj[keyPath[lastKeyIndex]] = value;
+}
+
+const isEmpty = (obj) => {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
 }
 
 const setCompanyInStorage = (data, info) => {
@@ -60,68 +68,101 @@ const setOtherInStorage = () => {
 }
 
 
+// setting up listeners, messaging, on off status
+const init = () => {
+	// the main listener - Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
+	chrome.webRequest.onCompleted.addListener( 
+		(info) => {
 
+		if(onStatus){
+			//	 preventing infinite loops
+			if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://")){
+				console.log(info)
+				postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
+				.then(data => postResponseHandler(data,info,message_object))
+				.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
+			}
+		} else{
+			console.log('extension is off')
+		}
+		return;
+	},
+		url_filter,
+		[]
+	);
 
-// the main listener - Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
-chrome.webRequest.onCompleted.addListener( 
-	(info) => {
+	// send messages to extension window and content.js in realtime
+	chrome.runtime.onConnect.addListener((port) => {
+		if(port.name=="extension_socket"){
+			try{console.log(port); /** console.trace(); /**/ }catch(e){}
+			console.assert(port.name == "extension_socket");
+			message_object = port;
+			message_object.onDisconnect.addListener(function(){
+				console.log("disconnected from extension")
+				net_win = null;
+				message_object = null;
+	
+			})
 
-	  //	 preventing infinite loops
-	  	if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://")){
-			console.log(info)
-			postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
-			.then(data => postResponseHandler(data,info,message_object))
-			.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
-	  }
-	return;
-  },
-	url_filter,
-    []
-);
-
-
-// send messages to extension window and content.js in realtime
-chrome.runtime.onConnect.addListener((port) => {
-	if(port.name=="extension_socket"){
-		try{console.log(port); /** console.trace(); /**/ }catch(e){}
-		console.assert(port.name == "extension_socket");
-		message_object = port;
-		message_object.onDisconnect.addListener(function(){
-			console.log("disconnected from extension")
-			net_win = null;
-			message_object = null;
-
+		}
+		// recieve on / off signal
+		let onOffPort = chrome.runtime.connect({name: "on_off_messaging"});
+		onOffPort.onMessage.addListener(onMessage);
+		onOffPort.onDisconnect.addListener(function(){
+			console.log('disconnected from on / off port')
 		})
+	
+	});
+
+
+
+	// open up the extension window when icon is clicked
+	chrome.browserAction.onClicked.addListener(() => {
+		if(net_win){
+			chrome.windows.remove(net_win.id)
+			chrome.windows.create(win_properties, (tab) => {
+				net_win = tab;
+			})
+		}else{
+			chrome.windows.create(win_properties, (tab) => {
+				net_win = tab;
+			})
+		}
+
+	})
+
+	chrome.storage.local.get(['onOff'], function(result){
+        if(!isEmpty(result)){
+            console.log('OnOff data from local storage is ' + result.onOff.onStatus);
+            let onOffObject = result.onOff;
+			onStatus = onOffObject.onStatus;
+
+        } else{
+			onStatus = true;
+        }
+    })
+
+}
+
+
+
+
+init()
+
+const onMessage = data => {
+	if(data.type=="OnOff"){
+		onStatus = data.onStatus
 	}
-	if(port.name=="blocker_socket"){
-		try{console.log(port); /** console.trace(); /**/ }catch(e){}
-		console.assert(port.name == "blocker_socket");
-		block_object = port;
-		block_object.onDisconnect.addListener(function(){
-			console.log("disconnected from page")
-			block_object = null;
-
-		})	
+	if(data.onStatus){
+		console.log("turned on")
+	} else {
+		console.log("turned off")
 	}
-
-});
-
+}
 
 
-// open up the extension window when icon is clicked
-chrome.browserAction.onClicked.addListener(() => {
-	if(net_win){
-		chrome.windows.remove(net_win.id)
-		chrome.windows.create(win_properties, (tab) => {
-			net_win = tab;
-		})
-	}else{
-		chrome.windows.create(win_properties, (tab) => {
-			net_win = tab;
-		})
-	}
 
-})
+
 
 
 // from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
