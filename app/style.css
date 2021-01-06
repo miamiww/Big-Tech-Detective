@@ -294,7 +294,7 @@ button:active {
     margin-top: 5px;
     border-radius: 40px;
     height: 45px;
-    width: 120px;
+    width: 140px;
     align-self: inherit;
     margin-bottom: 5px;
 }
@@ -412,7 +412,7 @@ transform: translateX(50px);
 /* end toggle switches */
 /* on off switch */
 #onOffSwitchBox{
-    width: 120px;
+    width: 140px;
     height: 40px;
 }
 #onOffSlider{
@@ -423,17 +423,19 @@ transform: translateX(50px);
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #1E354C;
     -webkit-transition: .3s;
     transition: .3s;
     font-family: "Basis Mono", monospace;
+    background-color: #E6F7F4;
+    border: 1px solid #1E354C;
 
 }
 
 #onOffSlider::after{
-    color: #E6F7F4;
+    color:#1E354C;
+
     font-family: "Basis Mono", monospace;
-    content: 'OFF';
+    content: 'ON';
     text-align: center;
     /* padding: 30px; */
     left: 50%;
@@ -442,18 +444,18 @@ transform: translateX(50px);
     position: absolute;
     top: 0;
 
-
 }
 
 input:checked + #onOffSlider {
-    background-color: #E6F7F4;
-    border: 1px solid #1E354C;
+
+    background-color: #1E354C;
 
 }
 
 input:checked + #onOffSlider::after {
-    color:#1E354C;
-    content: "ON";
+    color: #E6F7F4;
+
+    content: "OFF";
 
 }
 
