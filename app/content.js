@@ -43,6 +43,7 @@ const initBlocks = () => {
         }
 
     });
+    console.log(blockingData)
 }
 
 // handling messages from background.js

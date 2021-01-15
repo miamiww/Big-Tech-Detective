@@ -1,5 +1,10 @@
 // global  variables
-let blockObject = {};
+let blockObject  = {
+    "Google": true,
+    "Amazon": true,
+    "Facebook": true,
+    "Microsoft": true
+};
 let message_object = null;
 let onOffObject = {};
 let onOffStatus;
@@ -96,6 +101,7 @@ const initBlocks = () => {
 const setBlockingInStorage = (company) => {
 	blockObject[company] = !blockObject[company]
 	chrome.storage.local.set({blocks: blockObject}, function() {
+        console.log("block object set")
 		console.log(blockObject);
 	});
 }
