@@ -81,6 +81,11 @@ const onMessage = data => {
     if(data.type=="error"){
         console.log(data.message)
     }
+    if(data.type=="update"){
+        console.log(data.message)
+        let update_message = "Your version of Big Tech Detective, v"+ data.old_version + ", is outdated. Please visit bigtechdetective.net to download and install the latest version."
+        alert(update_message)
+    }
 }
 
 const buildWebsiteData = (globalData, inData) =>{

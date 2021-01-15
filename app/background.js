@@ -70,6 +70,7 @@ const setOtherInStorage = () => {
 
 // setting up listeners, messaging, on off status
 const init = () => {
+
 	// the main listener - Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
 	chrome.webRequest.onCompleted.addListener( 
 		(info) => {
@@ -128,6 +129,15 @@ const init = () => {
 				net_win = tab;
 			})
 		}
+		let manifestData = chrome.runtime.getManifest();
+		fetch('https://big-tech-detective-api.herokuapp.com/update/')
+		.then(response => response.json())
+		.then(data => {if(data.version!=manifestData.version){
+				if(message_object) message_object.postMessage({'type': 'update', 'message':'time to update', 'new_version': data.version, 'old_version': manifestData.version})
+			} else{
+				console.log("same version")
+			}
+		});
 
 	})
 
