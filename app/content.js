@@ -1,10 +1,10 @@
 // global variables
 var block = false;
 var blockingData = {
-    "Google": false,
-    "Amazon": false,
-    "Facebook": false,
-    "Microsoft": false
+    "Google": true,
+    "Amazon": true,
+    "Facebook": true,
+    "Microsoft": true
 };
 var companyData = {};
 var copyData = {};

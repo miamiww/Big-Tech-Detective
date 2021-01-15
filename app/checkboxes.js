@@ -40,10 +40,10 @@ const initBlocks = () => {
             }
         } else{
             blockObject = {
-                "Google": false,
-                "Amazon": false,
-                "Facebook": false,
-                "Microsoft": false
+                "Google": true,
+                "Amazon": true,
+                "Facebook": true,
+                "Microsoft": true
             };
             chrome.storage.local.set({blocks: blockObject}, function() {
                 console.log(blockObject);
