@@ -1,11 +1,6 @@
 // global variables
 var block = false;
-var blockingData = {
-    "Google": true,
-    "Amazon": true,
-    "Facebook": true,
-    "Microsoft": true
-};
+var blockingData = {};
 var companyData = {};
 var copyData = {};
 var companyList = [];
@@ -34,15 +29,17 @@ const initBlocks = () => {
     // port = chrome.runtime.connect({name: "blocker_socket"});
     // port.onMessage.addListener(blockTime);
 
-    chrome.runtime.onMessage.addListener(blockTime);
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
             blockingData = result.blocks;
+            console.log(blockingData)
         } else{
-            console.log('No user input on blocking, allow everything')
+            console.log('No locking instructions, allowing everything')
         }
 
     });
+    chrome.runtime.onMessage.addListener(blockTime);
+
     console.log(blockingData)
 }
 
