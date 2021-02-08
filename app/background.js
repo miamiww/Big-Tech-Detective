@@ -17,9 +17,13 @@ let websiteData = {};
 let onStatus;
 
 // settings for pop-out window
-var net_url = chrome.extension.getURL('main.html');
-var win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 686, 'focused': true }
-var net_win;
+let net_url = chrome.extension.getURL('main.html');
+let win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 686, 'focused': true }
+let net_win;
+
+// variable to avoid refresh page glitch
+let window_open = false;
+let window_id;
 
 // functions for setting local storage
 
@@ -75,18 +79,26 @@ const init = () => {
 	chrome.webRequest.onCompleted.addListener( 
 		(info) => {
 
-		if(onStatus){
-			//	 preventing infinite loops
-			if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://")){
-				console.log(info)
-				postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
-				.then(data => postResponseHandler(data,info,message_object))
-				.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
+			if(onStatus){
+				//	 preventing infinite loops
+				if(!ignore_ips.includes(info.ip) && info.initiator == undefined){
+					console.log(info)
+					postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
+					.then(data => postResponseHandler(data,info,message_object))
+					.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
+
+				}else {
+					if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://")){
+						postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
+						.then(data => postResponseHandler(data,info,message_object))
+						.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
+					}
+				}
+
+			} else{
+				console.log('extension is off')
 			}
-		} else{
-			console.log('extension is off')
-		}
-		return;
+			return;
 	},
 		url_filter,
 		[]
@@ -97,12 +109,18 @@ const init = () => {
 		if(port.name=="extension_socket"){
 			try{console.log(port); /** console.trace(); /**/ }catch(e){}
 			console.assert(port.name == "extension_socket");
+			console.log("printing the port")
+			console.log(port);
 			message_object = port;
+			window_open = true;
+			console.log("connected to extension")
 			message_object.onDisconnect.addListener(function(){
 				console.log("disconnected from extension")
+				window_id = net_win.id;
 				net_win = null;
 				message_object = null;
-	
+				window_open = false;
+
 			})
 
 		}
@@ -120,15 +138,25 @@ const init = () => {
 	// open up the extension window when icon is clicked
 	chrome.browserAction.onClicked.addListener(() => {
 		if(net_win){
-			chrome.windows.remove(net_win.id)
 			chrome.windows.create(win_properties, (tab) => {
 				net_win = tab;
 			})
 		}else{
-			chrome.windows.create(win_properties, (tab) => {
-				net_win = tab;
-			})
+			// this is to handle a rare bug in which the extension window is refreshed
+			if(window_open){
+				chrome.windows.remove(window_id)
+				chrome.windows.create(win_properties, (tab) => {
+					net_win = tab;
+				})
+			} else{
+				chrome.windows.create(win_properties, (tab) => {
+					net_win = tab;
+				})
+			}
+
 		}
+
+
 		let manifestData = chrome.runtime.getManifest();
 		fetch('https://big-tech-detective-api.herokuapp.com/update/')
 		.then(response => response.json())
@@ -143,7 +171,6 @@ const init = () => {
 
 	chrome.storage.local.get(['onOff'], function(result){
         if(!isEmpty(result)){
-            console.log('OnOff data from local storage is ' + result.onOff.onStatus);
             let onOffObject = result.onOff;
 			onStatus = onOffObject.onStatus;
 

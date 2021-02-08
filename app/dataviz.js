@@ -16,6 +16,7 @@ const init = () => {
     document.getElementById("clearbutton").addEventListener("click", clearHistory);
     document.getElementById("switchview").addEventListener("click", switchView);
 
+    console.log("initializing the connection to background page")
     port = chrome.runtime.connect({name: "extension_socket"});
     port.onMessage.addListener(onMessage);
     chrome.storage.local.get(['key'], function(result) {
@@ -44,6 +45,7 @@ const init = () => {
 // processing of packet info and call of chart build
 const onMessage = data => {
     if(data.type=="packetIn"){
+        console.log(data)
         companyData[data.company]=(companyData[data.company]+1) || 1;  // update the company global variable
         if(data.initiator == undefined){
             console.log("true undefined")
