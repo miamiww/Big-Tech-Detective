@@ -2,10 +2,9 @@
 // it both adds to local storage so that when the extension is opened it will query storage once, and sends it as a message to the extension
 // this is to avoid clogging up local storage communication, which can be overly slow in delivering real-time updates to the extension
 
+// global variables
 const url_filter = {urls: ["<all_urls>"], types:[]}
-// make sure to ignore the packets being sent to the server or else it will cause an infinite loop of requests
 const ignore_ips = [undefined]
-const early_flagged_domains = []
 
 // objects for messaging to the chart
 let message_object = null;
@@ -16,9 +15,9 @@ let websiteData = {};
 let onStatus;
 
 // settings for pop-out window
-let net_url = chrome.extension.getURL('main.html');
-let win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 686, 'focused': true }
-let net_win;
+let win_url = chrome.extension.getURL('main.html');
+let win_properties = {'url': win_url , 'type' : 'popup', 'width' : 800 , 'height' : 686, 'focused': true }
+let the_window;
 
 // variables to avoid refresh page glitch
 let window_open = false;
@@ -52,7 +51,6 @@ const setCompanyInStorage = (data, info) => {
 		// console.log(companyData);
 	  });
 
-	console.log(info)
 	if(info.frameId===0){
 		assign(websiteData, [info.initiator, data.ip.company], websiteData[info.initiator[data.ip.company]] + 1 || 1)
 		chrome.storage.local.set({websites: websiteData}, function() {
@@ -108,13 +106,16 @@ const init = () => {
 	// send messages to extension window and content.js in realtime
 	chrome.runtime.onConnect.addListener((port) => {
 		if(port.name=="extension_socket"){
+
 			try{console.log(port); /** console.trace(); /**/ }catch(e){}
 			console.assert(port.name == "extension_socket");
 			message_object = port;
+			specialMessageHandling(message_object);
+
 			window_open = true;
 			message_object.onDisconnect.addListener(function(){
-				if(net_win){window_id = net_win.id}
-				net_win = null;
+				if(the_window){window_id = the_window.id}
+				the_window = null;
 				message_object = null;
 				window_open = false;
 
@@ -134,10 +135,8 @@ const init = () => {
 
 	// making sure cleared history is consistent
 	chrome.runtime.onMessage.addListener(
-		function(request, sender, sendResponse) {
-		  console.log(sender.tab ?
-					  "from a content script:" + sender.tab.url :
-					  "from the extension");
+		function(request) {
+
 		  if (request.message == "clearing history"){
 			companyData = {};
 			websiteData = {};
@@ -149,36 +148,27 @@ const init = () => {
 
 	// open up the extension window when icon is clicked
 	chrome.browserAction.onClicked.addListener(() => {
-		if(net_win){
-			chrome.windows.remove(net_win.id)
+		if(the_window){
+			chrome.windows.remove(the_window.id)
 			chrome.windows.create(win_properties, (tab) => {
-				net_win = tab;
+				the_window = tab;
 			})
 		}else{
 			// this is to handle a rare bug in which the extension window is refreshed
 			if(window_open){
 				chrome.windows.remove(window_id)
 				chrome.windows.create(win_properties, (tab) => {
-					net_win = tab;
+					the_window = tab;
 				})
 			} else{
 				chrome.windows.create(win_properties, (tab) => {
-					net_win = tab;
+					the_window = tab;
 				})
 			}
 
 		}
 
 
-		let manifestData = chrome.runtime.getManifest();
-		fetch('https://big-tech-detective-api.herokuapp.com/update/')
-		.then(response => response.json())
-		.then(data => {if(data.version!=manifestData.version){
-				if(message_object) message_object.postMessage({'type': 'update', 'message':'time to update', 'new_version': data.version, 'old_version': manifestData.version})
-			} else{
-				console.log("same version")
-			}
-		});
 
 	})
 
@@ -191,6 +181,38 @@ const init = () => {
 			onStatus = true;
         }
     })
+
+}
+
+const specialMessageHandling = (message_object) => {
+
+	// for update information
+	let manifestData = chrome.runtime.getManifest();
+	fetch('https://big-tech-detective-api.herokuapp.com/update/')
+	.then(response => response.json())
+	.then(data => {if(data.version!=manifestData.version){
+			if(message_object) message_object.postMessage({'type': 'update', 'message':'time to update', 'new_version': data.version, 'old_version': manifestData.version})
+		}
+	});
+
+	// for when the api goes down or gets taken offline intentionally
+	fetch('https://big-tech-detective-api.herokuapp.com/')
+	.then(response => response.json())
+	.then(data => {if(data.status!="OK"){
+			if(message_object) message_object.postMessage({'type': 'majorissue', 'message':data.message, 'contents':data.code})
+		}
+	})
+	.catch(err => {if(message_object) message_object.postMessage({'type': 'apierror', 'message':'The API is currently down. Please email detective@bigtechdetective.net to report this and include the following error code in your email. Error code: ' + err, 'contents': err})});
+	
+	// for special announcements
+	fetch('https://big-tech-detective-api.herokuapp.com/message/')
+	.then(response => response.json())
+	.then(data => {if(data.status){
+			console.log(data.message)
+			if(message_object) message_object.postMessage({'type': 'announcement', 'message':data.message})
+		} 
+	})
+	.catch(err => {if(message_object) message_object.postMessage({'type': 'apierror', 'message':'The API is currently down. Please email detective@bigtechdetective.net to report this and include the following error code in your email. Error code: ' + err, 'contents': err})});
 
 }
 
@@ -259,14 +281,6 @@ const postResponseHandler = (data,inInfo,message_object) => {
 				})
 			})
 
-			// chrome.tabs.query({}, function(tabs) {
-
-			// 	chrome.tabs.sendMessage(
-			// 		inInfo.tabId,
-			// 		{'type': 'lockPage', 'company':data.ip.company, 'url':inInfo.url, 'ip': inInfo.ip}
-
-			// 	)
-			// });
 		}
 
 

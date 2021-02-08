@@ -505,7 +505,7 @@ transform: translateX(50px);
     /* padding: 30px; */
     left: 50%;
     font-size: small;
-    transform: translate(-250%, 70%);
+    transform: translate(-275%, 70%);
     position: absolute;
     top: 0;
     /* -webkit-transition: .4s;
