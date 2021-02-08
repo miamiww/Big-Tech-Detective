@@ -279,6 +279,12 @@ button:active {
     color: #1E354C;
 }
 
+
+button:focus {
+    outline: 0;
+}
+
+
 #buttons-container{
     display:flex;
     flex-direction: row;
@@ -371,17 +377,60 @@ transition: .4s;
 }
 
 .slider:before {
-position: absolute;
-content: "";
-height: 20px;
-width: 20px;
-top: 5px;
-left: 5px;
-bottom: 5px;
-background-color: #C3D8D3;
--webkit-transition: .4s;
-transition: .4s;
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    top: 5px;
+    left: 5px;
+    bottom: 5px;
+    background-color: #C3D8D3;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
+
+.slider::after{
+    color:#C3D8D3;
+
+    font-family: "Basis Mono", monospace;
+    /* content: 'locked'; */
+    content:'';
+    text-align: center;
+    /* padding: 30px; */
+    left: 50%;
+    font-size: x-small;
+    transform: translate(600%, 50%);
+    position: absolute;
+    top: 0;
+    -webkit-transition: .4s;
+    transition: .4s;
+    opacity:0;
+
+}
+
+input:checked + .slider::after{
+    color:#1E354C;
+
+    font-family: "Basis Mono", monospace;
+    content: '';
+    text-align: center;
+    /* padding: 30px; */
+    left: 50%;
+    font-size: x-small;
+    transform: translate(600%, 50%);
+    position: absolute;
+    top: 0;
+    -webkit-transition: .4s;
+    transition: .4s;
+    height: 13px;
+    width: 10px;
+    background-image: url('/assets/icons/lock_icon.png') ;
+    background-size: 10px;
+    opacity:1;
+
+
+}
+
 
 input:checked + .slider {
 background-color: red;
@@ -390,9 +439,9 @@ input:checked + .slider:before {
     background-color: #1E354C;
 }
 
-input:focus + .slider {
-box-shadow: 0 0 1px #2196F3;
-}
+
+
+
 
 
 input:checked + .slider:before {
@@ -426,23 +475,41 @@ transform: translateX(50px);
     -webkit-transition: .3s;
     transition: .3s;
     font-family: "Basis Mono", monospace;
-    background-color: #E6F7F4;
+    background-color: #1E354C;
     border: 1px solid #1E354C;
 
 }
+
+#onOffSlider:before {
+    position: absolute;
+    content: "";
+    height: 38px;
+    width: 70px;
+    top: 0px;
+    left: 0px;
+    /* bottom: 10px; */
+    background-color: #E6F7F4;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px 0px 0px 34px;
+
+}
+    
 
 #onOffSlider::after{
     color:#1E354C;
 
     font-family: "Basis Mono", monospace;
-    content: 'ON';
+    content: 'off';
     text-align: center;
     /* padding: 30px; */
     left: 50%;
-    font-size: xx-large;
-    transform: translate(-50%, 0px);
+    font-size: small;
+    transform: translate(-250%, 70%);
     position: absolute;
     top: 0;
+    /* -webkit-transition: .4s;
+    transition: .4s; */
 
 }
 
@@ -453,10 +520,30 @@ input:checked + #onOffSlider {
 }
 
 input:checked + #onOffSlider::after {
-    color: #E6F7F4;
+    /* color: #E6F7F4; */
 
-    content: "OFF";
+    content: "on";
+    transform: translate(200%, 70%);
+    /* -webkit-transition: .4s;
+    transition: .4s; */
+}
 
+input:checked + #onOffSlider:before {
+    -webkit-transform: translateX(68px);
+    -ms-transform: translateX(68px);
+    transform: translateX(68px);
+    background-color: #E6F7F4;
+    border-radius: 0px 34px 34px 0px;
+
+
+}
+
+#onOffSlider.round {
+    border-radius: 34px;
+  }
+  
+#onOffSlider.round:before {
+    border-radius: 34px 0px 0px 34px;
 }
 
 /* end on off switch */

@@ -5,7 +5,7 @@ var container = d3.select("#pie");
 var pieChartStatus = false;
 var websiteViewer = true;
 let webPercentData;
-let descriptionTextAllPackets = "% of current browser session traffic that has gone to each company"
+let descriptionTextAllPackets = "% of total current browser session traffic that has gone to each company"
 let descriptionTextWebsites = "% of websites visited during current browser session traffic that had connections to each company"
 let buttonTextAllPackets = "switch view"
 let buttonTextWebsites = "switch view"
