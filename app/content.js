@@ -44,10 +44,10 @@ const initBlocks = () => {
 }
 
 // handling messages from background.js
-const blockTime = (data,sender,sendResponse) => {
+const blockTime = (data) => {
     if(data.type=="lockPage"){
         buildCopyData(data,copyData);
-        // window.location.replace(block_url);
+        console.log(data)
         if(!block){
             _firstBlock("Google", data);
             _firstBlock("Amazon", data);
@@ -61,9 +61,11 @@ const blockTime = (data,sender,sendResponse) => {
             _restBlock("Facebook",data);
             _restBlock("Microsoft",data);
         }
+        if(data.url=="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"){
+            console.log("idk")
         }
+    }
 
-    sendResponse({message: "received"});
 }
 
 const _firstBlock = (company, data) => {

@@ -10,7 +10,7 @@ let descriptionTextAllPackets = "% of total current browser session traffic that
 let descriptionTextWebsites = "% of websites visited during current browser session traffic that had connections to each company"
 let buttonTextAllPackets = "switch chart"
 let buttonTextWebsites = "switch chart"
-
+let initiatorBool = true;
 
 // start the communication with background.js and start listeners and get local storage
 const init = () => {
@@ -33,6 +33,9 @@ const init = () => {
         updateSwitchButtonText(buttonTextAllPackets);
 
     });
+    chrome.storage.local.get(['sources'], function(result){
+        initiatorData = result.sources;
+    })
 
     //copy/paste
     document.getElementById("copy-data-button").addEventListener('click', (event) => {
@@ -55,7 +58,7 @@ const onMessage = data => {
             console.log(data)
         }
         if(data.frame ===0 && data.initiator !== undefined){
-            initiatorData = buildInitiatorData(data,initiatorData);
+            if(initiatorBool) initiatorData = buildInitiatorData(data,initiatorData);
             if(!websiteData.hasOwnProperty(data.initiator)){
                 let builtwebsitedataPromise = buildWebsiteData(websiteData,data)
                 builtwebsitedataPromise
@@ -147,6 +150,11 @@ const clearHistory = () => {
             console.log(websiteData);
         });
 
+        initiatorData = {};
+        chrome.storage.local.set({websites: websiteData}, function() {
+            console.log(websiteData);
+        });
+
         chrome.runtime.sendMessage({message: "clearing history"});
 
         dataSwitcher(pieChartStatus);
@@ -187,7 +195,12 @@ const copyTextToClipboard = (text) => {
 }
 const buildCopyData = (websiteData, companyData, initiatorData) => {
     let websiteDataTrue = convertTrue(websiteData)
-    let copyData = {totalPacketCounts: companyData, websites: websiteDataTrue, sources: initiatorData};
+    let copyData;
+    if(initiatorBool){
+        copyData = {totalPacketCounts: companyData, websites: websiteDataTrue, sources: initiatorData};
+    } else {
+        copyData = {totalPacketCounts: companyData, websites: websiteDataTrue};
+    }
     return copyData
 }
 const buildInitiatorData = (inData,initiatorData) => {
@@ -195,11 +208,17 @@ const buildInitiatorData = (inData,initiatorData) => {
         let size = Object.keys(initiatorData[inData.initiator]).length;
         let name = "Packet " + size;
         initiatorData[inData.initiator][name] = {company: inData.company, url: inData.url, ip: inData.ip};
+        chrome.storage.local.set({key: initiatorData}, function() {
+            console.log(initiatorData);
+        });
         return initiatorData
     } else{
         initiatorData[inData.initiator] = {
             "Packet 0": {company: inData.company, url: inData.url, ip: inData.ip}
         }
+        chrome.storage.local.set({key: initiatorData}, function() {
+            console.log(initiatorData);
+        });
         return initiatorData
 
     }

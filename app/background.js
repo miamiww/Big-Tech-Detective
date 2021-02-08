@@ -132,14 +132,13 @@ const init = () => {
 	
 	});
 
-	
+	// making sure cleared history is consistent
 	chrome.runtime.onMessage.addListener(
 		function(request, sender, sendResponse) {
 		  console.log(sender.tab ?
 					  "from a content script:" + sender.tab.url :
 					  "from the extension");
 		  if (request.message == "clearing history"){
-			console.log("clearing history")
 			companyData = {};
 			websiteData = {};
 		  }
@@ -235,54 +234,53 @@ async function postData(url = '', data = {}) {
 	return response.json(); // parses JSON response into native JavaScript objects
 }
   
-const postResponseHandler = (data,info,message_object) => {
+const postResponseHandler = (data,inInfo,message_object) => {
 	if(data.hasOwnProperty("ip")){
-		if(info.url="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"){
-			console.log(data);
-			console.log(info);
-			console.log("found it");
-			console.log(info.tabId);
 
-		}
 		//this is where we send info to the extension front-end
-		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
+		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':inInfo.url, 'ip': inInfo.ip, 'initiator': inInfo.initiator, 'frame': inInfo.frameId});
 
-		setCompanyInStorage(data, info);
+		setCompanyInStorage(data, inInfo);
 		//this is where we send info to the content script
-		if(info.tabId>0){
-			if(info.url="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"){
+		if(inInfo.tabId>0){
 
-				console.log("making into if statement");
-				console.log(info.tabId);
+			chrome.tabs.update(inInfo.tabId, {
+				
+			}, function(tab){
+				chrome.tabs.onUpdated.addListener(function listener(tabId, info){
+					if(info.status ==='complete' && tab.id===tabId){
+						chrome.tabs.onUpdated.removeListener(listener);
+						chrome.tabs.sendMessage(
+							inInfo.tabId,
+							{'type': 'lockPage', 'company':data.ip.company, 'url':inInfo.url, 'ip': inInfo.ip}
+		
+						)
+					}
+				})
+			})
 
-			}
-			chrome.tabs.query({status: "complete"}, function(tabs) {
-				if(info.url="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"){
+			// chrome.tabs.query({}, function(tabs) {
 
-					console.log("making into tab query");
-					console.log(info.tabId);
+			// 	chrome.tabs.sendMessage(
+			// 		inInfo.tabId,
+			// 		{'type': 'lockPage', 'company':data.ip.company, 'url':inInfo.url, 'ip': inInfo.ip}
 
-				}
-				chrome.tabs.sendMessage(
-					info.tabId,
-					{'type': 'lockPage', 'company':data.ip.company, 'url':info.url, 'ip': info.ip},
-
-				)
-			  });
+			// 	)
+			// });
 		}
 
 
 		
 	}else{
 		// console.log('IP not in database')
-		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
+		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':inInfo.url, 'ip': inInfo.ip, 'initiator': inInfo.initiator, 'frame': inInfo.frameId});
 		setOtherInStorage(info);
 
-		if(info.tabId>0){
+		if(inInfo.tabId>0){
 			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 				chrome.tabs.sendMessage(
-					info.tabId,
-					{'type': 'lockPage', 'company':"Other", 'url':info.url, 'ip': info.ip},
+					inInfo.tabId,
+					{'type': 'lockPage', 'company':"Other", 'url':inInfo.url, 'ip': inInfo.ip},
 
 				)
 			  });
