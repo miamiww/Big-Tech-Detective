@@ -7,8 +7,8 @@ var websiteViewer = true;
 let webPercentData;
 let descriptionTextAllPackets = "% of total current browser session traffic that has gone to each company"
 let descriptionTextWebsites = "% of websites visited during current browser session traffic that had connections to each company"
-let buttonTextAllPackets = "switch view"
-let buttonTextWebsites = "switch view"
+let buttonTextAllPackets = "switch chart"
+let buttonTextWebsites = "switch chart"
 
 
 // start the communication with background.js and start listeners and get local storage
@@ -16,7 +16,6 @@ const init = () => {
     document.getElementById("clearbutton").addEventListener("click", clearHistory);
     document.getElementById("switchview").addEventListener("click", switchView);
 
-    console.log("initializing the connection to background page")
     port = chrome.runtime.connect({name: "extension_socket"});
     port.onMessage.addListener(onMessage);
     chrome.storage.local.get(['key'], function(result) {

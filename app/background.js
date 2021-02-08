@@ -9,7 +9,6 @@ const early_flagged_domains = []
 
 // objects for messaging to the chart
 let message_object = null;
-let block_object = null;
 let chart_object;
 // object for local storage
 let companyData = {};
@@ -21,12 +20,12 @@ let net_url = chrome.extension.getURL('main.html');
 let win_properties = {'url': net_url , 'type' : 'popup', 'width' : 800 , 'height' : 686, 'focused': true }
 let net_win;
 
-// variable to avoid refresh page glitch
+// variables to avoid refresh page glitch
 let window_open = false;
 let window_id;
 
 // functions for setting local storage
-
+// building the object
 const assign = (obj, keyPath, value) => {
 	lastKeyIndex = keyPath.length-1;
 	for (var i = 0; i < lastKeyIndex; ++ i) {
@@ -55,7 +54,6 @@ const setCompanyInStorage = (data, info) => {
 
 	console.log(info)
 	if(info.frameId===0){
-		console.log("website data")
 		assign(websiteData, [info.initiator, data.ip.company], websiteData[info.initiator[data.ip.company]] + 1 || 1)
 		chrome.storage.local.set({websites: websiteData}, function() {
 			console.log(websiteData);
@@ -82,7 +80,6 @@ const init = () => {
 			if(onStatus){
 				//	 preventing infinite loops
 				if(!ignore_ips.includes(info.ip) && info.initiator == undefined){
-					console.log(info)
 					postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
 					.then(data => postResponseHandler(data,info,message_object))
 					.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
@@ -95,8 +92,6 @@ const init = () => {
 					}
 				}
 
-			} else{
-				console.log('extension is off')
 			}
 			return;
 	},
@@ -109,14 +104,10 @@ const init = () => {
 		if(port.name=="extension_socket"){
 			try{console.log(port); /** console.trace(); /**/ }catch(e){}
 			console.assert(port.name == "extension_socket");
-			console.log("printing the port")
-			console.log(port);
 			message_object = port;
 			window_open = true;
-			console.log("connected to extension")
 			message_object.onDisconnect.addListener(function(){
-				console.log("disconnected from extension")
-				window_id = net_win.id;
+				if(net_win){window_id = net_win.id}
 				net_win = null;
 				message_object = null;
 				window_open = false;
@@ -128,7 +119,7 @@ const init = () => {
 		let onOffPort = chrome.runtime.connect({name: "on_off_messaging"});
 		onOffPort.onMessage.addListener(onMessage);
 		onOffPort.onDisconnect.addListener(function(){
-			console.log('disconnected from on / off port')
+			// console.log('disconnected from on / off port')
 		})
 	
 	});
@@ -138,6 +129,7 @@ const init = () => {
 	// open up the extension window when icon is clicked
 	chrome.browserAction.onClicked.addListener(() => {
 		if(net_win){
+			chrome.windows.remove(net_win.id)
 			chrome.windows.create(win_properties, (tab) => {
 				net_win = tab;
 			})
@@ -227,20 +219,18 @@ const postResponseHandler = (data,info,message_object) => {
 		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
 
 		setCompanyInStorage(data, info);
+		//this is where we send info to the content script
 		if(info.tabId>0){
 			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 				chrome.tabs.sendMessage(
 					info.tabId,
 					{'type': 'blockPage', 'company':data.ip.company, 'url':info.url, 'ip': info.ip},
-					function(response){
-						console.log(response)
-					}
+
 				)
 			  });
 		}
 
 
-		// if(block_object) block_object.postMessage({'type': 'blockPage', 'company':data.ip.company, 'url':info.url});
 		
 	}else{
 		// console.log('IP not in database')
@@ -252,9 +242,7 @@ const postResponseHandler = (data,info,message_object) => {
 				chrome.tabs.sendMessage(
 					info.tabId,
 					{'type': 'blockPage', 'company':"Other", 'url':info.url, 'ip': info.ip},
-					function(response){
-						console.log(response)
-					}
+
 				)
 			  });
 		}

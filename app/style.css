@@ -489,8 +489,8 @@ transform: translateX(50px);
     left: 0px;
     /* bottom: 10px; */
     background-color: #1E354C;
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: .3s;
+    transition: .3s;
     border-radius: 34px 0px 0px 34px;
 
 }
