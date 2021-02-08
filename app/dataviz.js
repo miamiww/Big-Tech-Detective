@@ -1,6 +1,7 @@
 // global variables
 var companyData = {};
 var websiteData = {};
+var initiatorData = {};
 var container = d3.select("#pie"); 
 var pieChartStatus = false;
 var websiteViewer = true;
@@ -19,11 +20,11 @@ const init = () => {
     port = chrome.runtime.connect({name: "extension_socket"});
     port.onMessage.addListener(onMessage);
     chrome.storage.local.get(['key'], function(result) {
-        console.log('Company data from local storage is ' + result.key);
+        console.log('Company data from local storage is ' + JSON.stringify(result.key));
         companyData = result.key;
     });
     chrome.storage.local.get(['websites'], function(result) {
-        console.log('Website data from local storage is ' + result.websites)
+        console.log('Website data from local storage is ' + JSON.stringify(result.websites))
         websiteData = result.websites;
         webPercentData = reduceWebsites(websiteData)
 
@@ -36,7 +37,7 @@ const init = () => {
     //copy/paste
     document.getElementById("copy-data-button").addEventListener('click', (event) => {
         
-        copyTextToClipboard(JSON.stringify(buildCopyData(websiteData,companyData)));
+        copyTextToClipboard(JSON.stringify(buildCopyData(websiteData,companyData,initiatorData)));
     });
 
 }
@@ -44,7 +45,6 @@ const init = () => {
 // processing of packet info and call of chart build
 const onMessage = data => {
     if(data.type=="packetIn"){
-        console.log(data)
         companyData[data.company]=(companyData[data.company]+1) || 1;  // update the company global variable
         if(data.initiator == undefined){
             console.log("true undefined")
@@ -54,7 +54,8 @@ const onMessage = data => {
             console.log("string undefined")
             console.log(data)
         }
-        if(data.Company != "Other" && data.frame ===0 && data.initiator !== undefined){
+        if(data.frame ===0 && data.initiator !== undefined){
+            initiatorData = buildInitiatorData(data,initiatorData);
             if(!websiteData.hasOwnProperty(data.initiator)){
                 let builtwebsitedataPromise = buildWebsiteData(websiteData,data)
                 builtwebsitedataPromise
@@ -68,15 +69,9 @@ const onMessage = data => {
                     globalData => webPercentData = reduceWebsites(globalData)
                 )
             }
-            // console.log("building website data")
-            // assign(websiteData, [data.initiator, data.company],  1); // update the website global variable websiteData[data.initiator][data.ip.company] ||
-            // console.log("New Data")
-            // console.log(websiteData)
+
         }
 
-        // if(oldWebsiteData!=websiteData){
-
-        // }
         dataSwitcher(pieChartStatus)
     }
     if(data.type=="error"){
@@ -152,6 +147,8 @@ const clearHistory = () => {
             console.log(websiteData);
         });
 
+        chrome.runtime.sendMessage({message: "clearing history"});
+
         dataSwitcher(pieChartStatus);
     }
 
@@ -188,10 +185,25 @@ const copyTextToClipboard = (text) => {
       console.error('Async: Could not copy text: ', err);
     });
 }
-const buildCopyData = (websiteData, companyData) => {
+const buildCopyData = (websiteData, companyData, initiatorData) => {
     let websiteDataTrue = convertTrue(websiteData)
-    let copyData = {totalPacketCounts: companyData, websites: websiteDataTrue};
+    let copyData = {totalPacketCounts: companyData, websites: websiteDataTrue, sources: initiatorData};
     return copyData
+}
+const buildInitiatorData = (inData,initiatorData) => {
+    if(initiatorData[inData.initiator]){
+        let size = Object.keys(initiatorData[inData.initiator]).length;
+        let name = "Packet " + size;
+        initiatorData[inData.initiator][name] = {company: inData.company, url: inData.url, ip: inData.ip};
+        return initiatorData
+    } else{
+        initiatorData[inData.initiator] = {
+            "Packet 0": {company: inData.company, url: inData.url, ip: inData.ip}
+        }
+        return initiatorData
+
+    }
+
 }
 
 // the data visualization part

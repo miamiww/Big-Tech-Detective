@@ -49,24 +49,30 @@ const isEmpty = (obj) => {
 const setCompanyInStorage = (data, info) => {
 	companyData[data.ip.company]=(companyData[data.ip.company]+1) || 1;
 	chrome.storage.local.set({key: companyData}, function() {
-		console.log(companyData);
+		// console.log(companyData);
 	  });
 
 	console.log(info)
 	if(info.frameId===0){
 		assign(websiteData, [info.initiator, data.ip.company], websiteData[info.initiator[data.ip.company]] + 1 || 1)
 		chrome.storage.local.set({websites: websiteData}, function() {
-			console.log(websiteData);
+			// console.log(websiteData);
 		  });	
 	}
 
 }
 
-const setOtherInStorage = () => {
+const setOtherInStorage = (info) => {
 	companyData["Other"]=(companyData["Other"]+1) || 1;
 	chrome.storage.local.set({key: companyData}, function() {
-		console.log(companyData);
-	  });
+		// console.log(companyData);
+	});
+	if(info.frameId===0){
+		assign(websiteData, [info.initiator, "Other"], websiteData[info.initiator["Other"]] + 1 || 1)
+		chrome.storage.local.set({websites: websiteData}, function() {
+			// console.log(websiteData);
+		  });	
+	}
 }
 
 
@@ -121,8 +127,24 @@ const init = () => {
 		onOffPort.onDisconnect.addListener(function(){
 			// console.log('disconnected from on / off port')
 		})
+
+
 	
 	});
+
+	
+	chrome.runtime.onMessage.addListener(
+		function(request, sender, sendResponse) {
+		  console.log(sender.tab ?
+					  "from a content script:" + sender.tab.url :
+					  "from the extension");
+		  if (request.message == "clearing history"){
+			console.log("clearing history")
+			companyData = {};
+			websiteData = {};
+		  }
+		}
+	);
 
 
 
@@ -215,16 +237,35 @@ async function postData(url = '', data = {}) {
   
 const postResponseHandler = (data,info,message_object) => {
 	if(data.hasOwnProperty("ip")){
+		if(info.url="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"){
+			console.log(data);
+			console.log(info);
+			console.log("found it");
+			console.log(info.tabId);
+
+		}
 		//this is where we send info to the extension front-end
 		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
 
 		setCompanyInStorage(data, info);
 		//this is where we send info to the content script
 		if(info.tabId>0){
-			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+			if(info.url="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"){
+
+				console.log("making into if statement");
+				console.log(info.tabId);
+
+			}
+			chrome.tabs.query({status: "complete"}, function(tabs) {
+				if(info.url="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"){
+
+					console.log("making into tab query");
+					console.log(info.tabId);
+
+				}
 				chrome.tabs.sendMessage(
 					info.tabId,
-					{'type': 'blockPage', 'company':data.ip.company, 'url':info.url, 'ip': info.ip},
+					{'type': 'lockPage', 'company':data.ip.company, 'url':info.url, 'ip': info.ip},
 
 				)
 			  });
@@ -235,13 +276,13 @@ const postResponseHandler = (data,info,message_object) => {
 	}else{
 		// console.log('IP not in database')
 		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':info.url, 'ip': info.ip, 'initiator': info.initiator, 'frame': info.frameId});
-		setOtherInStorage();
+		setOtherInStorage(info);
 
 		if(info.tabId>0){
 			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 				chrome.tabs.sendMessage(
 					info.tabId,
-					{'type': 'blockPage', 'company':"Other", 'url':info.url, 'ip': info.ip},
+					{'type': 'lockPage', 'company':"Other", 'url':info.url, 'ip': info.ip},
 
 				)
 			  });

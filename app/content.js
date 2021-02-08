@@ -45,8 +45,7 @@ const initBlocks = () => {
 
 // handling messages from background.js
 const blockTime = (data,sender,sendResponse) => {
-
-    if(data.type=="blockPage"){
+    if(data.type=="lockPage"){
         buildCopyData(data,copyData);
         // window.location.replace(block_url);
         if(!block){
@@ -64,11 +63,13 @@ const blockTime = (data,sender,sendResponse) => {
         }
         }
 
-      sendResponse({message: "received"});
+    sendResponse({message: "received"});
 }
 
 const _firstBlock = (company, data) => {
     if(data.company == company){
+        console.log("locked")
+        console.log(data)
         if(blockingData[company]){
             buildBlockPage(data);
         }
@@ -327,20 +328,6 @@ function update(data) {
 
 
 // end chart stuff
-
-
-
-
-
   
-//   var copyBobBtn = document.querySelector('.js-copy-bob-btn'),
-//     copyJaneBtn = document.querySelector('.js-copy-jane-btn');
-  
-//   copyBobBtn.addEventListener('click', function(event) {
-//     copyTextToClipboard('Bob');
-//   });
-  
-  
-
 
 initBlocks();
