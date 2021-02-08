@@ -5,6 +5,7 @@
 // global variables
 const url_filter = {urls: ["<all_urls>"], types:[]}
 const ignore_ips = [undefined]
+const api_root = "https://bigtechdetective.club/";
 
 // objects for messaging to the chart
 let message_object = null;
@@ -84,13 +85,13 @@ const init = () => {
 			if(onStatus){
 				//	 preventing infinite loops
 				if(!ignore_ips.includes(info.ip) && info.initiator == undefined){
-					postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
+					postData(api_root+'ip/', { ip: info.ip })
 					.then(data => postResponseHandler(data,info,message_object))
 					.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
 
 				}else {
 					if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://")){
-						postData('https://big-tech-detective-api.herokuapp.com/ip/', { ip: info.ip })
+						postData(api_root+'ip/', { ip: info.ip })
 						.then(data => postResponseHandler(data,info,message_object))
 						.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
 					}
@@ -188,7 +189,7 @@ const specialMessageHandling = (message_object) => {
 
 	// for update information
 	let manifestData = chrome.runtime.getManifest();
-	fetch('https://big-tech-detective-api.herokuapp.com/update/')
+	fetch(api_root+'update/')
 	.then(response => response.json())
 	.then(data => {if(data.version!=manifestData.version){
 			if(message_object) message_object.postMessage({'type': 'update', 'message':'time to update', 'new_version': data.version, 'old_version': manifestData.version})
@@ -196,7 +197,7 @@ const specialMessageHandling = (message_object) => {
 	});
 
 	// for when the api goes down or gets taken offline intentionally
-	fetch('https://big-tech-detective-api.herokuapp.com/')
+	fetch(api_root)
 	.then(response => response.json())
 	.then(data => {if(data.status!="OK"){
 			if(message_object) message_object.postMessage({'type': 'majorissue', 'message':data.message, 'contents':data.code})
@@ -205,7 +206,7 @@ const specialMessageHandling = (message_object) => {
 	.catch(err => {if(message_object) message_object.postMessage({'type': 'apierror', 'message':'The API is currently down. Please email detective@bigtechdetective.net to report this and include the following error code in your email. Error code: ' + err, 'contents': err})});
 	
 	// for special announcements
-	fetch('https://big-tech-detective-api.herokuapp.com/message/')
+	fetch(api_root+'message/')
 	.then(response => response.json())
 	.then(data => {if(data.status){
 			console.log(data.message)
