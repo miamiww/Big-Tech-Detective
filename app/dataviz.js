@@ -10,7 +10,7 @@ let descriptionTextAllPackets = "% of total current browser session traffic that
 let descriptionTextWebsites = "% of websites visited during current browser session traffic that had connections to each company"
 let buttonTextAllPackets = "switch chart"
 let buttonTextWebsites = "switch chart"
-let initiatorBool = true;
+let initiatorBool = false;
 
 // start the communication with background.js and start listeners and get local storage
 const init = () => {
@@ -160,8 +160,8 @@ const clearHistory = () => {
         });
 
         initiatorData = {};
-        chrome.storage.local.set({websites: websiteData}, function() {
-            console.log(websiteData);
+        chrome.storage.local.set({sources: initiatorData}, function() {
+            console.log(sources);
         });
 
         chrome.runtime.sendMessage({message: "clearing history"});
@@ -217,7 +217,7 @@ const buildInitiatorData = (inData,initiatorData) => {
         let size = Object.keys(initiatorData[inData.initiator]).length;
         let name = "Packet " + size;
         initiatorData[inData.initiator][name] = {company: inData.company, url: inData.url, ip: inData.ip};
-        chrome.storage.local.set({key: initiatorData}, function() {
+        chrome.storage.local.set({sources: initiatorData}, function() {
             console.log(initiatorData);
         });
         return initiatorData
@@ -225,7 +225,7 @@ const buildInitiatorData = (inData,initiatorData) => {
         initiatorData[inData.initiator] = {
             "Packet 0": {company: inData.company, url: inData.url, ip: inData.ip}
         }
-        chrome.storage.local.set({key: initiatorData}, function() {
+        chrome.storage.local.set({sources: initiatorData}, function() {
             console.log(initiatorData);
         });
         return initiatorData
