@@ -5,4 +5,5 @@ Gruntfile.js
 .DS_Store
 *.csv
 reload.*
+*.sh
 180w
