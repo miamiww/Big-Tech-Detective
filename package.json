@@ -1,7 +1,7 @@
 {
-  "name": "big-ip-blocker",
-  "version": "0.0.1",
-  "description": "A tool for blocking monopolists",
+  "name": "big-tech-detective",
+  "version": "0.9.7",
+  "description": "A browser extension for tracking monopolists",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
