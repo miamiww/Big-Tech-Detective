@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/miamiww/Big-IP-Blocker/issues"
   },
-  "homepage": "https://github.com/miamiww/Big-IP-Blocker#readme",
+  "homepage": "https://bigtechdetective.net",
   "devDependencies": {
     "grunt": "^1.1.0",
     "grunt-contrib-watch": "^1.1.0",
