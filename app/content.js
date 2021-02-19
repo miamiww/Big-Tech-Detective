@@ -207,7 +207,7 @@ const buildBlockPage = (data) => {
     });
 
     removeButton.innerHTML = "Unlock It"
-    dataButton.style.backgroundImage = "url(" + extensionURL + "icons/unlock_icon.png)";
+    removeButton.style.backgroundImage = "url(" + extensionURL + "icons/unlock_icon.png)";
 
     footerDiv.appendChild(removeButton);
 

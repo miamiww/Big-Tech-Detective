@@ -134,8 +134,10 @@
 }
 
 #btd-copy-data-button {
-  background: #ff5551  !important;/* url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/copy_clipboard.png') no-repeat left !important; */
-  background-image: no-repeat left !important;
+  background-color: #ff5551  !important;/* url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/copy_clipboard.png') no-repeat left !important; */
+  /* background-image: no-repeat left !important; */
+  background-position: left;
+  background-repeat: no-repeat;
   background-size: 20px!important;
   font-size: small !important;
   color: #1E354C !important;
@@ -158,7 +160,9 @@
 }
 
 #btd-remove-button {
-  background: #ff5551 !important;/*url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/unlock_icon.png') no-repeat left !important; */
+  background-color: #ff5551 !important;/*url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/unlock_icon.png') no-repeat left !important; */
+  background-position: left;
+  background-repeat: no-repeat;
   background-size: 20px!important;
   font-size: small !important;
   color: #1E354C !important;
