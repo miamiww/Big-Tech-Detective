@@ -93,7 +93,7 @@ const headingText = (data) => {
 }
 
 const subHeadingText = () => {
-    return `Note that this does not block any of the resources from loading or prevent any of their trackers from collecting your data` 
+    return `This could have been anything from a font to an ad tracking script. Note that this does not block any of the resources from loading or prevent any of their trackers from collecting your data` 
 }
 
 
@@ -137,7 +137,7 @@ const buildBlockPage = (data) => {
     // heading for table
     let tableHeadingDiv = document.createElement('div');
     tableHeadingDiv.className = "btd-information-table-heading"
-    tableHeadingDiv.innerHTML = "% of packet sources within page"
+    tableHeadingDiv.innerHTML = "Requests Within Page"
 
     // table
     let tableDiv = document.createElement('div');
@@ -146,7 +146,7 @@ const buildBlockPage = (data) => {
     // heading for resources
     let listHeadingDiv = document.createElement('div');
     listHeadingDiv.className = "btd-information-table-heading"
-    listHeadingDiv.innerHTML = "origins of packets that triggered locking"
+    listHeadingDiv.innerHTML = "Requests That Triggered Locking"
 
 
     // resource list
@@ -295,7 +295,7 @@ const buildChart = () => {
             var header = table.append("thead").append("tr");
             header
             .selectAll("th")
-            .data(["Source","Packet Count","% Total Packets"])
+            .data(["Source","# of Requests","% Total"])
             .enter()
             .append("th")
             .text(function(d) { return d; });

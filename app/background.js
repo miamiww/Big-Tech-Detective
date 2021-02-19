@@ -3,7 +3,7 @@
 // this is to avoid clogging up local storage communication, which can be overly slow in delivering real-time updates to the extension
 
 // global variables
-const url_filter = {urls: ["<all_urls>"], types:[]}
+const url_filter = {urls: ["<all_urls>"]}
 const ignore_ips = [undefined]
 const api_root = "https://bigtechdetective.club/";
 
@@ -100,8 +100,7 @@ const init = () => {
 			}
 			return;
 	},
-		url_filter,
-		[]
+		url_filter
 	);
 
 	// send messages to extension window and content.js in realtime
