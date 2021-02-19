@@ -190,9 +190,9 @@ const buildBlockPage = (data) => {
     dataButton.addEventListener('click', (event) => {
         copyTextToClipboard(JSON.stringify(copyData));
       });
+    dataButton.style.backgroundImage = "url(" + extensionURL + "icons/copy_clipboard.png)";
 
     dataButton.innerHTML = "Copy Data to Clipboard"
-    dataButton.style.backgroundImage = "url(" + extensionURL + "icons/copy_clipboard.png)";
 
     // footer
     let footerDiv = document.createElement('div');
@@ -207,6 +207,7 @@ const buildBlockPage = (data) => {
     });
 
     removeButton.innerHTML = "Unlock It"
+    dataButton.style.backgroundImage = "url(" + extensionURL + "icons/unlock_icon.png)";
 
     footerDiv.appendChild(removeButton);
 
