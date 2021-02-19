@@ -1,11 +1,11 @@
-@font-face {
+/* @font-face {
   font-family: "Basis Mono";
   src: url("chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/fonts/basis-grotesque-mono.otf");
 
-}
+} */
 
 
-@font-face {
+/* @font-face {
   font-family: "GT Walsham Regular";
   src: url("chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/fonts/GT-Walsheim-Regular.otf");
 
@@ -21,7 +21,7 @@
   font-family: "GT Walsham Black";
   src: url("chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/fonts/GT-Walsheim-Black.otf");
 
-}
+} */
 
 #btd-lock-overlay {
   position: fixed !important;
@@ -49,7 +49,7 @@
   width: 50% !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
-  background-image:url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/lock_icon.png') !important;
+  /* background-image:url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/lock_icon.png') !important; */
   background-size: 35% !important;
 
 }
@@ -134,7 +134,8 @@
 }
 
 #btd-copy-data-button {
-  background: #ff5551 url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/copy_clipboard.png') no-repeat left !important;
+  background: #ff5551  !important;/* url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/copy_clipboard.png') no-repeat left !important; */
+  background-image: no-repeat left !important;
   background-size: 20px!important;
   font-size: small !important;
   color: #1E354C !important;
@@ -157,7 +158,7 @@
 }
 
 #btd-remove-button {
-  background: #ff5551 url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/unlock_icon.png') no-repeat left !important;
+  background: #ff5551 !important;/*url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/unlock_icon.png') no-repeat left !important; */
   background-size: 20px!important;
   font-size: small !important;
   color: #1E354C !important;

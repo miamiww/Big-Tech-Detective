@@ -6,6 +6,37 @@ var copyData = {};
 var companyList = [];
 var container;
 
+var extensionURL = chrome.runtime.getURL("assets/");
+var basis_font = new FontFace('Basis Mono', 'url('+extensionURL+'fonts/basis-grotesque-mono.otf)');
+basis_font.load().then(function(loaded_face) {
+    document.fonts.add(loaded_face);
+
+	// loaded_face holds the loaded FontFace
+}).catch(function(error) {
+	// error occurred
+});
+var regular_font = new FontFace('GT Walsham Regular', 'url('+extensionURL+'fonts/GT-Walsheim-Regular.otf)');
+regular_font.load().then(function(loaded_face) {
+    document.fonts.add(loaded_face);
+	// loaded_face holds the loaded FontFace
+}).catch(function(error) {
+	// error occurred
+});
+var regular_font = new FontFace('GT Walsham Bold', 'url('+extensionURL+'fonts/GT-Walsheim-Bold.otf.otf)');
+regular_font.load().then(function(loaded_face) {
+    document.fonts.add(loaded_face);
+	// loaded_face holds the loaded FontFace
+}).catch(function(error) {
+	// error occurred
+});
+var regular_font = new FontFace('GT Walsham Black', 'url('+extensionURL+'fonts/GT-Walsheim-Black.otf)');
+regular_font.load().then(function(loaded_face) {
+    document.fonts.add(loaded_face);
+	// loaded_face holds the loaded FontFace
+}).catch(function(error) {
+	// error occurred
+});
+
 // helper functions
 function isEmpty(obj) {
     for(var key in obj) {
@@ -18,9 +49,9 @@ function isEmpty(obj) {
 // copy/paste data from https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
 const copyTextToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(function() {
-      console.log('Async: Copying to clipboard was successful!');
+    //   console.log('Async: Copying to clipboard was successful!');
     }, function(err) {
-      console.error('Async: Could not copy text: ', err);
+    //   console.error('Async: Could not copy text: ', err);
     });
 }
 
@@ -32,22 +63,22 @@ const initBlocks = () => {
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
             blockingData = result.blocks;
-            console.log(blockingData)
+            // console.log(blockingData)
         } else{
-            console.log('No locking instructions, allowing everything')
+            // console.log('No locking instructions, allowing everything')
         }
 
     });
     chrome.runtime.onMessage.addListener(blockTime);
 
-    console.log(blockingData)
+    // console.log(blockingData)
 }
 
 // handling messages from background.js
 const blockTime = (data) => {
     if(data.type=="lockPage"){
         buildCopyData(data,copyData);
-        console.log(data)
+        // console.log(data)
         if(!block){
             _firstBlock("Google", data);
             _firstBlock("Amazon", data);
@@ -61,17 +92,14 @@ const blockTime = (data) => {
             _restBlock("Facebook",data);
             _restBlock("Microsoft",data);
         }
-        if(data.url=="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"){
-            console.log("idk")
-        }
     }
 
 }
 
 const _firstBlock = (company, data) => {
     if(data.company == company){
-        console.log("locked")
-        console.log(data)
+        // console.log("locked")
+        // console.log(data)
         if(blockingData[company]){
             buildBlockPage(data);
         }
@@ -164,6 +192,7 @@ const buildBlockPage = (data) => {
       });
 
     dataButton.innerHTML = "Copy Data to Clipboard"
+    dataButton.style.backgroundImage = "url(" + extensionURL + "icons/copy_clipboard.png)";
 
     // footer
     let footerDiv = document.createElement('div');
@@ -196,6 +225,7 @@ const buildBlockPage = (data) => {
 
     let lockDiv = document.createElement('div');
     lockDiv.id = "btd-lock-container";
+    lockDiv.style.backgroundImage = "url("+extensionURL + "icons/lock_icon.png)"
 
     document.body.append(overlayDiv);
     document.body.append(containerDiv);
