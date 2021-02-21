@@ -22,15 +22,15 @@ regular_font.load().then(function(loaded_face) {
 }).catch(function(error) {
 	// error occurred
 });
-var regular_font = new FontFace('GT Walsham Bold', 'url('+extensionURL+'fonts/GT-Walsheim-Bold.otf.otf)');
-regular_font.load().then(function(loaded_face) {
+var bold_font = new FontFace('GT Walsham Bold', 'url('+extensionURL+'fonts/GT-Walsheim-Bold.otf.otf)');
+bold_font.load().then(function(loaded_face) {
     document.fonts.add(loaded_face);
 	// loaded_face holds the loaded FontFace
 }).catch(function(error) {
 	// error occurred
 });
-var regular_font = new FontFace('GT Walsham Black', 'url('+extensionURL+'fonts/GT-Walsheim-Black.otf)');
-regular_font.load().then(function(loaded_face) {
+var black_font = new FontFace('GT Walsham Black', 'url('+extensionURL+'fonts/GT-Walsheim-Black.otf)');
+black_font.load().then(function(loaded_face) {
     document.fonts.add(loaded_face);
 	// loaded_face holds the loaded FontFace
 }).catch(function(error) {

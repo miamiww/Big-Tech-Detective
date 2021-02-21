@@ -78,7 +78,8 @@ const initBlocks = () => {
             chrome.storage.local.set({onOff: onOffObject}, function(){
                 console.log(onOffObject)
             })
-        }
+            var checkbox = document.getElementById('onOffSwitch');
+            checkbox.checked = true;        }
     })
 
     chrome.runtime.onConnect.addListener((port) => {

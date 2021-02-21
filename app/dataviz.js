@@ -20,17 +20,26 @@ const init = () => {
     port = chrome.runtime.connect({name: "extension_socket"});
     port.onMessage.addListener(onMessage);
     chrome.storage.local.get(['key'], function(result) {
-        console.log('Company data from local storage is ' + JSON.stringify(result.key));
-        companyData = result.key;
+        if(!isEmpty(result)){
+            console.log('Company data from local storage is ' + JSON.stringify(result.key));
+            companyData = result.key;
+        } else {
+            companyData = {};
+        }
+
     });
     chrome.storage.local.get(['websites'], function(result) {
-        console.log('Website data from local storage is ' + JSON.stringify(result.websites))
-        websiteData = result.websites;
-        webPercentData = reduceWebsites(websiteData)
+        if(!isEmpty(result)){
+            console.log('Website data from local storage is ' + JSON.stringify(result.websites))
+            websiteData = result.websites;
+            webPercentData = reduceWebsites(websiteData)
+            update(webPercentData);
+            updateDescriptionText(descriptionTextWebsites);
+            updateSwitchButtonText(buttonTextAllPackets);
+        } else{
+            websiteData = {};
+        }
 
-        update(webPercentData);
-        updateDescriptionText(descriptionTextWebsites);
-        updateSwitchButtonText(buttonTextAllPackets);
 
     });
     chrome.storage.local.get(['sources'], function(result){
