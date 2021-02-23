@@ -1,0 +1,28 @@
+{
+	"manifest_version": 2,
+	"name": "Big Tech Detective",
+	"version": "0.9.7",
+	"background": {
+	  "scripts": [
+		"background.js",
+		"reload.js"
+	]
+	},
+	"content_scripts":[
+		{
+		"matches": ["<all_urls>"],
+		"js": ["lib/d3.min.js", "content.js"],
+		"css": ["pagecss.css"]
+	}],
+	"browser_action": {
+	  "default_icon": "btd_icon_logo_128x128.png"
+
+	},
+	"permissions": [
+		"<all_urls>",
+		"tabs",
+		"webRequest",
+		"storage"
+	],
+	"web_accessible_resources":["assets/icons/unlock_icon.png","assets/icons/lock_icon.png", "assets/icons/copy_clipboard.png","assets/fonts/basis-grotesque-mono.otf","assets/fonts/GT-Walsheim-Regular.otf","assets/fonts/GT-Walsheim-Bold.otf","assets/fonts/GT-Walsheim-Black.otf"]
+  }
