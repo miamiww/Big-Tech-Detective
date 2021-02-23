@@ -202,7 +202,7 @@ const specialMessageHandling = (message_object) => {
 			if(message_object) message_object.postMessage({'type': 'majorissue', 'message':data.message, 'contents':data.code})
 		}
 	})
-	.catch(err => {if(message_object) message_object.postMessage({'type': 'apierror', 'message':'The API is currently down. Please email detective@bigtechdetective.net to report this and include the following error code in your email. Error code: ' + err, 'contents': err})});
+	.catch(err => {if(message_object) message_object.postMessage({'type': 'apierror', 'message':'The API is currently down, and Big Tech Detective will not function until it is back online. Please email detective@bigtechdetective.net to report this and include the following error code in your email. Error code: ' + err, 'contents': err})});
 	
 	// for special announcements
 	fetch(api_root+'message/')
@@ -212,7 +212,7 @@ const specialMessageHandling = (message_object) => {
 			if(message_object) message_object.postMessage({'type': 'announcement', 'message':data.message})
 		} 
 	})
-	.catch(err => {if(message_object) message_object.postMessage({'type': 'apierror', 'message':'The API is currently down. Please email detective@bigtechdetective.net to report this and include the following error code in your email. Error code: ' + err, 'contents': err})});
+	.catch(err => {if(message_object) message_object.postMessage({'type': 'apierror', 'message':'The API is currently down, and Big Tech Detective will not function until it is back online. Please email detective@bigtechdetective.net to report this and include the following error code in your email. Error code: ' + err, 'contents': err})});
 
 }
 
