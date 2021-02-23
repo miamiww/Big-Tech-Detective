@@ -84,13 +84,13 @@ const init = () => {
 
 			if(onStatus){
 				//	 preventing infinite loops
-				if(!ignore_ips.includes(info.ip) && info.initiator == undefined){
+				if(!ignore_ips.includes(info.ip) && info.initiator == undefined && !info.url.includes(api_root)){
 					postData(api_root+'ip/', { ip: info.ip })
 					.then(data => postResponseHandler(data,info,message_object))
 					.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
 
 				}else {
-					if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://")){
+					if(!ignore_ips.includes(info.ip) && !info.initiator.includes("chrome-extension://") && !info.url.includes(api_root)){
 						postData(api_root+'ip/', { ip: info.ip })
 						.then(data => postResponseHandler(data,info,message_object))
 						.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
@@ -288,7 +288,7 @@ const postResponseHandler = (data,inInfo,message_object) => {
 	}else{
 		// console.log('IP not in database')
 		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':inInfo.url, 'ip': inInfo.ip, 'initiator': inInfo.initiator, 'frame': inInfo.frameId});
-		setOtherInStorage(info);
+		setOtherInStorage(inInfo);
 
 		if(inInfo.tabId>0){
 			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
