@@ -5,7 +5,7 @@ var initiatorData = {};
 var container = d3.select("#pie"); 
 var pieChartStatus = false;
 var websiteViewer = true;
-let webPercentData;
+let webPercentData = {};
 let descriptionTextAllPackets = "% of network requests sent to each tech giant during current browsing session"
 let descriptionTextWebsites = "% of websites that connected to each tech giant during this browsing session"
 let buttonTextAllPackets = "switch chart"
@@ -38,6 +38,10 @@ const init = () => {
             updateSwitchButtonText(buttonTextAllPackets);
         } else{
             websiteData = {};
+            webPercentData = reduceWebsites(websiteData)
+            update(webPercentData); 
+            updateDescriptionText(descriptionTextWebsites);
+            updateSwitchButtonText(buttonTextAllPackets);
         }
 
 
