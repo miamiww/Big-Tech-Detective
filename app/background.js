@@ -84,7 +84,7 @@ const init = () => {
 
 			if(onStatus){
 				//	 preventing infinite loops
-				if(!ignore_ips.includes(info.ip) && info.initiator == undefined && !info.url.includes(api_root)){
+				if(!ignore_ips.includes(info.ip) && info.initiator == undefined){
 					postData(api_root+'ip/', { ip: info.ip })
 					.then(data => postResponseHandler(data,info,message_object))
 					.catch(err => {if(message_object) message_object.postMessage({'type': 'error', 'message':'api error', 'contents': err})});
