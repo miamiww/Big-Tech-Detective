@@ -1,26 +1,11 @@
-```
-8""""8   8  8""""8    ""8"" 8"""" 8""""8 8   8        
-8    8   8  8    "      8   8     8    " 8   8        
-8eeee8ee 8e 8e          8e  8eeee 8e     8eee8        
-88     8 88 88  ee      88  88    88     88  8        
-88     8 88 88   8      88  88    88   e 88  8        
-88eeeee8 88 88eee8      88  88eee 88eee8 88  8        
-                                                      
-8""""8 8"""" ""8"" 8"""" 8""""8 ""8"" 8  88   8 8"""" 
-8    8 8       8   8     8    "   8   8  88   8 8     
-8e   8 8eeee   8e  8eeee 8e       8e  8e 88  e8 8eeee 
-88   8 88      88  88    88       88  88 "8  8  88    
-88   8 88      88  88    88   e   88  88  8  8  88    
-88eee8 88eee   88  88eee 88eee8   88  88  8ee8  88eee 
-                                                      
-```
+![Big Tech Detective Logo](https://bigtechdetective.net/images/bigtechdetective_logo.png)
 
-A tool to help you track tech giants in your browser.
+Install [Big Tech Detective](https://bigtechdetective.net) for [Firefox](https://bigtechdetective.net/firefox) or [Chrome](https://bigtechdetective.net/#download-instructions)
 
-To install:
-1. download / clone the repo
-2. fire up chrome and navigate to [chrome://extensions/](chrome://extensions/)
-3. toggle that "developer mode" switch in the upper right hand corner
-4. click "load unpacked" in the upper left and select the /app directory of the repo
-5. boom. you're done.
-6. open up your new blocking tool by clicking its icon in the chrome toolbar
+## About
+
+[Big Tech Detective](https://bigtechdetective.net) is a browser extension to help you track tech giants while you surf the web. BTD works by checking the IP address of every request made by your browser against a database of IP addresses owned by Google, Facebook, Microsoft, and Amazon. The database lives at an [API](https://bigtechdetective.club) hosted on [Digital Ocean](https://www.digitalocean.com/), the code and documentation for which exists [here](https://gitlab.com/big-tech-detective/Blocker-API).
+
+--------
+
+BTD was made by [Alden Rivendale Jones](http://alden.website), [Dhruv Mehrotra](https://dhruvmehrotra.info/), and [Emily Lin](https://www.emilylin.work/) together with the [Anti-Monopoly Fund](https://www.economicsecurityproject.org/antimonopoly/) at the [Economic Security Project](https://www.economicsecurityproject.org/).

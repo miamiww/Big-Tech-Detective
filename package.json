@@ -1,6 +1,6 @@
 {
   "name": "big-tech-detective",
-  "version": "0.9.10",
+  "version": "1.0.0",
   "description": "A browser extension for tracking monopolists",
   "main": "app.js",
   "scripts": {
