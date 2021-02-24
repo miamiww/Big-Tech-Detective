@@ -77,17 +77,18 @@
   /* padding-top: 30px; */
   height: 130px !important;
   overflow-wrap: break-word !important;
-  overflow: scroll !important;
+  overflow-y: scroll !important;
   scroll-behavior: auto !important;
   border-bottom: 1px solid #1E354C !important;
   border-top: 1px solid #1E354C !important;
   color: #1E354C !important;
 
   padding-bottom: 30px !important;
+  scrollbar-color:  #ff5551 !important;
 }
 
 #btd-information-resource-list p{
-  color: #1E354C;
+  color: #1E354C !important;
   font-size: medium !important;
   top: 0px !important;
   padding-bottom: 10px !important;
