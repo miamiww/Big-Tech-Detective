@@ -52,7 +52,8 @@ const setCompanyInStorage = (data, info) => {
 		// console.log(companyData);
 	});
 	if(info.frameId===0){
-		assign(websiteData, [info.documentUrl, data.ip.company], websiteData[info.documentUrl[data.ip.company]] + 1 || 1)
+		let initatorUrl = info.documentUrl.split("/")[2]
+		assign(websiteData, [initatorUrl, data.ip.company], websiteData[initatorUrl[data.ip.company]] + 1 || 1)
 		browser.storage.local.set({websites: websiteData}, function() {
 			// console.log(websiteData);
 		});	
@@ -66,7 +67,9 @@ const setOtherInStorage = (info) => {
 		// console.log(companyData);
 	});
 	if(info.frameId===0){
-		assign(websiteData, [info.documentUrl, "Other"], websiteData[info.documentUrl["Other"]] + 1 || 1)
+		let initatorUrl = info.documentUrl.split("/")[2]
+
+		assign(websiteData, [initatorUrl, "Other"], websiteData[initatorUrl["Other"]] + 1 || 1)
 		browser.storage.local.set({websites: websiteData}, function() {
 			// console.log(websiteData);
 		});	
@@ -255,9 +258,10 @@ async function postData(url = '', data = {}) {
   
 const postResponseHandler = (data,inInfo,message_object) => {
 	if(data.hasOwnProperty("ip")){
+		let initatorUrl = inInfo.documentUrl.split("/")[2]
 
 		//this is where we send info to the extension front-end
-		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':inInfo.url, 'ip': inInfo.ip, 'documentUrl': inInfo.documentUrl, 'frame': inInfo.frameId});
+		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':data.ip.company, 'url':inInfo.url, 'ip': inInfo.ip, 'documentUrl': initatorUrl, 'frame': inInfo.frameId});
 
 		setCompanyInStorage(data, inInfo);
 		//this is where we send info to the content script
@@ -283,9 +287,11 @@ const postResponseHandler = (data,inInfo,message_object) => {
 
 		
 	}else{
+		let initatorUrl = inInfo.documentUrl.split("/")[2]
+
 		console.log('IP not in database')
 		setOtherInStorage(inInfo);
-		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':inInfo.url, 'ip': inInfo.ip, 'documentUrl': inInfo.documentUrl, 'frame': inInfo.frameId});
+		if(message_object) message_object.postMessage({'type': 'packetIn', 'company':'Other', 'url':inInfo.url, 'ip': inInfo.ip, 'documentUrl': initatorUrl, 'frame': inInfo.frameId});
 
 		if(inInfo.tabId>0){
 			browser.tabs.query({active: true, currentWindow: true}, function(tabs) {
