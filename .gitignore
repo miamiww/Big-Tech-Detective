@@ -7,3 +7,4 @@ Gruntfile.js
 reload.*
 *.sh
 180w
+*.otf
