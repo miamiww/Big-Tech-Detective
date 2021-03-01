@@ -159,6 +159,10 @@
   border-radius: 3px !important; 
 }
 
+#btd-copy-data-button:active {
+  background: #ff5551 !important;
+}
+
 #btd-remove-button {
   background-color: #ff5551 !important;/*url('chrome-extension://lbllgpjmaghgcmjkoekcjgghjhanabnk/assets/icons/unlock_icon.png') no-repeat left !important; */
   background-position: left;
