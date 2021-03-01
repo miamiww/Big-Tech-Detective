@@ -16,7 +16,6 @@ let initiatorBool = false;
 const init = () => {
     document.getElementById("clearbutton").addEventListener("click", clearHistory);
     document.getElementById("switchview").addEventListener("click", switchView);
-
     port = chrome.runtime.connect({name: "extension_socket"});
     port.onMessage.addListener(onMessage);
     chrome.storage.local.get(['key'], function(result) {

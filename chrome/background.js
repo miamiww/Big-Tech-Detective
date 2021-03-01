@@ -77,7 +77,6 @@ const setOtherInStorage = (info) => {
 
 // setting up listeners, messaging, on off status
 const init = () => {
-
 	// the main listener - Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
 	chrome.webRequest.onCompleted.addListener( 
 		(info) => {
@@ -111,7 +110,7 @@ const init = () => {
 			console.assert(port.name == "extension_socket");
 			message_object = port;
 			specialMessageHandling(message_object);
-
+			// loadFonts.then(response => sendFonts(response)).catch(err => console.log(err));
 			window_open = true;
 			message_object.onDisconnect.addListener(function(){
 				if(the_window){window_id = the_window.id}
@@ -301,3 +300,36 @@ const postResponseHandler = (data,inInfo,message_object) => {
 		}
 	}
 }
+
+
+// const loadFonts = (sendFonts) => {
+// 	let fontsObject = {}
+// 	let fontUrl = "https://bigtechdetective.net/";
+// 	let basis_font = new FontFace('Basis Mono', 'url('+fontUrl+'fonts/basis-grotesque-mono.otf)');
+// 	let regular_font = new FontFace('GT Walsham Regular', 'url('+fontUrl+'fonts/GT-Walsheim-Regular.otf)');
+// 	let bold_font = new FontFace('GT Walsham Bold', 'url('+fontUrl+'fonts/GT-Walsheim-Bold.otf.otf)');
+// 	let black_font = new FontFace('GT Walsham Black', 'url('+fontUrl+'fonts/GT-Walsheim-Black.otf)');
+
+// 	sendFonts(basis_font,regular_font,bold_font,black_font);
+// }
+
+// const loadFonts = new Promise((resolve,reject) =>  {
+// 	let fontsObject = {}
+// 	let fontUrl = "https://bigtechdetective.net/";
+// 	fontsObject['mono'] = new FontFace('Basis Mono', 'url('+fontUrl+'fonts/basis-grotesque-mono.otf)');
+// 	fontsObject['regular'] = new FontFace('GT Walsham Regular', 'url('+fontUrl+'fonts/GT-Walsheim-Regular.otf)');
+// 	fontsObject['bold'] = new FontFace('GT Walsham Bold', 'url('+fontUrl+'fonts/GT-Walsheim-Bold.otf)');
+// 	fontsObject['black'] = new FontFace('GT Walsham Black', 'url('+fontUrl+'fonts/GT-Walsheim-Black.otf)');
+// 	resolve(fontsObject)
+// 	console.log(fontsObject.mono)
+// 	console.log(fontsObject)
+
+// });
+
+
+// const sendFonts = (fontsObject) => {
+// 	console.log(JSON.stringify(fontsObject))
+
+// 	if(message_object) message_object.postMessage({'type': 'fonts', 'fonts':fontsObject})
+
+// }
