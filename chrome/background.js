@@ -273,7 +273,7 @@ const postResponseHandler = (data,inInfo,message_object) => {
 						chrome.tabs.onUpdated.removeListener(listener);
 						chrome.tabs.sendMessage(
 							inInfo.tabId,
-							{'type': 'lockPage', 'company':data.ip.company, 'url':inInfo.url, 'ip': inInfo.ip}
+							{'type': 'lockPage', 'company':data.ip.company, 'url':inInfo.url, 'ip': inInfo.ip, 'initiator':inInfo.initiator}
 		
 						)
 					}
@@ -293,43 +293,10 @@ const postResponseHandler = (data,inInfo,message_object) => {
 			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 				chrome.tabs.sendMessage(
 					inInfo.tabId,
-					{'type': 'lockPage', 'company':"Other", 'url':inInfo.url, 'ip': inInfo.ip},
+					{'type': 'lockPage', 'company':"Other", 'url':inInfo.url, 'ip': inInfo.ip, 'initiator':inInfo.initiator},
 
 				)
 			  });
 		}
 	}
 }
-
-
-// const loadFonts = (sendFonts) => {
-// 	let fontsObject = {}
-// 	let fontUrl = "https://bigtechdetective.net/";
-// 	let basis_font = new FontFace('Basis Mono', 'url('+fontUrl+'fonts/basis-grotesque-mono.otf)');
-// 	let regular_font = new FontFace('GT Walsham Regular', 'url('+fontUrl+'fonts/GT-Walsheim-Regular.otf)');
-// 	let bold_font = new FontFace('GT Walsham Bold', 'url('+fontUrl+'fonts/GT-Walsheim-Bold.otf.otf)');
-// 	let black_font = new FontFace('GT Walsham Black', 'url('+fontUrl+'fonts/GT-Walsheim-Black.otf)');
-
-// 	sendFonts(basis_font,regular_font,bold_font,black_font);
-// }
-
-// const loadFonts = new Promise((resolve,reject) =>  {
-// 	let fontsObject = {}
-// 	let fontUrl = "https://bigtechdetective.net/";
-// 	fontsObject['mono'] = new FontFace('Basis Mono', 'url('+fontUrl+'fonts/basis-grotesque-mono.otf)');
-// 	fontsObject['regular'] = new FontFace('GT Walsham Regular', 'url('+fontUrl+'fonts/GT-Walsheim-Regular.otf)');
-// 	fontsObject['bold'] = new FontFace('GT Walsham Bold', 'url('+fontUrl+'fonts/GT-Walsheim-Bold.otf)');
-// 	fontsObject['black'] = new FontFace('GT Walsham Black', 'url('+fontUrl+'fonts/GT-Walsheim-Black.otf)');
-// 	resolve(fontsObject)
-// 	console.log(fontsObject.mono)
-// 	console.log(fontsObject)
-
-// });
-
-
-// const sendFonts = (fontsObject) => {
-// 	console.log(JSON.stringify(fontsObject))
-
-// 	if(message_object) message_object.postMessage({'type': 'fonts', 'fonts':fontsObject})
-
-// }

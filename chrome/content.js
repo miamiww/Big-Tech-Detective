@@ -47,23 +47,27 @@ const initBlocks = () => {
 // handling messages from background.js
 const blockTime = (data) => {
     if(data.type=="lockPage"){
-        buildCopyData(data,copyData);
-        // console.log(data)
-        if(!block){
-            _firstBlock("Google", data);
-            _firstBlock("Amazon", data);
-            _firstBlock("Facebook", data);
-            _firstBlock("Microsoft", data);
-    
-        } else{
-            addBlockPage(data);
-            _restBlock("Google",data);
-            _restBlock("Amazon",data);
-            _restBlock("Facebook",data);
-            _restBlock("Microsoft",data);
+        console.log(data.initiator)
+        console.log(window.location.origin)
+        if(data.initiator==window.location.origin){
+
+            buildCopyData(data,copyData);
+            // console.log(data)
+            if(!block){
+                _firstBlock("Google", data);
+                _firstBlock("Amazon", data);
+                _firstBlock("Facebook", data);
+                _firstBlock("Microsoft", data);
+        
+            } else{
+                addBlockPage(data);
+                _restBlock("Google",data);
+                _restBlock("Amazon",data);
+                _restBlock("Facebook",data);
+                _restBlock("Microsoft",data);
+            }
         }
     }
-
 }
 
 const _firstBlock = (company, data) => {
