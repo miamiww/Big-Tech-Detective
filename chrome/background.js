@@ -77,17 +77,6 @@ const setOtherInStorage = (info) => {
 
 // setting up listeners, messaging, on off status
 const init = () => {
-
-	let fontsObject = {}
-	let fontUrl = "https://bigtechdetective.net/";
-	fontsObject['mono'] = new FontFace('Basis Mono', 'url('+fontUrl+'fonts/basis-grotesque-mono.otf)');
-	fontsObject['regular'] = new FontFace('GT Walsham Regular', 'url('+fontUrl+'fonts/GT-Walsheim-Regular.otf)');
-	fontsObject['bold'] = new FontFace('GT Walsham Bold', 'url('+fontUrl+'fonts/GT-Walsheim-Bold.otf)');
-	fontsObject['black'] = new FontFace('GT Walsham Black', 'url('+fontUrl+'fonts/GT-Walsheim-Black.otf)');
-	console.log(fontsObject)
-	JSON.stringify(fontsObject['mono'])
-
-
 	// the main listener - Get IP when request is completed, request the IP from the server to see the IP owner, and then send the appriate message to the extension interface and update the local storage information
 	chrome.webRequest.onCompleted.addListener( 
 		(info) => {
@@ -121,8 +110,6 @@ const init = () => {
 			console.assert(port.name == "extension_socket");
 			message_object = port;
 			specialMessageHandling(message_object);
-			console.log(fontsObject);
-			if(message_object) message_object.postMessage({'type': 'fonts'})
 			// loadFonts.then(response => sendFonts(response)).catch(err => console.log(err));
 			window_open = true;
 			message_object.onDisconnect.addListener(function(){
