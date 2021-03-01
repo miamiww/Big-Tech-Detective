@@ -6,37 +6,6 @@ var copyData = {};
 var companyList = [];
 var container;
 
-var extensionURL = chrome.runtime.getURL("assets/");
-var basis_font = new FontFace('Basis Mono', 'url('+extensionURL+'fonts/basis-grotesque-mono.otf)');
-basis_font.load().then(function(loaded_face) {
-    document.fonts.add(loaded_face);
-
-	// loaded_face holds the loaded FontFace
-}).catch(function(error) {
-	// error occurred
-});
-var regular_font = new FontFace('GT Walsham Regular', 'url('+extensionURL+'fonts/GT-Walsheim-Regular.otf)');
-regular_font.load().then(function(loaded_face) {
-    document.fonts.add(loaded_face);
-	// loaded_face holds the loaded FontFace
-}).catch(function(error) {
-	// error occurred
-});
-var bold_font = new FontFace('GT Walsham Bold', 'url('+extensionURL+'fonts/GT-Walsheim-Bold.otf.otf)');
-bold_font.load().then(function(loaded_face) {
-    document.fonts.add(loaded_face);
-	// loaded_face holds the loaded FontFace
-}).catch(function(error) {
-	// error occurred
-});
-var black_font = new FontFace('GT Walsham Black', 'url('+extensionURL+'fonts/GT-Walsheim-Black.otf)');
-black_font.load().then(function(loaded_face) {
-    document.fonts.add(loaded_face);
-	// loaded_face holds the loaded FontFace
-}).catch(function(error) {
-	// error occurred
-});
-
 // helper functions
 function isEmpty(obj) {
     for(var key in obj) {
@@ -59,7 +28,7 @@ const copyTextToClipboard = (text) => {
 const initBlocks = () => {
     // port = chrome.runtime.connect({name: "blocker_socket"});
     // port.onMessage.addListener(blockTime);
-
+    loadFonts();
     chrome.storage.local.get(['blocks'], function(result) {
         if(!isEmpty(result)){
             blockingData = result.blocks;
@@ -278,7 +247,41 @@ const removeLockPage = () => {
 
 }
 
+const loadFonts = () =>{
+    let fontsObject = {}
+    let fontUrl = "https://bigtechdetective.net/";
+    fontsObject['mono'] = new FontFace('Basis Mono', 'url('+fontUrl+'fonts/basis-grotesque-mono.otf)');
+    fontsObject['regular'] = new FontFace('GT Walsham Regular', 'url('+fontUrl+'fonts/GT-Walsheim-Regular.otf)');
+    fontsObject['bold'] = new FontFace('GT Walsham Bold', 'url('+fontUrl+'fonts/GT-Walsheim-Bold.otf)');
+    fontsObject['black'] = new FontFace('GT Walsham Black', 'url('+fontUrl+'fonts/GT-Walsheim-Black.otf)');
 
+    fontsObject.mono.load().then(function(loaded_face) {
+        document.fonts.add(loaded_face);
+    
+        // loaded_face holds the loaded FontFace
+    }).catch(function(error) {
+        // error occurred
+        console.log('font not loaded')
+    });
+    fontsObject.regular.load().then(function(loaded_face) {
+        document.fonts.add(loaded_face);
+        // loaded_face holds the loaded FontFace
+    }).catch(function(error) {
+        // error occurred
+    });
+    fontsObject.bold.load().then(function(loaded_face) {
+        document.fonts.add(loaded_face);
+        // loaded_face holds the loaded FontFace
+    }).catch(function(error) {
+        // error occurred
+    });
+    fontsObject.black.load().then(function(loaded_face) {
+        document.fonts.add(loaded_face);
+        // loaded_face holds the loaded FontFace
+    }).catch(function(error) {
+        // error occurred
+    });
+}
 
 
 // chart stuff
