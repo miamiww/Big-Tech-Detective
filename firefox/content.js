@@ -5,6 +5,7 @@ var companyData = {};
 var copyData = {};
 var companyList = [];
 var container;
+var extensionURL = browser.runtime.getURL("assets/");
 
 // helper functions
 function isEmpty(obj) {
